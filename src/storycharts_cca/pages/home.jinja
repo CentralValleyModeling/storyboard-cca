@@ -1,0 +1,55 @@
+{%extends "pages/base.jinja"%}
+
+{%block title%} 
+    CCA Home 
+{%-endblock %}
+
+{%macro adaptation_card(header, subheading, content, href="#", link="Explore", footer="")%}
+    <div class="card text-center m-2">
+        <div class="card-header">
+            {{header}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{subheading}}</h5>
+            <div>
+            {{content|safe}}
+            </div>
+            <a href="{{href}}" class="btn btn-primary">{{link}}</a>
+        </div>
+        <div class="card-footer text-muted">
+            {{footer}}
+        </div>
+    </div>
+{%-endmacro%}
+
+{%block content%}
+<div class="container-lg">
+    <h2>SWP Climate Change Adaptation Studies</h2>
+    <!-- Narrative -->
+    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus lectus justo, molestie finibus leo nec, gravida ullamcorper nunc. In hac habitasse platea dictumst. Ut fermentum orci non quam suscipit dignissim. Phasellus quis neque in diam laoreet hendrerit. Aenean convallis interdum massa eu ornare. Nunc at sapien et ligula tempus mollis. Nullam vulputate fringilla sapien sit amet dapibus. Nam augue erat, dictum eu efficitur sed, suscipit eget elit. Phasellus pretium pulvinar vestibulum.</p>
+    <p>Integer nec bibendum lacus, a varius risus. Quisque in pharetra nisl. Aenean vel enim pulvinar massa tincidunt tincidunt. Proin orci enim, maximus sagittis massa id, pellentesque convallis nunc. Aenean nec risus non elit malesuada posuere. Nam rutrum est vitae leo porta auctor. Nulla vehicula turpis quis enim sollicitudin, in aliquet ex maximus. Duis ultricies molestie risus, a posuere mauris tempus id. Cras et metus pellentesque, auctor est ac, pellentesque dui. Ut eget justo iaculis mauris ultrices porttitor tincidunt quis lacus. Phasellus posuere sapien sit amet varius hendrerit. Vivamus nec ante eu purus ultrices sodales mollis eu nibh. Maecenas posuere dui elit, at convallis magna cursus ac. </p>
+    <!-- Cards --> 
+    <div class="row">
+        <div class="col-sm-4">
+            {{adaptation_card("Storage", "South of Delta Storage", "content")}}
+        </div>
+        <div class="col-md-4">
+            {{adaptation_card("Operations", "Temporary Use Change Permits", "content")}}
+        </div>
+        <div class="col-md-4">
+            {{adaptation_card("Operations", "Temporary Use Change Permits", "content")}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            {{adaptation_card("Operations", "Voluntary Agreements", "content")}}
+        </div>
+        <div class="col-md-4">
+            {{adaptation_card("Storage", "South of Delta Storage", "content")}}
+        </div>
+        <div class="col-md-4">
+            {{adaptation_card("Storage", "South of Delta Storage", "content")}}
+        </div>
+    </div>
+</div>
+{%-endblock%}
