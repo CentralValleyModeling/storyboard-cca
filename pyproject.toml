@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "storycharts_cca"
+authors = [
+    {name = "Zachary Roy", email = "zachary.roy@water.ca.gov" }
+]
+description = "A Story Dashboard for the SWP Climate Change Adaptation Studies"
+readme = "README.md"
+license = {text = "MIT"}
+version = "0.0.1"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "fastapi",
+    "packaging",
+    "uvicorn",
+    "jinja2",
+    "python-multipart",
+    "pandss>=0.7.4",
+    "httpx"
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib", 
+    "--strict-markers",
+]
+pythonpath = "./src"
