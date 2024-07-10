@@ -1,4 +1,4 @@
-name: dev_storycharts_cca
+name: dev_storyboard_cca
 channels:
   - dwr-cvm
   - cadwr-dms
@@ -44,4 +44,4 @@ dependencies:
   - wheel=0.43.0
   - xz=5.4.6
   - zlib=1.2.13
-prefix: C:\Users\zroy\AppData\Local\miniconda3\envs\dev_storycharts_cca
+prefix: C:\Users\zroy\AppData\Local\miniconda3\envs\dev_storyboard_cca

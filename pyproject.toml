@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "storycharts_cca"
+name = "storyboard_cca"
 authors = [
     {name = "Zachary Roy", email = "zachary.roy@water.ca.gov" }
 ]

@@ -8,7 +8,7 @@ from .logging import logger
 from .pages import home
 from .templates import templates
 
-TITLE = "STORYCHARTS_CCA"
+TITLE = "STORYBOARD_CCA"
 SUMMARY = "Story Charts for the SWP CCA Studies"
 DESCRIPTION = """Story Charts for the SWP CCA Studies."""
 CONTACT = {
