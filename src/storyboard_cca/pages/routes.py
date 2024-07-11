@@ -1,48 +1,40 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
+from jinja2 import Environment
 
 from ..templates import templates
 from ..widgets.cards import CardWithButton
-from ..widgets.placeholders import PlaceholderImage, PlaceholderPage, lorem
+from ..widgets.placeholders import PlaceholderImage, PlaceholderPage
 
 router = APIRouter(prefix="", include_in_schema=False)
 
 
 @router.get("/home", response_class=HTMLResponse)
 async def get_home(request: Request):
-    narrative = f"<p>{lorem.SHORT}</p>"  # TODO: 2024-07-11 Make this load content
-
+    env: Environment = templates.env
+    introduction = env.get_template("pages/home/introduction.jinja").render()
+    hydrology = env.get_template("pages/home/hydrology.jinja").render()
     cards = [
         CardWithButton(
-            "Storage",
-            "South of Delta Storage",
+            "Infrastructure",
+            "Additional Storage",
             PlaceholderImage(),
             router.url_path_for(get_sods.__name__),
         ),
         CardWithButton(
-            "Operations",
-            "Temporary Use Change Permits",
+            "Infrastructure",
+            "Delta Conveyance Project",
             PlaceholderImage(),
             router.url_path_for(get_tucp.__name__),
         ),
         CardWithButton(
-            "Operations",
-            "Temporary Use Change Permits",
+            "Infrastructure",
+            "FIRO",
             PlaceholderImage(),
         ),
         CardWithButton(
             "Operations",
             "Voluntary Agreements",
-            PlaceholderImage(),
-        ),
-        CardWithButton(
-            "Storage",
-            "South of Delta Storage",
-            PlaceholderImage(),
-        ),
-        CardWithButton(
-            "Storage",
-            "South of Delta Storage",
             PlaceholderImage(),
         ),
     ]
@@ -51,7 +43,8 @@ async def get_home(request: Request):
         name="pages/home/page.jinja",
         context={
             "request": request,
-            "narrative": narrative,
+            "introduction": introduction,
+            "hydrology": hydrology,
             "cards": cards,
         },
     )
