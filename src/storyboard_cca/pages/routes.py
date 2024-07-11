@@ -3,20 +3,14 @@ from fastapi.responses import HTMLResponse
 
 from ..templates import templates
 from ..widgets.cards import CardWithButton
-from ..widgets.placeholders import Image
+from ..widgets.placeholders import Image, text
 
 router = APIRouter(prefix="", include_in_schema=False)
 
 
 @router.get("/home", response_class=HTMLResponse)
 async def get_home(request: Request):
-    narrative = """<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus 
-    lectus justo, molestie finibus leo nec, gravida ullamcorper nunc. In hac habitasse 
-    platea dictumst. Ut fermentum orci non quam suscipit dignissim. Phasellus quis 
-    neque in diam laoreet hendrerit. Aenean convallis interdum massa eu ornare. Nunc 
-    at sapien et ligula tempus mollis. Nullam vulputate fringilla sapien sit amet 
-    dapibus. Nam augue erat, dictum eu efficitur sed, suscipit eget elit. Phasellus 
-    pretium pulvinar vestibulum.</p>"""
+    narrative = f"<p>{text.SHORT}</p>"
 
     cards = [
         CardWithButton(
