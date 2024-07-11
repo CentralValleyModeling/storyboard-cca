@@ -1,2 +1,3 @@
-from .image import Image
-from .text import LoremIpsum
+from .image import PlaceholderImage
+from .lorem import LoremIpsum
+from .page import PlaceholderPage

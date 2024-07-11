@@ -3,46 +3,47 @@ from fastapi.responses import HTMLResponse
 
 from ..templates import templates
 from ..widgets.cards import CardWithButton
-from ..widgets.placeholders import Image, text
+from ..widgets.placeholders import PlaceholderImage, PlaceholderPage, lorem
 
 router = APIRouter(prefix="", include_in_schema=False)
 
 
 @router.get("/home", response_class=HTMLResponse)
 async def get_home(request: Request):
-    narrative = f"<p>{text.SHORT}</p>"
+    narrative = f"<p>{lorem.SHORT}</p>"  # TODO: 2024-07-11 Make this load content
 
     cards = [
         CardWithButton(
             "Storage",
             "South of Delta Storage",
-            Image(),
+            PlaceholderImage(),
             router.url_path_for(get_sods.__name__),
         ),
         CardWithButton(
             "Operations",
             "Temporary Use Change Permits",
-            Image(),
+            PlaceholderImage(),
+            router.url_path_for(get_tucp.__name__),
         ),
         CardWithButton(
             "Operations",
             "Temporary Use Change Permits",
-            Image(),
+            PlaceholderImage(),
         ),
         CardWithButton(
             "Operations",
             "Voluntary Agreements",
-            Image(),
+            PlaceholderImage(),
         ),
         CardWithButton(
             "Storage",
             "South of Delta Storage",
-            Image(),
+            PlaceholderImage(),
         ),
         CardWithButton(
             "Storage",
             "South of Delta Storage",
-            Image(),
+            PlaceholderImage(),
         ),
     ]
 
@@ -64,3 +65,8 @@ async def get_sods(request: Request):
             "request": request,
         },
     )
+
+
+@router.get("/tucp", response_class=HTMLResponse)
+async def get_tucp(request: Request):
+    return PlaceholderPage(request).encode()

@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Image:
+class PlaceholderImage:
     src: str = "https://placehold.co/320x160"
     alt: str = "Placeholder image."
 
