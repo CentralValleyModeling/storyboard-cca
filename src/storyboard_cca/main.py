@@ -1,11 +1,8 @@
-from pathlib import Path
-
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 
-from . import __version__
+from . import __version__, pages
 from .logging import logger
-from .pages import home
 from .templates import templates
 
 TITLE = "STORYBOARD_CCA"
@@ -33,10 +30,15 @@ app = FastAPI(
     license_info=LISCENSE,
 )
 
-app.include_router(home.router)
+app.include_router(pages.router)
 
 
-@app.get("/", response_class=RedirectResponse, status_code=302, include_in_schema=False)
+@app.get(
+    "/",
+    response_class=RedirectResponse,
+    status_code=302,
+    include_in_schema=False,
+)
 async def redirect_home():
     return RedirectResponse("/home")
 

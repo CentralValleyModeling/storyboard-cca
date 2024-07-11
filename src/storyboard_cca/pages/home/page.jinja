@@ -1,0 +1,36 @@
+{%extends "pages/base.jinja"%}
+
+{%block title%} 
+    CCA Home 
+{%-endblock %}
+
+{%block content%}
+<div class="container-lg">
+    <h2>SWP Climate Change Adaptation Studies</h2>
+    <!-- Narrative -->
+    {{narrative|safe}}
+    <!-- Cards --> 
+    <div class="row">
+        <div class="col-sm-4">
+            {{cards[0]|safe}}
+        </div>
+        <div class="col-md-4">
+            {{cards[1]|safe}}
+        </div>
+        <div class="col-md-4">
+            {{cards[2]|safe}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            {{cards[3]|safe}}
+        </div>
+        <div class="col-md-4">
+            {{cards[4]|safe}}
+        </div>
+        <div class="col-md-4">
+            {{cards[5]|safe}}
+        </div>
+    </div>
+</div>
+{%-endblock%}
