@@ -1,0 +1,210 @@
+[[assumptions]]
+name = "LTO VA 12A Version 2"
+kind = "regulations"
+detail = "Detail to be added for LTO VA 12A Version 2"
+
+[[assumptions]]
+name = "Historical Adjusted"
+kind = "hydrology"
+detail = "Detail to be added for Historical Adjusted"
+
+[[assumptions]]
+name = "2043 50% LOC"
+kind = "hydrology"
+detail = "Detail to be added for 2043 LOC 50%"
+
+[[assumptions]]
+name = "2043 95% LOC"
+kind = "hydrology"
+detail = "Detail to be added for 2043 LOC 95%"
+
+[[assumptions]]
+name = "2085 50% LOC"
+kind = "hydrology"
+detail = "Detail to be added for 2085 LOC 50%"
+
+[[assumptions]]
+name = "2085 75% LOC"
+kind = "hydrology"
+detail = "Detail to be added for 2085 LOC 75%"
+
+[[assumptions]]
+name = "Runflat"
+kind = "asset_management"
+detail = "Detail to be added for Runflat"
+
+[[assumptions]]
+name = "Maintain Current Assets"
+kind = "asset_management"
+detail = "Detail to be added for Current"
+
+[[assumptions]]
+name = "Design CAA Capacity"
+kind = "caa_subsidence"
+detail = "Detail to be added for Design CAA Capacity"
+
+[[assumptions]]
+name = "2043 50% LOC Subsidence"
+kind = "caa_subsidence"
+detail = "Detail to be added for 2043 50% LOC Subsidence"
+
+[[assumptions]]
+name = "2085 50% LOC Subsidence"
+kind = "caa_subsidence"
+detail = "Detail to be added for 2085 50% LOC Subsidence"
+
+[[assumptions]]
+name = "No Delta Conveyance Project"
+kind = "dcp"
+detail = "Detail to be added for No Delta Conveyance Project"
+
+[[assumptions]]
+name = "Delta Conveyance Project"
+kind = "dcp"
+detail = "Detail to be added for Delta Conveyance Project"
+
+[[assumptions]]
+name = "No Forecast-informed Reservoir Operations"
+kind = "firo"
+detail = "Detail to be added for No Forecast-informed Reservoir Operations"
+
+[[assumptions]]
+name = "Forecast-informed Reservoir Operations"
+kind = "firo"
+detail = "Detail to be added for Forecast-informed Reservoir Operations"
+
+[[assumptions]]
+name = "No Additional South of Delta Storage"
+kind = "sods"
+detail = "Detail to be added for No Additional South of Delta Storage"
+
+[[assumptions]]
+name = "Additional South of Delta Storage"
+kind = "sods"
+detail = "Detail to be added for Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Baseline"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+hydrology = "Historical Adjusted"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "2043 50% LOC - Maintain"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+hydrology = "2043 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "2043 50% LOC - DCP + Maintain"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+hydrology = "2043 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "2043 50% LOC - FIRO + Maintain"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+hydrology = "2043 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "2043 50% LOC - SODS + Maintain"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+hydrology = "2043 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "Additional South of Delta Storage"
+
+[[scenarios]]
+name = "2043 50% LOC - Combination"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+hydrology = "2043 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "Delta Conveyance Project"
+firo = "Forecast-informed Reservoir Operations"
+sods = "Additional South of Delta Storage"
+
+[[runs]]
+scenario = "Baseline"
+version = "1.0"
+code_version = "3.6.0"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run for the baseline"
+dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA1_v3.6.0__Baseline_LU100_SLR0_20240711/DSS/output/CCA1_v3.6.0__Baseline_LU100_SLR0_20240711.dss"
+
+[[runs]]
+scenario = "2043 50% LOC - Maintain"
+version = "1.0"
+code_version = "3.6.0"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run, Climate Change at 2043 50% LOC, LU 100%, Sea Level Rise 15cm"
+dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA4_v3.6.0__2043_50CC_LU100_SLR15_20240715/DSS/output/CCA4_v3.6.0__2043_50CC_LU100_SLR15_20240715.dss"
+
+[[runs]]
+scenario = "2043 50% LOC - DCP + Maintain"
+version = "1.0"
+code_version = "3.6.0"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run for DCP analysis, uses the same climate as 2043 50CC"
+dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA6_v3.6.0_A_2043_50CC_LU100_SLR15_20240716/DSS/output/CCA6_v3.6.0_A_2043_50CC_LU100_SLR15_20240716.dss"
+
+[[runs]]
+scenario = "2043 50% LOC - FIRO + Maintain"
+version = "1.0"
+code_version = "3.6.0"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run for FIRO analysis, uses the same climate as 2043 50CC"
+dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA8_v3.6.0_D_2043_50CC_LU100_SLR15_20240711/DSS/output/CCA8_v3.6.0_D_2043_50CC_LU100_SLR15_20240711.dss"
+
+[[runs]]
+scenario = "2043 50% LOC - SODS + Maintain"
+version = "1.0"
+code_version = "3.6.0"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run for SOD analysis, uses the same climate as 2043 50CC"
+dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA10_v3.6.0_C_2043_50CC_LU100_SLR15_20240711/DSS/output/CCA10_v3.6.0_C_2043_50CC_LU100_SLR15_20240711.dss"
+
+[[runs]]
+scenario = "2043 50% LOC - Combination"
+version = "1.0"
+code_version = "3.6.0"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run for multi-project analysis, uses the same climate as 2043 50CC"
+dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA12_v3.6.0_ACD_2043_50CC_LU100_SLR15_20240712/DSS/output/CCA12_v3.6.0_ACD_2043_50CC_LU100_SLR15_20240712.dss"
