@@ -12,24 +12,22 @@ from ..widgets.placeholders import PlaceholderImage, PlaceholderPage
 router = APIRouter(prefix="", include_in_schema=False)
 
 
-def temp_get_data(path: str = "oroville_storage") -> tuple[pd.DataFrame, ...]:
-    s = SCEANRIOS[0]
-    r = RUNS[s.name][0]
-    rts_1 = client.get_timeseries(
-        scenario=r.scenario,
-        version=r.version,
-        path=path,
-    )
-    s = SCEANRIOS[1]
-    r = RUNS[s.name][0]
-    rts_2 = client.get_timeseries(
-        scenario=r.scenario,
-        version=r.version,
-        path=path,
-    )
-    df_1 = rts_1.to_frame()
-    df_2 = rts_2.to_frame()
-    return df_1, df_2
+def temp_get_data(
+    path: str = "/.*/SWP_TA_TOTAL/SWP_DELIVERY/.*/.*/.*/",
+) -> dict[str, pd.DataFrame]:
+    frames = dict()
+    for s in SCEANRIOS:
+        r = RUNS[s.name][0]
+        rts_1 = client.get_timeseries(
+            scenario=r.scenario,
+            version=r.version,
+            path=path,
+        )
+        try:
+            frames[s.name] = rts_1.to_frame()
+        except Exception:
+            pass
+    return frames
 
 
 @router.get("/home", response_class=HTMLResponse)
@@ -37,20 +35,20 @@ async def get_home(request: Request):
     env: Environment = templates.env
     introduction = env.get_template("pages/home/introduction.jinja").render()
     hydrology = env.get_template("pages/home/hydrology.jinja").render()
-    oro_1, oro_2 = temp_get_data(path="oroville_storage")
-    plot_1 = plots.line(
-        {
-            SCEANRIOS[0].name: oro_1.loc[oro_1.index.month == 9, :],
-            SCEANRIOS[1].name: oro_2.loc[oro_2.index.month == 9, :],
-        },
-        y_label="Oroville Storage (TAF)",
-    )
+    oro = temp_get_data()
+    oro_storage = {
+        k: v
+        for k, v in oro.items()
+        if k in ("Baseline", "2043 50% LOC - SODS + Maintain")
+    }
+    plot_1 = plots.line(oro_storage, y_label="Table A Deliveries (CFS)")
 
     cards = [
         CardWithButton(
             "Infrastructure",
             "Additional Storage",
-            f"{plot_1}<p>Additional storage South of the Delta allows Oroville to retain more water during droughts.</p>",
+            f"{plot_1}<p>Additional storage South of the Delta allows Oroville to "
+            + "retain more water during droughts.</p>",
             router.url_path_for(get_sods.__name__),
         ),
         CardWithButton(
@@ -93,5 +91,5 @@ async def get_tucp(request: Request):
 
 
 @router.get("/explore", response_class=HTMLResponse)
-async def get_tucp(request: Request):
+async def get_explore(request: Request):
     return PlaceholderPage(request).encode()
