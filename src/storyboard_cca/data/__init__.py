@@ -1,15 +1,18 @@
+import logging
 from functools import cache
+from pathlib import Path
 
-from csrs import clients, schemas
+from csrs import clients, database, schemas
 
-client = clients.RemoteClient(
-    "https://calsim-scenario-results-server.azurewebsites.net/"
-)
+here = Path(__file__).parent
+client = clients.LocalClient(database.db_cfg.db)
 
 
 @cache
 def get_all_scenarios(client: clients.RemoteClient) -> list[schemas.Scenario]:
-    return client.get_scenario()
+    scenarios = client.get_scenario()
+    logging.info(f"found {len(scenarios)} scenarios: {scenarios}")
+    return scenarios
 
 
 @cache
@@ -18,6 +21,7 @@ def get_all_runs(client: clients.RemoteClient) -> dict[str, list[schemas.Run]]:
     runs = {s.name: list() for s in scenarios}
     all_runs = client.get_run()
     for r in all_runs:
+        logging.info(f"found run: {r}")
         runs[r.scenario].append(r)
     return runs
 
