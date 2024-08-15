@@ -14,7 +14,7 @@ def get_dir() -> Path:
 
 
 def get_logger() -> logging.Logger:
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger("storyboard-cca")
     level = int(os.environ.get("log-level", logging.INFO))
     logger.setLevel(level)
     # make formatter for these logging handlers
