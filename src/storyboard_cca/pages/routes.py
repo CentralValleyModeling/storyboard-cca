@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from jinja2 import Environment
 
-from ..data import RUNS, SCEANRIOS, client
+from ..data import DATA_CACHE
 from ..templates import templates
 from ..widgets import plots
 from ..widgets.cards import CardWithButton
@@ -12,49 +12,40 @@ from ..widgets.placeholders import PlaceholderImage, PlaceholderPage
 router = APIRouter(prefix="", include_in_schema=False)
 
 
-def temp_get_data(
-    path: str = "/.*/SWP_TA_TOTAL/SWP_DELIVERY/.*/.*/.*/",
-) -> dict[str, pd.DataFrame]:
-    frames = dict()
-    for s in SCEANRIOS:
-        r = RUNS[s.name][0]
-        rts_1 = client.get_timeseries(
-            scenario=r.scenario,
-            version=r.version,
-            path=path,
-        )
-        try:
-            frames[s.name] = rts_1.to_frame()
-        except Exception:
-            pass
-    return frames
-
-
 @router.get("/home", response_class=HTMLResponse)
 async def get_home(request: Request):
     env: Environment = templates.env
     introduction = env.get_template("pages/home/introduction.jinja").render()
     hydrology = env.get_template("pages/home/hydrology.jinja").render()
-    oro = temp_get_data()
-    oro_storage = {
-        k: v
-        for k, v in oro.items()
-        if k in ("Baseline", "2043 50% LOC - SODS + Maintain")
-    }
-    plot_1 = plots.line(oro_storage, y_label="Table A Deliveries (CFS)")
+    storage_data = DATA_CACHE.get_timeseries("/.*/S_SLUIS/STORAGE/.*/.*/.*/")
+    exports_data = DATA_CACHE.get_timeseries("/.*/D_OMR027_CAA000/DIVERSION/.*/.*/.*/")
+    # Identify storage scenarios
+    storage_scenarios = [
+        k for k in storage_data if (("Baseline" in k) or ("SODS" in k))
+    ]
+    dcp_scenarios = [k for k in storage_data if (("Baseline" in k) or ("DCP" in k))]
+
+    plot_storage = plots.monthly(
+        {k: v for k, v in storage_data.items() if k in storage_scenarios},
+        y_label="Storage in San Luis (TAF)",
+    )
+    plot_dcp = plots.exceedance(
+        {k: v for k, v in exports_data.items() if k in dcp_scenarios},
+        y_label="Exports at Banks (TAF)",
+    )
 
     cards = [
         CardWithButton(
-            "Infrastructure",
-            "Additional Storage",
-            f"{plot_1}<p>Additional storage South of the Delta allows Oroville to "
-            + "retain more water during droughts.</p>",
-            router.url_path_for(get_sods.__name__),
+            header="Infrastructure",
+            subheading="Additional Storage",
+            content=plot_storage,
+            href=router.url_path_for(get_sods.__name__),
+            footer="Additonal text",
         ),
         CardWithButton(
             "Infrastructure",
             "Delta Conveyance Project",
-            PlaceholderImage(),
+            plot_dcp,
             router.url_path_for(get_tucp.__name__),
         ),
         CardWithButton(

@@ -7,7 +7,7 @@ class CardWithButton:
     subheading: str
     content: str
     href: str = "#"
-    link: str = "Explore"
+    link_label: str = "Explore"
     footer: str = ""
 
     def __str__(self) -> str:
@@ -20,7 +20,7 @@ class CardWithButton:
                 <div class="row mx-1 my-2 mh-100">
                     {self.content}
                 </div>
-                <a href="{self.href}" class="btn btn-primary">{self.link}</a>
+                <a href="{self.href}" class="btn btn-primary">{self.link_label}</a>
             </div>
             <div class="card-footer text-muted">
                 {self.footer}

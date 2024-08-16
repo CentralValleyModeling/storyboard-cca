@@ -1,8 +1,9 @@
+import logging
+
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 
 from . import __version__, pages
-from .logging import logger
 from .templates import templates
 
 TITLE = "STORYBOARD_CCA"
@@ -45,5 +46,5 @@ async def redirect_home():
 
 @app.exception_handler(404)
 async def custom_404_handler(request: Request, __):
-    logger.info(request.headers)
+    logging.info(request.headers)
     return templates.TemplateResponse("errors/404.jinja", {"request": request})
