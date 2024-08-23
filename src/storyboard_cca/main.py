@@ -1,10 +1,12 @@
-import logging
-
+import csrs
+import csrs.config
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 
-from . import __version__, pages
+from . import __version__, logger, pages, widgets
 from .templates import templates
+
+csrs.config.configure_logging(logger)
 
 TITLE = "STORYBOARD_CCA"
 SUMMARY = "Story Charts for the SWP CCA Studies"
@@ -32,6 +34,7 @@ app = FastAPI(
 )
 
 app.include_router(pages.router)
+app.include_router(widgets.placeholders.image.router)
 
 
 @app.get(
@@ -46,5 +49,9 @@ async def redirect_home():
 
 @app.exception_handler(404)
 async def custom_404_handler(request: Request, __):
-    logging.info(request.headers)
-    return templates.TemplateResponse("errors/404.jinja", {"request": request})
+    logger.warning(f"404 returned for request={request.url}")
+    return templates.TemplateResponse(
+        "errors/404.jinja",
+        {"request": request},
+        status_code=404,
+    )

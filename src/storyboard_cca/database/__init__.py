@@ -4,16 +4,20 @@ from pathlib import Path
 
 from csrs import clients, database, schemas
 
+logger = logging.getLogger(__name__)
+
 
 class DataCache:
     def __init__(self):
         self.data_dir = Path(__file__).parent
-        self.client = clients.LocalClient(database.db_cfg.db)
+        self.client = clients.LocalClient(database.db_cfg.source)
 
     @lru_cache()
     def get_all_scenarios(self) -> list[schemas.Scenario]:
         scenarios = self.client.get_scenario()
-        logging.info(f"found {len(scenarios)} scenarios: {scenarios}")
+        logger.info(f"`get_all_scenarios` found {len(scenarios)}, result cached")
+        for s in scenarios:
+            logger.info(s)
         return scenarios
 
     @lru_cache()
@@ -22,11 +26,16 @@ class DataCache:
         runs = dict()
         for s in scenarios:
             runs[s.name] = self.client.get_run(scenario=s.name)
-            logging.info(f"{len(runs[s])} runs found for scenario {s.name}")
+            logger.info(
+                f"{len(runs[s])} runs found for scenario {s.name}, result cached"
+            )
+            for r in runs[s]:
+                logger.info(r)
         return runs
 
     @lru_cache()
     def get_preferred_runs(self) -> list[schemas.Run]:
+        logger.info("calling `get_preferred_runs`, results are cached")
         scenarios = self.get_all_scenarios()
         runs = list()
         for s in scenarios:
@@ -36,9 +45,10 @@ class DataCache:
                     version=s.preferred_run,
                 )
                 if len(run_list) == 1:
+                    logger.info(f"{s} prefers version {run_list[0].version}")
                     runs.append(run_list[0])
                 else:
-                    logging.warning(
+                    logger.error(
                         f"{len(run_list)} runs found for scenario={s.name}, "
                         + f"version={s.preferred_run}, skipping"
                     )
@@ -65,6 +75,7 @@ class DataCache:
                 version=run.version,
                 path=path,
             )
+            logger.info(f"found {ts.path} for {run}")
             timeseries[run.scenario] = ts
         return timeseries
 

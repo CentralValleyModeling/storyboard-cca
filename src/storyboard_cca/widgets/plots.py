@@ -1,14 +1,19 @@
+import logging
+
 import numpy as np
 import pandas as pd
 from csrs import schemas
 from plotly import graph_objects as go
 
+logger = logging.getLogger(__name__)
+
 
 def monthly(
     timeseries: dict[str, schemas.Timeseries],
-    y_label: str = "y",
+    y_label: str = "Value",
     **layout_kwargs,
 ) -> str:
+    logger.info(f"creating monthly chart for {len(timeseries)} timeseries")
     all_series = dict()
     month_key = {
         1: "Jan",
@@ -30,8 +35,7 @@ def monthly(
         df = df.groupby(months).agg("mean")
         df.index = [month_key[i] for i in df.index]
         all_series[k] = df.iloc[:, 0]
-
-    return line(
+    return _line(
         series=all_series,
         y_label=y_label,
         **layout_kwargs,
@@ -43,22 +47,28 @@ def exceedance(
     y_label: str = "y",
     **layout_kwargs,
 ) -> str:
+    logger.info(f"creating exceedance chart for {len(timeseries)} timeseries")
     all_series = dict()
     for k, ts in timeseries.items():
         df = ts.to_frame()
         sorted = df.iloc[:, 0].sort_values().values
-        exceedance = np.arange(1.0, len(sorted) + 1.0) / len(sorted)
+        exceedance = (np.arange(1.0, len(sorted) + 1.0) / len(sorted)) * 100.0
         series = pd.Series(sorted, index=exceedance)
         all_series[k] = series
-
-    return line(
+    return _line(
         series=all_series,
         y_label=y_label,
+        x_label="Non-Exceedance Probability (%)",
         **layout_kwargs,
     )
 
 
-def line(series: dict[str, pd.Series], y_label: str = "y", **layout_kwargs) -> str:
+def _line(
+    series: dict[str, pd.Series],
+    y_label: str = "Value",
+    x_label: str | None = None,
+    **layout_kwargs,
+) -> str:
     fig = go.Figure()
     for name, s in series.items():
         if isinstance(s, pd.DataFrame):
@@ -73,6 +83,12 @@ def line(series: dict[str, pd.Series], y_label: str = "y", **layout_kwargs) -> s
         rangemode="tozero",
         title_text=y_label,
     )
+    if x_label:
+        fig.update_xaxes(
+            visible=True,
+            fixedrange=True,
+            title_text=x_label,
+        )
     # strip down the rest of the plot
     layout_kwargs = (
         dict(
@@ -91,6 +107,7 @@ def line(series: dict[str, pd.Series], y_label: str = "y", **layout_kwargs) -> s
         )
         | layout_kwargs
     )
+    logger.debug(f"{layout_kwargs=}")
     fig.update_layout(**layout_kwargs)
     config = {
         "responsive": True,

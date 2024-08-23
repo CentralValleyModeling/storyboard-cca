@@ -1,3 +1,4 @@
+import logging
 from importlib.metadata import PackageNotFoundError, version
 
 try:
@@ -5,3 +6,6 @@ try:
 except PackageNotFoundError:
     # csrs not installed, likely developer mode
     __version__ = None
+
+
+logger = logging.getLogger(__name__)

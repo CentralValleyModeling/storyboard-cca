@@ -53,9 +53,7 @@ def new_file(f: str) -> Path:
 
 def bootstrap_database(toml_file: Path):
     config = load_config(toml_file)
-    db = csrs.database.db_cfg.db
-    if db.exists():
-        logging.warning(f"database already exists {db}")
+    db = csrs.database.db_cfg.source
     client = csrs.LocalClient(db)
     try:
         client.put_standard_paths()
@@ -63,9 +61,11 @@ def bootstrap_database(toml_file: Path):
             client.put_assumption(**assumption)
         for scenario in config["scenarios"]:
             client.put_scenario(**scenario)
+        dss_key = dict()
         for run in config["runs"]:
             dss = run.pop("dss")  # Don't use this to construct the Run object
             run_obj = client.put_run(**run)
+            dss_key[run_obj.id] = dss
         for run in config["runs"]:
             logging.info(f"adding data from dss: {dss}")
             run_obj = client.get_run(
@@ -73,7 +73,7 @@ def bootstrap_database(toml_file: Path):
                 version=run["version"],
             )[0]
             timeseries = client.get_timeseries_from_dss(
-                dss=dss,
+                dss=dss_key[run_obj.id],
                 scenario=run_obj.scenario,
                 version=run_obj.version,
             )

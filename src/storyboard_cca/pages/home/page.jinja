@@ -5,29 +5,26 @@
 {%-endblock %}
 
 {%block content%}
-<div class="container-lg">
-    <h2>SWP Climate Change Adaptation Studies</h2>
+<div class="row m-0">
+    <div class="card border-0 rounded-0 p-0">
+        <img src="/placeholder/image" class="card-img rounded-0" style="max-height: 20rem; object-fit: cover;" alt="Decorative image behind the page title. Shows historical images from the SWP development.">
+        <div class="card-img-overlay p-0 d-flex justify-content-end flex-column">
+            <div class="bg-light" style="--bs-bg-opacity:0.5;">
+                <div class="px-3 py-1">
+                    <h1 class="card-title">Climate Change Adaptation Studies</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row m-0">
+    <div class="col px-3">
     <!-- Introduction -->
     {{introduction|safe}}
     <!-- Hydrology -->
     {{hydrology|safe}}
-    <!-- Cards --> 
-    <h3>Explore Adaptation Studies</h3>
-    <div class="row">
-        <div class="col-sm-6">
-            {{cards[0]|safe}}
-        </div>
-        <div class="col-md-6">
-            {{cards[1]|safe}}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            {{cards[2]|safe}}
-        </div>
-        <div class="col-md-6">
-            {{cards[3]|safe}}
-        </div>
+    <!-- Adaptation -->
+    {{adaptations|safe}}
     </div>
 </div>
 {%-endblock%}
