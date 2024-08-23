@@ -1,8 +1,8 @@
 import logging
 import random
-from dataclasses import dataclass
 from pathlib import Path
 
+from dash import html
 from fastapi import APIRouter
 from fastapi.responses import FileResponse
 
@@ -12,9 +12,9 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/placeholder", include_in_schema=False)
 
 image_options = [
-    "static/images/placeholders/19671110_Oroville_Const.jpg",
-    "static/images/placeholders/19570915_Ozalid_Machine.jpg",
-    "static/images/placeholders/19591117_Frenchman_Dam_Const.jpg",
+    "assets/images/placeholders/19671110_Oroville_Const.jpg",
+    "assets/images/placeholders/19570915_Ozalid_Machine.jpg",
+    "assets/images/placeholders/19591117_Frenchman_Dam_Const.jpg",
 ]
 random.shuffle(image_options)
 
@@ -28,21 +28,19 @@ def get_image():
     return f
 
 
-@dataclass
-class PlaceholderImage:
-    src: str = "https://placehold.co/240x120"
-    alt: str = "Placeholder image."
-
-    def __str__(self) -> str:
-        bootstrap = "img-fluid rounded mx-auto d-block"
-        return f'<img src={self.src} class="{bootstrap}" alt={self.alt}>'
-
-
-@dataclass
-class PlaceholderFeatureImage:
-    src: str = "/placeholder/image"
-    alt: str = "Placeholder image."
-
-    def __str__(self) -> str:
-        bootstrap = "card-img"
-        return f'<img src={self.src} class="{bootstrap}" alt="{self.alt}">'
+class PlaceholderImage(html.Img):
+    def __init__(
+        self,
+        src: str = "/placeholder/image",
+        alt: str = "Placeholder image.",
+        class_name: str = "card-img rounded-0",
+        style: dict | None = None,
+    ):
+        if style is None:
+            style = {"height": "300px", "object-fit": "cover"}
+        super().__init__(
+            src=src,
+            className=class_name,
+            alt=alt,
+            style=style,
+        )

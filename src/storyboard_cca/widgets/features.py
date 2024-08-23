@@ -1,27 +1,44 @@
-from dataclasses import dataclass
+from dash import html
 
 
-@dataclass
-class TitleImageOverlay:
-    title: str
-    image: str
-    paragraph: str | None = None
-    text_color: str = ""
-
-    def __str__(self):
-        p = ""
-        if self.paragraph:
-            p = []
-            for _p in self.paragraph.split("\n"):
-                p.append(f'<p class="card-text">{_p}</p>')
-            p = "".join(p)
-        return f"""
-        <div class="card bg-inverse" style="max-width: 600px;">
-            {self.image}
-            <div class="card-img-overlay p-0">
-                <div class="bg-light p-2" style="--bs-bg-opacity:0.5;">
-                    <h3 class="card-title" >{self.title}</h3>
-                    {p}
-                </div>
-            </div>
-        </div>"""
+class TitleImageOverlay(html.Div):
+    def __init__(
+        self,
+        title: str,
+        image: html.Img,
+        paragraph: str | None = None,
+    ):
+        paragraph_objects = []
+        if paragraph:
+            for txt in paragraph.split("\n"):
+                paragraph_objects.append(html.P(className="card-text", children=txt))
+        card_overlay_class = " ".join(
+            [
+                "card-img-overlay",
+                "p-0",
+                "rounded-0",
+                "d-flex",
+                "justify-content-end",
+                "flex-column",
+            ]
+        )
+        super().__init__(
+            className="card bg-inverse rounded-0",
+            children=[
+                image,
+                html.Div(
+                    className=card_overlay_class,
+                    children=html.Div(
+                        className="bg-light p-2",
+                        style={"--bs-bg-opacity": 0.5},
+                        children=[
+                            html.H3(
+                                className="card-title",
+                                children=title,
+                            ),
+                            *paragraph_objects,
+                        ],
+                    ),
+                ),
+            ],
+        )

@@ -1,1 +1,1 @@
-from .routes import router
+from .home import app as home

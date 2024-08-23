@@ -2,7 +2,6 @@
 # Calsim flavored ignores
 run/=ILP=
 Results
-assets
 run/cvgroundwater/data/restart
 .vscode/
 _archive/
