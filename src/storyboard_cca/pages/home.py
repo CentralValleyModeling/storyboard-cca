@@ -1,10 +1,6 @@
-from pathlib import Path
-
 import dash
 
 from .. import widgets
-
-here = Path(__file__).parent
 
 
 def layout():
@@ -13,7 +9,8 @@ def layout():
             widgets.features.TitleImageOverlay(
                 title="Climate Change Adaptation Studies",
                 image=widgets.placeholders.PlaceholderImage(),
-            )
+            ),
+            widgets.markdown.from_file("home/introduction"),
         ]
     )
 
@@ -21,9 +18,9 @@ def layout():
 app = dash.Dash(
     __name__,
     title="Home - Climate Change Adaptation Studies",
-    external_stylesheets=widgets.style_sheets,
+    external_stylesheets=widgets.STYLE_SHEETS,
     requests_pathname_prefix="/home/",
-    assets_folder=here.parent / "assets",
+    assets_folder=widgets.ASSETS_DIR,
 )
 
 app.layout = layout
