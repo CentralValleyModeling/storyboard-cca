@@ -9,7 +9,7 @@ assets = Path(__file__).parent.parent / "assets/text"
 def from_file(src: str | Path) -> Markdown:
     if not isinstance(src, Path):
         src = Path(src)
-    if not src.suffix == ".md":
+    if src.suffix == "":
         src = src.with_suffix(".md")
     if not src.exists():
         src = assets / src
