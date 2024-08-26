@@ -1,26 +1,17 @@
 import dash
+import widgets
 
-from .. import widgets
+dash.register_page(__name__, path="/home/", redirect_from=["/home"])
 
 
 def layout():
     return widgets.layout.LayoutCCA(
+        header=widgets.features.TitleImageOverlay(
+            title="Climate Change Adaptation Studies",
+            image=widgets.placeholders.PlaceholderImage(),
+        ),
         children=[
-            widgets.features.TitleImageOverlay(
-                title="Climate Change Adaptation Studies",
-                image=widgets.placeholders.PlaceholderImage(),
-            ),
             widgets.markdown.from_file("home/introduction"),
-        ]
+            widgets.tables.from_file("home/dcr_results"),
+        ],
     )
-
-
-app = dash.Dash(
-    __name__,
-    title="Home - Climate Change Adaptation Studies",
-    external_stylesheets=widgets.STYLE_SHEETS,
-    requests_pathname_prefix="/home/",
-    assets_folder=widgets.ASSETS_DIR,
-)
-
-app.layout = layout

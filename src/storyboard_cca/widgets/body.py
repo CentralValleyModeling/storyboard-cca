@@ -1,3 +1,5 @@
+from typing import Any
+
 import dash_bootstrap_components as dbc
 from dash import html
 
@@ -20,10 +22,20 @@ class IconLink(html.A):
 
 
 class MainCCA(html.Main):
-    def __init__(self, **kwargs):
+    def __init__(
+        self,
+        header: Any | None = None,
+        children: Any | None = None,
+        **kwargs,
+    ):
         cca_kwargs = dict()
         cca_kwargs.update(kwargs)
-        super().__init__(children=dbc.Container(**cca_kwargs))
+        content = list()
+        if header:
+            content.append(header)
+        if children:
+            content.append(dbc.Container(children, **cca_kwargs))
+        super().__init__(children=content)
 
 
 class FooterCCA(dbc.Container):
