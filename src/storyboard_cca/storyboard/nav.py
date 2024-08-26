@@ -1,11 +1,11 @@
 import dash_bootstrap_components as dbc
 
-from .brand import BrandCCA
+from .brand import Brand
 
 GITHUB_HREF = "https://github.com/CentralValleyModeling/storyboard-cca"
 
 
-class NavCCA(dbc.Nav):
+class Nav(dbc.Nav):
     def __init__(
         self,
         links: list[dbc.NavLink] | None = None,
@@ -25,7 +25,7 @@ class NavCCA(dbc.Nav):
         super().__init__(children=[dbc.NavItem(link) for link in links], **cca_kwargs)
 
 
-class NavBarCCA(dbc.Navbar):
+class NavBar(dbc.Navbar):
     def __init__(
         self,
         links: list[dbc.NavLink] | None = None,
@@ -39,10 +39,10 @@ class NavBarCCA(dbc.Navbar):
             children=dbc.Container(
                 fluid=True,
                 children=[
-                    BrandCCA(),
+                    Brand(),
                     dbc.NavbarToggler(id="cca-navbar-toggler"),
                     dbc.Collapse(
-                        NavCCA(links=links),
+                        Nav(links=links),
                         id="cca-navbar-nav-dropdown",
                         navbar=True,
                     ),

@@ -90,6 +90,3 @@ class DataCache:
     @property
     def scenarios(self) -> list[schemas.Scenario]:
         return self.get_all_scenarios()
-
-
-DATA_CACHE = DataCache()

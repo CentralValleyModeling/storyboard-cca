@@ -1,8 +1,8 @@
 import dash
-import widgets
+import storyboard
 
 dash.register_page(__name__)
 
 
 def layout():
-    return widgets.layout.LayoutCCA(children=widgets.markdown.from_file("errors/404"))
+    return storyboard.Page(children=storyboard.markdown.from_file("errors/404"))

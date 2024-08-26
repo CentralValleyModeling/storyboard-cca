@@ -20,7 +20,7 @@ class ImgCCA(html.Img):
         super().__init__(**cca_kwargs)
 
 
-class BrandCCA(dbc.NavbarBrand):
+class Brand(dbc.NavbarBrand):
     def __init__(self, **kwargs):
         cca_kwargs = dict(
             children=html.A(ImgCCA()),

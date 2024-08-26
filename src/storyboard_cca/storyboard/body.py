@@ -21,7 +21,7 @@ class IconLink(html.A):
         super().__init__(**cca_kwargs)
 
 
-class MainCCA(html.Main):
+class Page(html.Main):
     def __init__(
         self,
         header: Any | None = None,
@@ -38,7 +38,7 @@ class MainCCA(html.Main):
         super().__init__(children=content)
 
 
-class FooterCCA(dbc.Container):
+class Footer(dbc.Container):
     def __init__(self, **kwargs):
         container_class = " ".join(
             [
