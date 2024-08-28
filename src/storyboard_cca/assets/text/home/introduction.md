@@ -3,10 +3,3 @@
 The far-reaching consequences of climate change continue to impact California, necessitating the adaptation of critical infrastructure systems to ensure their resilience in the face of shifting environmental conditions. In this analysis, over a dozen strategies that the State Water Project (SWP) is already pursuing are described and explained. In addition, five key climate adaptation strategies that are currently being planned or that are in early stages of development are quantitatively evaluated to show how these strategies, if implemented, could change the future of water supply reliability for the SWP and contribute to statewide benefits.
 
 The question that this analysis attempts to answer is: To what degree do the adaptation strategies that SWP is already planning, move SWP to a climate resilient future? Are these major adaptation strategies enough to improve SWP's resilience given the expected changes in climate? And even with these adaptation strategies, what conditions would continue to pose risks to the SWP and SWP water users?
-
-<!-- Existing Studies -->
-#### Baseline Conditions
-
-The Delivery Capability Report presents DWR's analysis of the existing SWP system and provides important planning information for users of SWP water. The analysis provided information about how changing climate, regulatory, and operational considerations impact SWP delivery capability.
-
-The DCR is used as the starting point for the Adaptation analyses. The DCR is a good condidate for this due to it's wide circulation, and it's consideration of existing operations, infrastructure, and climate. As such, the DCR analyses factor in all the current regulations governing SWP and CVP operations in the Delta (i.e., D-1641, 2019 BiOps and ITP), existing infrastructure and assumptions about water uses upstream in the Sacramento River and San Joaquin River watersheds.

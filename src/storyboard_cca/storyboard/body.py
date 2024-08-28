@@ -76,15 +76,14 @@ class Page(html.Main):
         self,
         header: Any | None = None,
         children: Any | None = None,
-        **kwargs,
     ):
-        cca_kwargs = dict()
-        cca_kwargs.update(kwargs)
         content = list()
         if header:
             content.append(header)
         if children:
-            content.append(dbc.Container(children, **cca_kwargs))
+            if isinstance(children, list):
+                children = html.Div(children, className="my-3")
+            content.append(children)
         super().__init__(children=content)
 
 
@@ -134,17 +133,18 @@ class Footer(dbc.Container):
         cca_kwargs.update(kwargs)
         super().__init__(
             children=html.Footer(**cca_kwargs),
-            class_name="m-0 py-3 px-0",
+            class_name="m-0 p-0",
             fluid=True,
         )
 
 
-class Layout(html.Div):
+class AppLayout(html.Div):
     def __init__(
         self,
         links: list[dbc.NavLink] | None = None,
     ):
         super().__init__(
+            id="app-layout",
             children=[
                 NavBar(links=links),
                 page_container,

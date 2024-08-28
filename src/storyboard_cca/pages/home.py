@@ -1,4 +1,5 @@
 import dash
+import dash_bootstrap_components as dbc
 import storyboard
 
 dash.register_page(
@@ -10,12 +11,56 @@ dash.register_page(
 
 def layout():
     return storyboard.Page(
-        header=storyboard.features.TitleImageOverlay(
+        header=storyboard.features.BannerImage(
             title="Climate Change Adaptation Studies",
             image=storyboard.placeholders.get_image(),
         ),
         children=[
-            storyboard.markdown.from_file("text/home/introduction"),
-            storyboard.table.from_file("text/home/dcr_results"),
+            storyboard.Container(
+                dbc.Col(
+                    storyboard.markdown.from_file("text/home/introduction"),
+                    width=8,
+                ),
+                dbc.Col(
+                    storyboard.features.LinksBin.from_csv(
+                        "text/home/links",
+                        title="Learn More",
+                    ),
+                    width=4,
+                ),
+            ),
+            storyboard.features.ScrollBy(
+                left=storyboard.placeholders.get_image(
+                    style={
+                        "height": "100%",
+                        "object-fit": "cover",
+                    }
+                ),
+                right=storyboard.placeholders.LoremIpsum(20),
+            ),
+            storyboard.features.ScrollBy(
+                right=storyboard.placeholders.get_image(
+                    style={
+                        "height": "100%",
+                        "object-fit": "cover",
+                    }
+                ),
+                left=storyboard.placeholders.LoremIpsum(20),
+                height_limit="50vh",
+            ),
+            storyboard.features.ScrollBy(
+                left=storyboard.placeholders.get_image(
+                    style={
+                        "height": "100%",
+                        "object-fit": "cover",
+                    }
+                ),
+                right=storyboard.placeholders.LoremIpsum(20),
+                height_limit="50vh",
+            ),
+            storyboard.Container(
+                dbc.Row(storyboard.markdown.from_file("text/home/baseline_conditions")),
+                dbc.Row(storyboard.table.from_file("text/home/dcr_results")),
+            ),
         ],
     )

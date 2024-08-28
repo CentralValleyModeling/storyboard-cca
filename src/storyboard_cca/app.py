@@ -4,13 +4,14 @@ from flask import send_from_directory
 
 app = dash.Dash(
     __name__,
-    external_stylesheets=storyboard.STYLE_SHEETS,
+    external_stylesheets=storyboard.EXTERNAL_STYLE_SHEETS,
+    external_scripts=storyboard.EXTERNAL_SCRIPTS,
     assets_folder="assets",
     pages_folder="pages",
     use_pages=True,
 )
 
-app.layout = storyboard.body.Layout()
+app.layout = storyboard.body.AppLayout()
 server = app.server
 
 
