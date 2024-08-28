@@ -7,7 +7,7 @@ BRAND_IMG_SRC = (
 )
 
 
-class ImgCCA(html.Img):
+class CalSim3Img(html.Img):
     def __init__(self, **kwargs):
         cca_kwargs = dict(
             src=BRAND_IMG_SRC,
@@ -23,7 +23,7 @@ class ImgCCA(html.Img):
 class Brand(dbc.NavbarBrand):
     def __init__(self, **kwargs):
         cca_kwargs = dict(
-            children=html.A(ImgCCA()),
+            children=html.A(CalSim3Img()),
             id="cca-navbar-brand",
             href="/home",
             className="navbar-brand",

@@ -9,5 +9,5 @@ app = dash.Dash(
     use_pages=True,
 )
 
-app.layout = storyboard.Layout()
+app.layout = storyboard.body.Layout()
 server = app.server

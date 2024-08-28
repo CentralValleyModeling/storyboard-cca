@@ -1,15 +1,3 @@
-from . import (
-    body,
-    cards,
-    features,
-    layout,
-    markdown,
-    nav,
-    placeholders,
-    plots,
-    style,
-    table,
-)
-from .body import Page
-from .layout import Layout
+from . import body, features, markdown, placeholders, style, table
+from .body import Layout, Page
 from .style import STYLE_SHEETS

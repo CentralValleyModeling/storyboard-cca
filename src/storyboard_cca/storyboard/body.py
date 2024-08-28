@@ -1,13 +1,63 @@
 from typing import Any
 
 import dash_bootstrap_components as dbc
-from dash import html
+from dash import html, page_container
 
-from .nav import GITHUB_HREF
+from . import body
+from .brand import Brand
+
+GITHUB_HREF = "https://github.com/CentralValleyModeling/storyboard-cca"
 
 
 def get_icon(s: str) -> html.I:
     return html.I(className=f"bi bi-{s}")
+
+
+class Nav(dbc.Nav):
+    def __init__(
+        self,
+        links: list[dbc.NavLink] | None = None,
+        **kwargs,
+    ):
+        if links is None:
+            links = [
+                dbc.NavLink("Home", href="/home"),
+                dbc.NavLink("Climate Change", href="/climate-change"),
+                dbc.NavLink("Adaptation", href="/adaptation"),
+            ]
+        cca_kwargs = dict(
+            className="navbar-nav",
+            navbar=True,
+        )
+        cca_kwargs.update(kwargs)
+        super().__init__(children=[dbc.NavItem(link) for link in links], **cca_kwargs)
+
+
+class NavBar(dbc.Navbar):
+    def __init__(
+        self,
+        links: list[dbc.NavLink] | None = None,
+        **kwargs,
+    ):
+        cca_kwargs = dict(
+            className="navbar navbar-expand-md bg-body-secondary border-bottom",
+        )
+        cca_kwargs.update(kwargs)
+        super().__init__(
+            children=dbc.Container(
+                fluid=True,
+                children=[
+                    Brand(),
+                    dbc.NavbarToggler(id="cca-navbar-toggler"),
+                    dbc.Collapse(
+                        Nav(links=links),
+                        id="cca-navbar-nav-dropdown",
+                        navbar=True,
+                    ),
+                ],
+            ),
+            **cca_kwargs,
+        )
 
 
 class IconLink(html.A):
@@ -40,18 +90,18 @@ class Page(html.Main):
 
 class Footer(dbc.Container):
     def __init__(self, **kwargs):
-        container_class = " ".join(
+        footer_class = " ".join(
             [
                 "d-flex",
                 "flex-wrap",
                 "justify-content-between",
                 "align-items-center",
                 "py-1",
-                "px-4",
+                "px-3",
                 "border-top",
             ]
         )
-        ul_list = " ".join(
+        ul_list_class = " ".join(
             [
                 "nav",
                 "col-md-4",
@@ -62,7 +112,7 @@ class Footer(dbc.Container):
             ]
         )
         cca_kwargs = dict(
-            className=container_class,
+            className=footer_class,
             children=[
                 dbc.Col(
                     md=4,
@@ -73,7 +123,7 @@ class Footer(dbc.Container):
                     ),
                 ),
                 html.Ul(
-                    className=ul_list,
+                    className=ul_list_class,
                     children=[
                         html.Li(IconLink("house-fill", "/home"), className="nav-item"),
                         html.Li(IconLink("github", GITHUB_HREF), className="nav-item"),
@@ -84,6 +134,20 @@ class Footer(dbc.Container):
         cca_kwargs.update(kwargs)
         super().__init__(
             children=html.Footer(**cca_kwargs),
-            class_name="m-0",
+            class_name="m-0 py-3 px-0",
             fluid=True,
+        )
+
+
+class Layout(html.Div):
+    def __init__(
+        self,
+        links: list[dbc.NavLink] | None = None,
+    ):
+        super().__init__(
+            children=[
+                NavBar(links=links),
+                page_container,
+                body.Footer(),
+            ],
         )
