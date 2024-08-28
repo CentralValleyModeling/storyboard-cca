@@ -12,10 +12,10 @@ def layout():
     return storyboard.Page(
         header=storyboard.features.TitleImageOverlay(
             title="Climate Change Adaptation Studies",
-            image=storyboard.placeholders.PlaceholderImage(),
+            image=storyboard.placeholders.get_image(),
         ),
         children=[
-            storyboard.markdown.from_file("home/introduction"),
-            storyboard.tables.from_file("home/dcr_results"),
+            storyboard.markdown.from_file("text/home/introduction"),
+            storyboard.table.from_file("text/home/dcr_results"),
         ],
     )

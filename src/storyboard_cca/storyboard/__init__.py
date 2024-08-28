@@ -8,7 +8,7 @@ from . import (
     placeholders,
     plots,
     style,
-    tables,
+    table,
 )
 from .body import Page
 from .layout import Layout

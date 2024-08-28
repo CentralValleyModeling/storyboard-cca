@@ -3,7 +3,7 @@ from pathlib import Path
 
 from dash.dcc import Markdown
 
-assets = Path(__file__).parent.parent / "assets/text"
+assets = Path(__file__).parent.parent / "assets"
 
 
 def from_file(src: str | Path) -> Markdown:
