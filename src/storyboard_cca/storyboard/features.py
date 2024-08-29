@@ -34,8 +34,16 @@ class BannerImage(html.Div):
                 "flex-column",
             ]
         )
+        main_div_class = " ".join(
+            [
+                "card",
+                "bg-inverse",
+                "rounded-0",
+                "h-100",
+            ]
+        )
         super().__init__(
-            className="card bg-inverse rounded-0",
+            className=main_div_class,
             children=[
                 image,
                 html.Div(
@@ -82,7 +90,7 @@ class ScrollBy(dbc.Row):
                     class_name="overflow-auto scroll-by pe-0",
                 ),
             ],
-            class_name="mx-0 my-5 shadow border-top border-bottom border-primary",
+            class_name="mx-0 my-3 shadow border-top border-bottom border-primary",
         )
 
 
