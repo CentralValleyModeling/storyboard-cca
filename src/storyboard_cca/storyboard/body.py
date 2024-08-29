@@ -21,7 +21,7 @@ class Nav(dbc.Nav):
     ):
         if links is None:
             links = [
-                dbc.NavLink("Home", href="/home"),
+                dbc.NavLink("Home", href="/"),
                 dbc.NavLink("Climate Change", href="/climate-change"),
                 dbc.NavLink("Adaptation", href="/adaptation"),
             ]
