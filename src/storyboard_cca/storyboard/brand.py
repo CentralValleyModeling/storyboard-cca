@@ -1,16 +1,14 @@
 import dash_bootstrap_components as dbc
-from dash import html
+from dash import get_asset_url, html
 
-BRAND_IMG_SRC = (
-    "https://raw.githubusercontent.com/CentralValleyModeling"
-    + "/static-assets/main/images/calsim3_icon.svg"
-)
+BRAND_IMG_SRC = "images/calsim3_icon.svg"
 
 
 class CalSim3Img(html.Img):
     def __init__(self, **kwargs):
         cca_kwargs = dict(
-            src=BRAND_IMG_SRC,
+            id="calsim3-icon",
+            src=get_asset_url(BRAND_IMG_SRC),
             alt="CalSim3 Icon.",
             width=30,
             height=24,
@@ -23,8 +21,8 @@ class CalSim3Img(html.Img):
 class Brand(dbc.NavbarBrand):
     def __init__(self, **kwargs):
         cca_kwargs = dict(
-            children=html.A(CalSim3Img()),
-            id="cca-navbar-brand",
+            id="calsim3-navbar-brand",
+            children=CalSim3Img(),
             href="/home",
             className="navbar-brand",
         )

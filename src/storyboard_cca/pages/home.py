@@ -16,7 +16,7 @@ def layout():
             image=storyboard.placeholders.get_image(),
         ),
         children=[
-            storyboard.Container(
+            storyboard.GridContainer(
                 dbc.Col(
                     storyboard.markdown.from_file("text/home/introduction"),
                     width=8,
@@ -58,7 +58,7 @@ def layout():
                 right=storyboard.placeholders.LoremIpsum(20),
                 height_limit="50vh",
             ),
-            storyboard.Container(
+            storyboard.GridContainer(
                 dbc.Row(storyboard.markdown.from_file("text/home/baseline_conditions")),
                 dbc.Row(storyboard.table.from_file("text/home/dcr_results")),
             ),

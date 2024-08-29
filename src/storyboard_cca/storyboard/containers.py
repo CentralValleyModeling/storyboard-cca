@@ -1,12 +1,13 @@
+import dash
 import dash_bootstrap_components as dbc
 
 
-class Container(dbc.Container):
+class GridContainer(dbc.Container):
     def __init__(self, /, *children, **kwargs):
-        if isinstance(children, (list, tuple, set)):
-            if any(isinstance(child, dbc.Row) for child in children):
-                holder = dbc.Col
-            else:
-                holder = dbc.Row
-            children = holder(children)
+        children = list(children)
+        for i, child in enumerate(children):
+            if isinstance(child, (list, tuple, set)):
+                children[i] = dash.html.Div(child)
+        if not any(isinstance(child, dbc.Row) for child in children):
+            children = dbc.Row(children)
         super().__init__(children, **kwargs)

@@ -26,6 +26,7 @@ class Nav(dbc.Nav):
                 dbc.NavLink("Adaptation", href="/adaptation"),
             ]
         cca_kwargs = dict(
+            id="cca-nav",
             className="navbar-nav",
             navbar=True,
         )
@@ -40,6 +41,7 @@ class NavBar(dbc.Navbar):
         **kwargs,
     ):
         cca_kwargs = dict(
+            id="cca-navbar",
             className="navbar navbar-expand-md bg-body-secondary border-bottom",
         )
         cca_kwargs.update(kwargs)

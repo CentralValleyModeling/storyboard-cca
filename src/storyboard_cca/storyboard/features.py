@@ -61,25 +61,28 @@ class ScrollBy(dbc.Row):
         self,
         left: Any,
         right: Any,
-        height_limit: str = "100vh",
+        height_limit: str = "50vh",
         left_width: int = 6,
     ):
+        uuid = id(object())
 
         super().__init__(
             children=[
                 dbc.Col(
+                    id=f"left-{uuid}",
                     children=left,
                     style={"height": height_limit},
                     class_name="overflow-auto scroll-by ps-0",
                     width=left_width,
                 ),
                 dbc.Col(
+                    id=f"right-{uuid}",
                     children=right,
                     style={"height": height_limit},
                     class_name="overflow-auto scroll-by pe-0",
                 ),
             ],
-            class_name="mx-0 my-5 shadow bg-body border-top border-primary",
+            class_name="mx-0 my-5 shadow border-top border-bottom border-primary",
         )
 
 
