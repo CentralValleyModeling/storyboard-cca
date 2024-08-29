@@ -1,16 +1,20 @@
 import logging
 import random
+from pathlib import Path
 
 from dash import get_asset_url, html
 
 logger = logging.getLogger(__name__)
 
-
+here = Path(__file__)
+asset_dir = here.parent.parent.parent / "assets"
+placeholder_img_dir = asset_dir / "images/placeholders"
 image_options = [
-    "images/placeholders/19671110_Oroville_Const.jpg",
-    "images/placeholders/19570915_Ozalid_Machine.jpg",
-    "images/placeholders/19591117_Frenchman_Dam_Const.jpg",
+    str(p.relative_to(asset_dir))
+    for p in placeholder_img_dir.iterdir()
+    if p.suffix in (".jpg", ".jpeg", ".png")
 ]
+print(image_options)
 random.shuffle(image_options)
 
 
@@ -31,8 +35,9 @@ class PlaceholderImage(html.Img):
         style: dict | None = None,
     ):
         if style is None:
-            style = {"height": "300px", "object-fit": "cover"}
+            style = {"height": "100%", "object-fit": "cover"}
         super().__init__(
+            id=str(src),
             src=src,
             className=class_name,
             alt=alt,
