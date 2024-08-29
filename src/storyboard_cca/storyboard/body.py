@@ -126,7 +126,7 @@ class Footer(dbc.Container):
                 html.Ul(
                     className=ul_list_class,
                     children=[
-                        html.Li(IconLink("house-fill", "/home"), className="nav-item"),
+                        html.Li(IconLink("house-fill", "/"), className="nav-item"),
                         html.Li(IconLink("github", GITHUB_HREF), className="nav-item"),
                     ],
                 ),

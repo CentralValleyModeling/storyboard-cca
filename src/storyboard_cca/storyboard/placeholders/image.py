@@ -14,7 +14,6 @@ image_options = [
     for p in placeholder_img_dir.iterdir()
     if p.suffix in (".jpg", ".jpeg", ".png")
 ]
-print(image_options)
 random.shuffle(image_options)
 
 

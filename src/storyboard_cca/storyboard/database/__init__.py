@@ -10,7 +10,10 @@ logger = logging.getLogger(__name__)
 class DataCache:
     def __init__(self):
         self.data_dir = Path(__file__).parent
-        self.client = clients.LocalClient(database.db_cfg.source)
+        db = self.data_dir / "storyboard_cca.db"
+        if not db.exists():
+            raise FileNotFoundError(db)
+        self.client = clients.LocalClient(db)
 
     @lru_cache()
     def get_all_scenarios(self) -> list[schemas.Scenario]:
@@ -90,3 +93,6 @@ class DataCache:
     @property
     def scenarios(self) -> list[schemas.Scenario]:
         return self.get_all_scenarios()
+
+
+DB = DataCache()

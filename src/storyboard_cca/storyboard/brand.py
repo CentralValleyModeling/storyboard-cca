@@ -23,7 +23,7 @@ class Brand(dbc.NavbarBrand):
         cca_kwargs = dict(
             id="calsim3-navbar-brand",
             children=CalSim3Img(),
-            href="/home",
+            href="/",
             className="navbar-brand",
         )
         cca_kwargs.update(kwargs)

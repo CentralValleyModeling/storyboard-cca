@@ -6,6 +6,14 @@ from dash import html
 from pandas import read_csv
 
 assets = Path(__file__).parent.parent / "assets"
+LEVELS = {
+    1: html.H1,
+    2: html.H2,
+    3: html.H3,
+    4: html.H4,
+    5: html.H5,
+    6: html.H6,
+}
 
 
 class BannerImage(html.Div):
@@ -14,7 +22,10 @@ class BannerImage(html.Div):
         title: str,
         image: html.Img,
         paragraph: str | None = None,
+        title_level: int = 1,
+        bar_color: str = "bg-primary",
     ):
+        header_level = LEVELS.get(title_level, html.H6)
         paragraph_objects = []
         if paragraph:
             for txt in paragraph.split("\n"):
@@ -49,11 +60,11 @@ class BannerImage(html.Div):
                 html.Div(
                     className=card_overlay_class,
                     children=html.Div(
-                        className="bg-primary p-2",
+                        className=f"{bar_color} p-2",
                         style={"--bs-bg-opacity": 0.50},
                         children=[
-                            html.H1(
-                                className="card-title text-light",
+                            header_level(
+                                className="card-title text-light m-0",
                                 children=title,
                             ),
                             *paragraph_objects,
