@@ -2,7 +2,7 @@ import dash
 import dash_bootstrap_components as dbc
 
 
-class GridContainer(dbc.Container):
+class PaddedSection(dbc.Container):
     def __init__(self, /, *children, **kwargs):
         children = list(children)
         for i, child in enumerate(children):
