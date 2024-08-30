@@ -9,5 +9,5 @@ To get things set up, and to serve the site on your local machine, follow the fo
 ```powershell
 conda env create -f environment.yaml -y
 conda activate dev_storyboard_cca
-uvicorn src.storyboard_cca.main:app --reload
+run_server.bat
 ```
