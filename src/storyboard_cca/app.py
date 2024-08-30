@@ -14,6 +14,10 @@ app = dash.Dash(
 app.layout = storyboard.body.AppLayout()
 server = app.server
 
+storyboard.plots.colors.assign_colors_for_runs(
+    [s.name for s in storyboard.DB.get_all_scenarios()]
+)
+
 
 @server.route("/robots.txt")
 def send_robots():
