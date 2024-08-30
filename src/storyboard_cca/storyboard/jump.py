@@ -2,7 +2,7 @@ import dash
 
 
 class JumpLink(dash.dcc.Link):
-    def __init__(self, text: str, href: str, **kwargs):
+    def __init__(self, text: str, href: str, same_page: bool = False, **kwargs):
         super().__init__(
             [
                 text,
@@ -10,6 +10,6 @@ class JumpLink(dash.dcc.Link):
             ],
             href=href,
             className="btn btn-primary",
-            refresh=True,
+            refresh=not same_page,
             **kwargs,
         )
