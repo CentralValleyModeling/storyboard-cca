@@ -1,6 +1,8 @@
 import pandas as pd
 from plotly import graph_objects as go
 
+from .colors import get_color_for
+
 
 def line(
     series: dict[str, pd.Series],
@@ -12,7 +14,17 @@ def line(
     for name, s in series.items():
         if isinstance(s, pd.DataFrame):
             s = s.iloc[:, 0]
-        fig.add_trace(go.Scatter(x=s.index, y=s, mode="lines", name=name))
+        fig.add_trace(
+            go.Scatter(
+                x=s.index,
+                y=s,
+                mode="lines",
+                name=name,
+                line=dict(
+                    color=get_color_for(name),
+                ),
+            )
+        )
     fig.update_xaxes(
         fixedrange=True,
     )
