@@ -132,7 +132,7 @@ def layout():
         ],
     )
     card_operational = sb.SimpleCard(
-        header="Operations & Management easures",
+        header="Operations & Management Measures",
         body=[
             sb.text.from_file("text/home/adaptations_operational"),
             sb.Jump("Explore", "/adaptation#section-operations"),
@@ -155,7 +155,7 @@ def layout():
                 sb.text.from_file("text/home/adaptations_1"),
                 *adaptation_cards,
             ],
-            class_name="me-3 py-3",
+            class_name="ms-3 py-3",
         ),
         left_width=9,
         margin_y=3,
