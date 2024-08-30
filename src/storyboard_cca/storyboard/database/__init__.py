@@ -4,7 +4,7 @@ from functools import cache
 from pathlib import Path
 from typing import Generator
 
-from csrs import clients, database, schemas
+from csrs import clients, schemas
 
 logger = logging.getLogger(__name__)
 
