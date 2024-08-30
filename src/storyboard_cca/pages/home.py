@@ -56,6 +56,7 @@ def layout():
             ]
         ),
         dbc.Row(storyboard.markdown.from_file("text/home/introduction_2")),
+        id="home-introduction",
     )
 
     # 3. CLIMATE CHANGE
@@ -85,6 +86,7 @@ def layout():
         ),
         left_width=4,
         height_limit="75vh",
+        id="home-climate-change",
     )
 
     # 4. INTERLUDE
@@ -105,6 +107,7 @@ def layout():
         left=storyboard.markdown.from_file("text/home/adaptations_1"),
         height_limit="50vh",
         left_width=7,
+        id="home-adaptations",
     )
 
     # 6. FINAL NOTE
