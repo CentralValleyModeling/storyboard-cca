@@ -1,7 +1,7 @@
 import pandas as pd
 from plotly import graph_objects as go
 
-from .colors import get_color_for
+from .colors import ASSIGNED_COLORS
 
 
 def line(
@@ -20,9 +20,7 @@ def line(
                 y=s,
                 mode="lines",
                 name=name,
-                line=dict(
-                    color=get_color_for(name),
-                ),
+                line=dict(color=ASSIGNED_COLORS[name]),
             )
         )
     fig.update_xaxes(

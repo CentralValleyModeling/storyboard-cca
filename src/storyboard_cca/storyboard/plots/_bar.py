@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from csrs import schemas
 
 from ..database import DB
-from .colors import get_color_for
+from .colors import ASSIGNED_COLORS
 from .conversions import cfs_to_taf
 
 
@@ -57,7 +57,7 @@ def _bar(
     x_label: str | None = None,
     **layout_kwargs,
 ) -> go.Figure:
-    colors = {k: get_color_for(k) for k in df[x_label]}
+    colors = {k: ASSIGNED_COLORS[k] for k in df[x_label]}
     fig: go.Figure = px.bar(
         df,
         y=y_label,
