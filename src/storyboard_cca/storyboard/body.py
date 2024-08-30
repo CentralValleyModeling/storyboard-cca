@@ -1,7 +1,7 @@
 from typing import Any
 
 import dash_bootstrap_components as dbc
-from dash import html, page_container
+from dash import dcc, html, page_container
 
 from . import body
 from .brand import Brand
@@ -27,7 +27,6 @@ class Nav(dbc.Nav):
             ]
         cca_kwargs = dict(
             id="cca-nav",
-            className="navbar-nav",
             navbar=True,
         )
         cca_kwargs.update(kwargs)
@@ -42,18 +41,22 @@ class NavBar(dbc.Navbar):
     ):
         cca_kwargs = dict(
             id="cca-navbar",
-            className="navbar navbar-expand-md bg-body-secondary border-bottom",
+            className="border-bottom",
+            color="bg-primary",
+            expand="md",
         )
         cca_kwargs.update(kwargs)
+
         super().__init__(
             children=dbc.Container(
                 fluid=True,
                 children=[
                     Brand(),
-                    dbc.NavbarToggler(id="cca-navbar-toggler"),
+                    dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
                     dbc.Collapse(
                         Nav(links=links),
-                        id="cca-navbar-nav-dropdown",
+                        id="navbar-collapse",
+                        is_open=False,
                         navbar=True,
                     ),
                 ],
@@ -149,6 +152,7 @@ class AppLayout(html.Div):
             id="app-layout",
             children=[
                 NavBar(links=links),
+                dcc.Location(id="url", refresh=True),
                 page_container,
                 body.Footer(),
             ],

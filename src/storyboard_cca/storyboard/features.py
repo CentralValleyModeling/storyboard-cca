@@ -82,9 +82,26 @@ class ScrollBy(dbc.Row):
         right: Any,
         height_limit: str = "50vh",
         left_width: int = 6,
+        border: bool | str = True,
+        shadow: bool = True,
+        margin_y: int = 0,
+        **kwargs,
     ):
         uuid = id(object())
-
+        class_name = "mx-0"
+        if border:
+            if isinstance(border, str):
+                class_name = class_name + " " + border
+            else:
+                class_name = class_name + " border-top border-bottom border-primary"
+        if shadow:
+            class_name = class_name + " shadow"
+        if margin_y:
+            class_name = class_name + f" my-{margin_y}"
+        cca_kwargs = dict(
+            class_name=class_name,
+        )
+        cca_kwargs.update(kwargs)
         super().__init__(
             children=[
                 dbc.Col(
@@ -101,7 +118,7 @@ class ScrollBy(dbc.Row):
                     class_name="overflow-auto scroll-by pe-0",
                 ),
             ],
-            class_name="mx-0 my-3 shadow border-top border-bottom border-primary",
+            **cca_kwargs,
         )
 
 

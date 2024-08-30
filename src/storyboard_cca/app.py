@@ -19,3 +19,14 @@ server = app.server
 def send_robots():
     """Don't list the website"""
     return send_from_directory("assets", "robots.txt")
+
+
+@app.callback(
+    dash.Output("navbar-collapse", "is_open"),
+    dash.Input("navbar-toggler", "n_clicks"),
+    dash.State("navbar-collapse", "is_open"),
+)
+def toggle_navbar_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open

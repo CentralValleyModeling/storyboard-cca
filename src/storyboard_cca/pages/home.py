@@ -1,6 +1,6 @@
 import dash
 import dash_bootstrap_components as dbc
-import storyboard
+import storyboard as sb
 
 dash.register_page(
     __name__,
@@ -25,9 +25,9 @@ def layout():
     # 6. Final Note
 
     # 1. HEADER
-    header = storyboard.features.BannerImage(
+    header = sb.features.BannerImage(
         title="Climate Change Adaptation Studies",
-        image=storyboard.placeholders.get_image(
+        image=sb.placeholders.get_image(
             style={
                 "height": "300px",
                 "object-fit": "cover",
@@ -36,73 +36,141 @@ def layout():
     )
 
     # 2. INTRODUCTION
-    introduction = storyboard.PaddedSection(
-        dbc.Col(
-            storyboard.markdown.from_file("text/home/introduction"),
-            width=8,
+    introduction = sb.PaddedSection(
+        dbc.Row(
+            [
+                dbc.Col(
+                    sb.text.from_file("text/home/introduction_1"),
+                    sm=dict(offset=False, order=0, size=12),
+                    md=dict(offset=False, order=0, size=6),
+                ),
+                dbc.Col(
+                    sb.features.LinksBin.from_csv(
+                        "text/home/links",
+                        title="Learn More",
+                    ),
+                    sm=dict(offset=False, order=1, size=12),
+                    md=dict(offset=False, order=1, size=6),
+                    class_name="mb-1",
+                ),
+            ]
         ),
-        dbc.Col(
-            storyboard.features.LinksBin.from_csv(
-                "text/home/links",
-                title="Learn More",
-            ),
-            width=4,
-        ),
+        dbc.Row(sb.text.from_file("text/home/introduction_2")),
+        id="home-introduction",
     )
 
     # 3. CLIMATE CHANGE
-    exports = storyboard.DB.get_timeseries("/.*/D_OMR027_CAA000/DIVERSION/.*/.*/.*/")
-
-    climate_change = storyboard.features.ScrollBy(
-        left=storyboard.features.BannerImage(
-            title="Climate Change",
-            image=storyboard.placeholders.get_image(),
-            title_level=2,
-            bar_color="bg-danger",
+    card_storage = sb.SimpleCard(
+        header="Reservoir Storage",
+        body=[
+            sb.text.from_file("text/home/climate_change_storage"),
+            sb.Jump("Explore", "/climate-change#section-storage"),
+        ],
+    )
+    card_river_flows = sb.SimpleCard(
+        header="River Flows",
+        body=[
+            sb.text.from_file("text/home/climate_change_river_flows"),
+            sb.Jump("Explore", "/climate-change#section-river-flows"),
+        ],
+    )
+    card_deliveries = sb.SimpleCard(
+        header="SWP Deliveries",
+        body=[
+            sb.text.from_file("text/home/climate_change_deliveries"),
+            sb.Jump("Explore", "/climate-change#section-deliveries"),
+        ],
+    )
+    card_saliniaty = sb.SimpleCard(
+        header="Saliniaty",
+        body=[
+            sb.text.from_file("text/home/climate_change_salinity"),
+            sb.Jump("Explore", "/climate-change#section-salinity"),
+        ],
+    )
+    impacts_cards = (
+        dbc.Row(
+            [
+                dbc.Col(card_storage, md=True),
+                dbc.Col(card_river_flows, md=True),
+                dbc.Col(card_deliveries, md=True),
+                dbc.Col(card_saliniaty, md=True),
+            ],
+            class_name="g-2 my-2 row-cols-1 row-cols-md-2",
         ),
+    )
+    climate_change = sb.features.ScrollBy(
+        left=sb.SelfJump(sb.placeholders.get_image()),
         right=dbc.Col(
             children=[
-                storyboard.markdown.from_file("text/home/climate_change_1"),
-                dash.dcc.Graph(
-                    "graph-climate-change-1",
-                    figure=storyboard.plots.monthly(exports, y_label="Delta Exports"),
-                ),
-                storyboard.markdown.from_file("text/home/climate_change_2"),
-                storyboard.table.from_file("text/home/dcr_results"),
+                sb.text.from_file("text/home/climate_change_1"),
+                sb.text.from_file("text/home/climate_change_2"),
+                sb.text.from_file("text/home/climate_change_3"),
+                *impacts_cards,
             ],
-            class_name="me-3 mt-2",
+            class_name="me-3 py-3",
         ),
-        left_width=4,
+        left_width=3,
+        margin_y=3,
+        height_limit="75vh",
+        id="home-climate-change",
     )
 
     # 4. INTERLUDE
-    interlude = storyboard.PaddedSection(
+    interlude = sb.PaddedSection(
         dbc.Col(
-            storyboard.markdown.from_file("text/home/interlude"),
+            sb.text.from_file("text/home/interlude"),
         )
     )
 
     # 5. ADAPTATIONS
-    adaptations = storyboard.features.ScrollBy(
-        right=storyboard.features.BannerImage(
-            title="Adaptations",
-            image=storyboard.placeholders.get_image(),
-            title_level=2,
-            bar_color="bg-success",
+    card_structural = sb.SimpleCard(
+        header="Structural Measures",
+        body=[
+            sb.text.from_file("text/home/adaptations_structural"),
+            sb.Jump("Explore", "/adaptation#section-structural"),
+        ],
+    )
+    card_operational = sb.SimpleCard(
+        header="Operations & Management Measures",
+        body=[
+            sb.text.from_file("text/home/adaptations_operational"),
+            sb.Jump("Explore", "/adaptation#section-operations"),
+        ],
+    )
+
+    adaptation_cards = (
+        dbc.Row(
+            [
+                dbc.Col(card_structural, md=True),
+                dbc.Col(card_operational, md=True),
+            ],
+            class_name="g-2 my-2 row-cols-1 row-cols-md-2",
         ),
-        left=storyboard.markdown.from_file("text/home/adaptations_1"),
-        height_limit="50vh",
-        left_width=7,
+    )
+    adaptations = sb.features.ScrollBy(
+        right=sb.SelfJump(sb.placeholders.get_image()),
+        left=dbc.Col(
+            children=[
+                sb.text.from_file("text/home/adaptations_1"),
+                *adaptation_cards,
+            ],
+            class_name="ms-3 py-3",
+        ),
+        left_width=9,
+        margin_y=3,
+        height_limit="75vh",
+        id="home-adaptations",
     )
 
     # 6. FINAL NOTE
-    final_note = storyboard.PaddedSection(
+    final_note = sb.PaddedSection(
         dbc.Col(
-            storyboard.markdown.from_file("text/home/final_note"),
+            sb.text.from_file("text/home/final_note"),
         )
     )
 
-    return storyboard.Page(
+    return sb.Page(
         header=header,
         children=[
             introduction,
