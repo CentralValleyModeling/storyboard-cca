@@ -1,10 +1,23 @@
 import logging
-from functools import lru_cache
+from contextlib import contextmanager
+from functools import cache
 from pathlib import Path
+from typing import Generator
 
 from csrs import clients, database, schemas
 
 logger = logging.getLogger(__name__)
+
+
+@contextmanager
+def single_use_client(
+    db_path: Path, **kwargs
+) -> Generator[clients.LocalClient, None, None]:
+    client = clients.LocalClient(db_path, **kwargs)
+    try:
+        yield client
+    finally:
+        client.close()
 
 
 class DataCache:
@@ -13,62 +26,67 @@ class DataCache:
         db = self.data_dir / "storyboard_cca.db"
         if not db.exists():
             raise FileNotFoundError(db)
-        self.client = clients.LocalClient(db)
+        self.db = db
 
-    @lru_cache()
+    @cache
     def get_all_scenarios(self) -> list[schemas.Scenario]:
-        scenarios = self.client.get_scenario()
+        with single_use_client(self.db) as client:
+            scenarios = client.get_scenario()
         logger.info(f"`get_all_scenarios` found {len(scenarios)}, result cached")
         for s in scenarios:
             logger.info(s)
         return scenarios
 
-    @lru_cache()
+    @cache
     def get_all_runs(self) -> dict[str, list[schemas.Run]]:
         scenarios = self.get_all_scenarios()
         runs = dict()
-        for s in scenarios:
-            runs[s.name] = self.client.get_run(scenario=s.name)
-            logger.info(
-                f"{len(runs[s])} runs found for scenario {s.name}, result cached"
-            )
-            for r in runs[s]:
-                logger.info(r)
+        with single_use_client(self.db) as client:
+            for s in scenarios:
+                runs[s.name] = client.get_run(scenario=s.name)
+                logger.info(
+                    f"{len(runs[s])} runs found for scenario {s.name}, result cached"
+                )
+                for r in runs[s]:
+                    logger.info(r)
         return runs
 
-    @lru_cache()
+    @cache
     def get_preferred_runs(self) -> list[schemas.Run]:
         logger.info("calling `get_preferred_runs`, results are cached")
         scenarios = self.get_all_scenarios()
         runs = list()
-        for s in scenarios:
-            if s.preferred_run:
-                run_list = self.client.get_run(
-                    scenario=s.name,
-                    version=s.preferred_run,
-                )
-                if len(run_list) == 1:
-                    logger.info(f"{s} prefers version {run_list[0].version}")
-                    runs.append(run_list[0])
-                else:
-                    logger.error(
-                        f"{len(run_list)} runs found for scenario={s.name}, "
-                        + f"version={s.preferred_run}, skipping"
+        with single_use_client(self.db) as client:
+            for s in scenarios:
+                if s.preferred_run:
+                    run_list = client.get_run(
+                        scenario=s.name,
+                        version=s.preferred_run,
                     )
+                    if len(run_list) == 1:
+                        logger.info(f"{s} prefers version {run_list[0].version}")
+                        runs.append(run_list[0])
+                    else:
+                        logger.error(
+                            f"{len(run_list)} runs found for scenario={s.name}, "
+                            + f"version={s.preferred_run}, skipping"
+                        )
         return runs
 
-    @lru_cache()
+    @cache
     def get_timeseries_for_run(
         self,
         scenario: str,
         version: str,
         path: str,
     ) -> schemas.Timeseries:
-        return self.client.get_timeseries(
-            scenario=scenario,
-            version=version,
-            path=path,
-        )
+        with single_use_client(self.db) as client:
+            ts = client.get_timeseries(
+                scenario=scenario,
+                version=version,
+                path=path,
+            )
+        return ts
 
     def get_timeseries(self, path: str) -> dict[str, schemas.Timeseries]:
         timeseries = dict()
