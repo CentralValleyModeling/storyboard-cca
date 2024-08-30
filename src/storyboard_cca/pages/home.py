@@ -64,27 +64,38 @@ def layout():
     exports = {
         k: v for k, v in exports.items() if k in ("Baseline", "2043 50% LOC - Maintain")
     }
+    impacts_accordion = storyboard.Accordion(
+        (
+            [
+                storyboard.markdown.from_file("text/home/climate_change_storage"),
+                storyboard.JumpLink("Explore", "/climate-change#section-storage"),
+            ],
+            dict(title="Reservoir Storage"),
+        ),
+        (
+            [
+                storyboard.markdown.from_file("text/home/climate_change_river_flows"),
+                storyboard.JumpLink("Explore", "/climate-change#section-river-flows"),
+            ],
+            dict(title="River Flows"),
+        ),
+        always_open=True,
+        start_collapsed=True,
+        class_name="my-3",
+    )
     climate_change = storyboard.features.ScrollBy(
         left=storyboard.placeholders.get_image(),
         right=dbc.Col(
             children=[
                 storyboard.markdown.from_file("text/home/climate_change_1"),
-                dbc.Row(),
                 storyboard.markdown.from_file("text/home/climate_change_2"),
-                dash.dcc.Graph(
-                    "graph-climate-change-1",
-                    figure=storyboard.plots.annual_exceedance(
-                        exports,
-                        y_label="SWP Table A Deliveries (TAF)",
-                        conversion="cfs_to_taf",
-                    ),
-                ),
                 storyboard.markdown.from_file("text/home/climate_change_3"),
-                storyboard.table.from_file("text/home/dcr_results"),
+                impacts_accordion,
             ],
-            class_name="me-3 mt-2",
+            class_name="me-3",
         ),
         left_width=4,
+        margin_y=3,
         height_limit="75vh",
         id="home-climate-change",
     )
@@ -104,9 +115,13 @@ def layout():
             title_level=2,
             bar_color="bg-success",
         ),
-        left=storyboard.markdown.from_file("text/home/adaptations_1"),
+        left=storyboard.markdown.from_file(
+            "text/home/adaptations_1",
+            className="ms-3",
+        ),
         height_limit="50vh",
         left_width=7,
+        margin_y=3,
         id="home-adaptations",
     )
 

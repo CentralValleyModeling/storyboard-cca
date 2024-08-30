@@ -84,6 +84,7 @@ class ScrollBy(dbc.Row):
         left_width: int = 6,
         border: bool | str = True,
         shadow: bool = True,
+        margin_y: int = 0,
         **kwargs,
     ):
         uuid = id(object())
@@ -95,6 +96,8 @@ class ScrollBy(dbc.Row):
                 class_name = class_name + " border-top border-bottom border-primary"
         if shadow:
             class_name = class_name + " shadow"
+        if margin_y:
+            class_name = class_name + f" my-{margin_y}"
         cca_kwargs = dict(
             class_name=class_name,
         )

@@ -1,7 +1,7 @@
 from typing import Any
 
 import dash_bootstrap_components as dbc
-from dash import html, page_container
+from dash import dcc, html, page_container
 
 from . import body
 from .brand import Brand
@@ -149,6 +149,7 @@ class AppLayout(html.Div):
             id="app-layout",
             children=[
                 NavBar(links=links),
+                dcc.Location(id="url", refresh=False),
                 page_container,
                 body.Footer(),
             ],
