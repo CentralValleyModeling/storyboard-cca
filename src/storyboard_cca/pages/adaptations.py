@@ -39,7 +39,7 @@ def layout():
     # 2. INTRODUCTION
     introduction = storyboard.PaddedSection(
         dbc.Row(
-            storyboard.markdown.from_file("text/adaptation/introduction"),
+            storyboard.text.from_file("text/adaptation/introduction"),
         ),
     )
 
@@ -54,7 +54,7 @@ def layout():
         ),
         right=dbc.Col(
             children=[
-                storyboard.markdown.from_file("text/adaptation/dcp_1"),
+                storyboard.text.from_file("text/adaptation/dcp_1"),
                 dash.dcc.Graph(
                     "graph-climate-change-1",
                     figure=storyboard.plots.exceedance(
@@ -70,7 +70,7 @@ def layout():
     # 6. FINAL NOTE
     final_note = storyboard.PaddedSection(
         dbc.Col(
-            storyboard.markdown.from_file("text/adaptation/final_note"),
+            storyboard.text.from_file("text/adaptation/final_note"),
         )
     )
 

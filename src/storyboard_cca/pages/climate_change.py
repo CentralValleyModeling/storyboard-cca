@@ -41,7 +41,7 @@ def layout():
     # 2. INTRODUCTION
     introduction = storyboard.PaddedSection(
         dbc.Row(
-            storyboard.markdown.from_file("text/climate_change/introduction"),
+            storyboard.text.from_file("text/climate_change/introduction"),
         ),
     )
 
@@ -54,7 +54,7 @@ def layout():
         left=storyboard.placeholders.get_image(),
         right=dbc.Col(
             children=[
-                storyboard.markdown.from_file("text/climate_change/impacts_storage_1"),
+                storyboard.text.from_file("text/climate_change/impacts_storage_1"),
                 dash.dcc.Graph(
                     id="graph-climate-change-storage",
                     figure=storyboard.plots.monthly(
@@ -76,9 +76,7 @@ def layout():
         right=storyboard.placeholders.get_image(),
         left=dbc.Col(
             children=[
-                storyboard.markdown.from_file(
-                    "text/climate_change/impacts_deliveries_1"
-                ),
+                storyboard.text.from_file("text/climate_change/impacts_deliveries_1"),
                 dash.dcc.Graph(
                     "graph-climate-change-river-flows",
                     figure=storyboard.plots.exceedance(
@@ -96,7 +94,7 @@ def layout():
     # 6. FINAL NOTE
     final_note = storyboard.PaddedSection(
         dbc.Col(
-            storyboard.markdown.from_file("text/climate_change/final_note"),
+            storyboard.text.from_file("text/climate_change/final_note"),
         )
     )
 

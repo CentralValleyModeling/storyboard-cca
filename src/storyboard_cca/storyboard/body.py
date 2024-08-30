@@ -27,7 +27,6 @@ class Nav(dbc.Nav):
             ]
         cca_kwargs = dict(
             id="cca-nav",
-            className="navbar-nav",
             navbar=True,
         )
         cca_kwargs.update(kwargs)
