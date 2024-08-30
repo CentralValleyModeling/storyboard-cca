@@ -77,15 +77,15 @@ def layout():
     card_deliveries = sb.SimpleCard(
         header="SWP Deliveries",
         body=[
-            sb.text.from_file("text/home/climate_change_river_flows"),
-            sb.Jump("Explore", "/climate-change#section-river-flows"),
+            sb.text.from_file("text/home/climate_change_deliveries"),
+            sb.Jump("Explore", "/climate-change#section-deliveries"),
         ],
     )
     card_saliniaty = sb.SimpleCard(
         header="Saliniaty",
         body=[
-            sb.text.from_file("text/home/climate_change_river_flows"),
-            sb.Jump("Explore", "/climate-change#section-river-flows"),
+            sb.text.from_file("text/home/climate_change_salinity"),
+            sb.Jump("Explore", "/climate-change#section-salinity"),
         ],
     )
     impacts_cards = (
