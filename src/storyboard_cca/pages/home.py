@@ -37,42 +37,54 @@ def layout():
 
     # 2. INTRODUCTION
     introduction = storyboard.PaddedSection(
-        dbc.Col(
-            storyboard.markdown.from_file("text/home/introduction"),
-            width=8,
+        dbc.Row(
+            [
+                dbc.Col(
+                    storyboard.markdown.from_file("text/home/introduction_1"),
+                    sm=dict(offset=False, order=0, size=12),
+                    md=dict(offset=False, order=0, size=6),
+                ),
+                dbc.Col(
+                    storyboard.features.LinksBin.from_csv(
+                        "text/home/links",
+                        title="Learn More",
+                    ),
+                    sm=dict(offset=False, order=1, size=12),
+                    md=dict(offset=False, order=1, size=6),
+                    class_name="mb-1",
+                ),
+            ]
         ),
-        dbc.Col(
-            storyboard.features.LinksBin.from_csv(
-                "text/home/links",
-                title="Learn More",
-            ),
-            width=4,
-        ),
+        dbc.Row(storyboard.markdown.from_file("text/home/introduction_2")),
     )
 
     # 3. CLIMATE CHANGE
-    exports = storyboard.DB.get_timeseries("/.*/D_OMR027_CAA000/DIVERSION/.*/.*/.*/")
-
+    exports = storyboard.DB.get_timeseries("/.*/SWP_TA_TOTAL/SWP_DELIVERY/.*/.*/.*/")
+    exports = {
+        k: v for k, v in exports.items() if k in ("Baseline", "2043 50% LOC - Maintain")
+    }
     climate_change = storyboard.features.ScrollBy(
-        left=storyboard.features.BannerImage(
-            title="Climate Change",
-            image=storyboard.placeholders.get_image(),
-            title_level=2,
-            bar_color="bg-danger",
-        ),
+        left=storyboard.placeholders.get_image(),
         right=dbc.Col(
             children=[
                 storyboard.markdown.from_file("text/home/climate_change_1"),
+                dbc.Row(),
+                storyboard.markdown.from_file("text/home/climate_change_2"),
                 dash.dcc.Graph(
                     "graph-climate-change-1",
-                    figure=storyboard.plots.monthly(exports, y_label="Delta Exports"),
+                    figure=storyboard.plots.annual_exceedance(
+                        exports,
+                        y_label="SWP Table A Deliveries (TAF)",
+                        conversion="cfs_to_taf",
+                    ),
                 ),
-                storyboard.markdown.from_file("text/home/climate_change_2"),
+                storyboard.markdown.from_file("text/home/climate_change_3"),
                 storyboard.table.from_file("text/home/dcr_results"),
             ],
             class_name="me-3 mt-2",
         ),
         left_width=4,
+        height_limit="75vh",
     )
 
     # 4. INTERLUDE

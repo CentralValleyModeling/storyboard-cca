@@ -1,7 +1,14 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ita credo. Et hunc idem dico, inquieta sed ad virtutes et ad vitia nihil interesse. Duo Reges: constructio interrete. Verba tu fingas et ea dicas, quae non sentias? Cur igitur, inquam, res tam dissimiles eodem nomine appellas? Paulum, cum regem Persem captum adduceret, eodem flumine invectio? Qui ita affectus, beatum esse numquam probabis;
+<!-- Existing Studies -->
+#### Climate Change Impacts in the DCR 2023
 
-Age nunc isti doceant, vel tu potius quis enim ista melius? Quis hoc dicit?
+The Delivery Capability Report presents DWR's analysis of the existing SWP system and provides important planning information for users of SWP water. The analysis provided information about how changing climate, regulatory, and operational considerations impact SWP delivery capability.
 
-Indicant pueri, in quibus ut in speculis natura cernitur. Tum Piso: Quoniam igitur aliquid omnes, quid Lucius noster? Ex ea difficultate illae fallaciloquae, ut ait Accius, malitiae natae sunt. Ego vero volo in virtute vim esse quam maximam; Apud ceteros autem philosophos, qui quaesivit aliquid, tacet; Ait enim se, si uratur, Quam hoc suave! dicturum. Videamus igitur sententias eorum, tum ad verba redeamus. Ne in odium veniam, si amicum destitero tueri. Quis Aristidem non mortuum diligit? Simus igitur contenti his. Nondum autem explanatum satis, erat, quid maxime natura vellet. Quod si ita se habeat, non possit beatam praestare vitam sapientia.
+The DCR is used as the starting point for the Adaptation analyses. The DCR is a good condidate for this due to it's wide circulation, and it's consideration of existing operations, infrastructure, and climate. As such, the DCR analyses factor in all the current regulations governing SWP and CVP operations in the Delta (i.e., D-1641, 2019 BiOps and ITP), existing infrastructure and assumptions about water uses upstream in the Sacramento River and San Joaquin River watersheds.
 
-Quid enim possumus hoc agere divinius? Cum audissem Antiochum, Brute, ut solebam, cum M. Quis non odit sordidos, vanos, leves, futtiles? Quid, si etiam iucunda memoria est praeteritorum malorum? Faceres tu quidem, Torquate, haec omnia; Quis est enim, in quo sit cupiditas, quin recte cupidus dici possit? Haec et tu ita posuisti, et verba vestra sunt. Sed nimis multa. Graccho, eius fere, aequalí? Atqui eorum nihil est eius generis, ut sit in fine atque extrerno bonorum. Ergo adhuc, quantum equidem intellego, causa non videtur fuisse mutandi nominis. Sed quid minus probandum quam esse aliquem beatum nec satis beatum? 
+The most salient findings from the DCR 2023 with respect to Climate Change are:
+
+- Under existing conditions, the estimated average annual delivery of Tabler A water for this report is 2,202 thousand acre-feet (TAF)/year.
+- Under the climate change scenarios the estimated average annual delivery of Table A water is 13 percent to 22 percent lower than under existing conditions.
+- Under future climate conditions, California's hydrology is likely to become more extreme with periods of high flows that current infrastructure and operations are unable to capture and longer more severe dry periods that challenge operations.
+
+
