@@ -42,18 +42,22 @@ class NavBar(dbc.Navbar):
     ):
         cca_kwargs = dict(
             id="cca-navbar",
-            className="navbar navbar-expand-md bg-body-secondary border-bottom",
+            className="border-bottom",
+            color="bg-primary",
+            expand="md",
         )
         cca_kwargs.update(kwargs)
+
         super().__init__(
             children=dbc.Container(
                 fluid=True,
                 children=[
                     Brand(),
-                    dbc.NavbarToggler(id="cca-navbar-toggler"),
+                    dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
                     dbc.Collapse(
                         Nav(links=links),
-                        id="cca-navbar-nav-dropdown",
+                        id="navbar-collapse",
+                        is_open=False,
                         navbar=True,
                     ),
                 ],
