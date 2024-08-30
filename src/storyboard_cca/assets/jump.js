@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var ref = document.getElementById(id);
         if (ref) {
             setTimeout(function() {
-                console.log("jumpgin to id: " + id)
+                console.debug("jumping to id: " + id)
                 ref.scrollIntoView({
                     behavior: 'smooth', 
                     block: 'start'
