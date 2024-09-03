@@ -277,24 +277,30 @@ def update_explore(project: str) -> str:
         data[k] = {s: ts for s, ts in v.items() if s in scenario_names}
 
     return [
-        dash.html.H3(project, className="mt-1"),
-        dash.dcc.Graph(
-            figure=sb.plots.monthly(
-                data["storage"],
-                y_label="Oroville Stroage",
-            )
+        dbc.Col(
+            [
+                dash.html.H3(project, className="mt-1"),
+                dash.dcc.Graph(
+                    figure=sb.plots.monthly(
+                        data["storage"],
+                        y_label="Oroville Stroage",
+                    )
+                ),
+                dash.dcc.Graph(
+                    figure=sb.plots.monthly(
+                        data["river_flow"],
+                        y_label="Delta Outflow",
+                        conversion="cfs_to_taf",
+                    )
+                ),
+                dash.dcc.Graph(
+                    figure=sb.plots.annual_exceedance(
+                        data["deliveries"],
+                        y_label="SWP Deliveries",
+                    )
+                ),
+            ],
+            width=9,
         ),
-        dash.dcc.Graph(
-            figure=sb.plots.monthly(
-                data["river_flow"],
-                y_label="Delta Outflow",
-                conversion="cfs_to_taf",
-            )
-        ),
-        dash.dcc.Graph(
-            figure=sb.plots.annual_exceedance(
-                data["deliveries"],
-                y_label="SWP Deliveries",
-            )
-        ),
+        dbc.Col(sb.text.from_file(f"text/adaptation/explore/{pretty_to_url(project)}")),
     ]
