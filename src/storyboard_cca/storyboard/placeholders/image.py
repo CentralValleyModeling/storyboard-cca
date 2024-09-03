@@ -17,12 +17,16 @@ image_options = [
 random.shuffle(image_options)
 
 
-def get_image(**kwargs):
+def get_image_src():
     logger.info("getting a placeholder image")
     p = image_options.pop(0)
     image_options.append(p)
 
-    return PlaceholderImage(src=get_asset_url(p), **kwargs)
+    return get_asset_url(p)
+
+
+def get_image(**kwargs):
+    return PlaceholderImage(src=get_image_src(), **kwargs)
 
 
 class PlaceholderImage(html.Img):

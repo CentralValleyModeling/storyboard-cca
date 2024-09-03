@@ -213,7 +213,6 @@ def layout():
     # 3. Impacts to River Flows
     # 4. Impacts to Deliveries
     # 5. Impacts to Salinity
-    # 6. Final Note
 
     return sb.Page(
         children=[

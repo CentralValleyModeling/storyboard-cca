@@ -1,5 +1,4 @@
-<!-- Introduction -->
-# Adapting to Climate Change
+## Structural Measures
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ita credo. Et hunc idem dico, inquieta sed ad virtutes et ad vitia nihil interesse. Duo Reges: constructio interrete. Verba tu fingas et ea dicas, quae non sentias? Cur igitur, inquam, res tam dissimiles eodem nomine appellas? Paulum, cum regem Persem captum adduceret, eodem flumine invectio? Qui ita affectus, beatum esse numquam probabis;
 

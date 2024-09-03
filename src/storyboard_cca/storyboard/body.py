@@ -152,7 +152,7 @@ class AppLayout(html.Div):
             id="app-layout",
             children=[
                 NavBar(links=links),
-                dcc.Location(id="url", refresh=True),
+                dcc.Location(id="url", refresh=False),
                 page_container,
                 body.Footer(),
             ],
