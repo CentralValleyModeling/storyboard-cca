@@ -91,10 +91,10 @@ def layout():
     impacts_cards = (
         dbc.Row(
             [
-                dbc.Col(card_storage, md=True),
-                dbc.Col(card_river_flows, md=True),
-                dbc.Col(card_deliveries, md=True),
-                dbc.Col(card_saliniaty, md=True),
+                dbc.Col(card_storage, xl=6, lg=12),
+                dbc.Col(card_river_flows, xl=6, lg=12),
+                dbc.Col(card_deliveries, xl=6, lg=12),
+                dbc.Col(card_saliniaty, xl=6, lg=12),
             ],
             class_name="g-2 my-2 row-cols-1 row-cols-md-2",
         ),
@@ -138,14 +138,21 @@ def layout():
             sb.Jump("Explore", "/adaptation#section-operations"),
         ],
     )
+    card_nature_based = sb.SimpleCard(
+        header="Nature Based Measures",
+        body=[
+            sb.text.from_file("text/home/adaptations_nature"),
+        ],
+    )
 
     adaptation_cards = (
         dbc.Row(
             [
-                dbc.Col(card_structural, md=True),
-                dbc.Col(card_operational, md=True),
+                dbc.Col(card_structural, xl=4, lg=12),
+                dbc.Col(card_operational, xl=4, lg=12),
+                dbc.Col(card_nature_based, xl=4, lg=12),
             ],
-            class_name="g-2 my-2 row-cols-1 row-cols-md-2",
+            class_name="g-2 my-2",
         ),
     )
     adaptations = sb.features.ScrollBy(
