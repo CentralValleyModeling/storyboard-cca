@@ -1,3 +1,0 @@
-## Quantitatively Evaluated Adaptation Measures
-
-From the two categories of measures outlined above, five strategies are quantitatively evaluated in this analysis. This quantitative evaluation highlights key SWP actions that are already moving forward but that are not yet in place. In this study, the CalSim3 operations model has been used to track and quantify changes in system performance and the benefits provided by these changes in infrastructure and operations.

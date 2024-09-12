@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Self
+from typing import Any, Literal, Self
 
 import dash_bootstrap_components as dbc
 from dash import html
@@ -81,7 +81,8 @@ class ScrollBy(dbc.Row):
         left: Any,
         right: Any,
         height_limit: str = "50vh",
-        left_width: int = 6,
+        priority: Literal["left", "right"] = "left",
+        minor_col_steps: dict[str, int] | None = None,
         border: bool | str = True,
         shadow: bool = True,
         margin_y: int = 0,
@@ -102,20 +103,36 @@ class ScrollBy(dbc.Row):
             class_name=class_name,
         )
         cca_kwargs.update(kwargs)
+        # Set up the class names for each side
+        col_L = "overflow-auto scroll-by ps-0"
+        col_R = "overflow-auto scroll-by ps-0"
+        # Set up the breakpoints of the minor column
+        minor_col_steps_used = dict(xs=1, sm=1, md=2, lg=3, xl=3, xxl=3)
+        if minor_col_steps:
+            minor_col_steps_used.update(minor_col_steps)
+        minor_col = " "
+        for breakpoint, size in minor_col_steps_used.items():
+            if breakpoint == "xs":
+                minor_col = minor_col + f" col-{size}"
+            else:
+                minor_col = minor_col + f" col-{breakpoint}-{size}"
+        if priority == "left":
+            col_R = col_R + minor_col
+        elif priority == "right":
+            col_L = col_L + minor_col
         super().__init__(
             children=[
                 dbc.Col(
                     id=f"left-{uuid}",
                     children=left,
                     style={"height": height_limit},
-                    class_name="overflow-auto scroll-by ps-0",
-                    width=left_width,
+                    class_name=col_L,
                 ),
                 dbc.Col(
                     id=f"right-{uuid}",
                     children=right,
                     style={"height": height_limit},
-                    class_name="overflow-auto scroll-by pe-0",
+                    class_name=col_R,
                 ),
             ],
             **cca_kwargs,

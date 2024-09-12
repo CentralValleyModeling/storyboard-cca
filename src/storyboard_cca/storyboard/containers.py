@@ -12,6 +12,11 @@ class PaddedSection(dbc.Container):
                 children[i] = dash.html.Div(child)
         if not any(isinstance(child, dbc.Row) for child in children):
             children = dbc.Row(children)
+        kw = dict(fluid=True)
+        if ("class_name" not in kwargs) and ("className" not in kwargs):
+            kw["class_name"] = "px-4 mx-0"
+
+        kwargs = kw | kwargs
         super().__init__(children, **kwargs)
 
 

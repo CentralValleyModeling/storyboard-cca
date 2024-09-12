@@ -41,7 +41,7 @@ def layout():
             [
                 dbc.Col(
                     sb.text.from_file("text/home/introduction_1"),
-                    sm=dict(offset=False, order=0, size=12),
+                    xs=dict(offset=False, order=0, size=12),
                     md=dict(offset=False, order=0, size=6),
                 ),
                 dbc.Col(
@@ -49,13 +49,15 @@ def layout():
                         "text/home/links",
                         title="Learn More",
                     ),
-                    sm=dict(offset=False, order=1, size=12),
+                    xs=dict(offset=False, order=1, size=12),
                     md=dict(offset=False, order=1, size=6),
                     class_name="mb-1",
                 ),
             ]
         ),
-        dbc.Row(sb.text.from_file("text/home/introduction_2")),
+        dbc.Row(
+            sb.text.from_file("text/home/introduction_2"),
+        ),
         id="home-introduction",
     )
 
@@ -110,7 +112,7 @@ def layout():
             ],
             class_name="me-3 py-3",
         ),
-        left_width=3,
+        priority="right",
         margin_y=3,
         height_limit="75vh",
         id="home-climate-change",
@@ -118,9 +120,9 @@ def layout():
 
     # 4. INTERLUDE
     interlude = sb.PaddedSection(
-        dbc.Col(
+        dbc.Row(
             sb.text.from_file("text/home/interlude"),
-        )
+        ),
     )
 
     # 5. ADAPTATIONS
@@ -164,7 +166,7 @@ def layout():
             ],
             class_name="ms-3 py-3",
         ),
-        left_width=9,
+        priority="left",
         margin_y=3,
         height_limit="75vh",
         id="home-adaptations",
@@ -172,9 +174,26 @@ def layout():
 
     # 6. FINAL NOTE
     final_note = sb.PaddedSection(
-        dbc.Col(
-            sb.text.from_file("text/home/final_note"),
-        )
+        dbc.Row(
+            sb.text.from_file("text/home/projects_1"),
+        ),
+        dbc.Row(
+            sb.table.from_file(
+                "text/home/projects",
+                kind="bootstrap",
+                class_name="table-sm",
+            ),
+        ),
+        dbc.Row(
+            sb.text.from_file("text/home/projects_2"),
+        ),
+        dbc.Row(
+            sb.table.from_file(
+                "text/home/projects_quantitative",
+                kind="bootstrap",
+                class_name="table-sm",
+            ),
+        ),
     )
 
     return sb.Page(
