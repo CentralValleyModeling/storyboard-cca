@@ -1,0 +1,13 @@
+name: storyboard_cca
+channels:
+  - dwr-cvm
+  - cadwr-dms
+  - defaults
+  - conda-forge
+dependencies:
+  - csrs
+  - python=3.11
+  - dash
+  - dash-bootstrap-components
+  - pydantic-settings
+prefix: C:\Users\zroy\AppData\Local\miniconda3\envs\storyboard_cca
