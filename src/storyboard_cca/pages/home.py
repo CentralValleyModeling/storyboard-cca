@@ -22,7 +22,6 @@ def layout():
     # 3. Climate Change
     # 4. Interlude
     # 5. Adaptations
-    # 6. Final Note
 
     # 1. HEADER
     header = sb.features.BannerImage(
@@ -41,7 +40,7 @@ def layout():
             [
                 dbc.Col(
                     sb.text.from_file("text/home/introduction_1"),
-                    sm=dict(offset=False, order=0, size=12),
+                    xs=dict(offset=False, order=0, size=12),
                     md=dict(offset=False, order=0, size=6),
                 ),
                 dbc.Col(
@@ -49,13 +48,15 @@ def layout():
                         "text/home/links",
                         title="Learn More",
                     ),
-                    sm=dict(offset=False, order=1, size=12),
+                    xs=dict(offset=False, order=1, size=12),
                     md=dict(offset=False, order=1, size=6),
                     class_name="mb-1",
                 ),
             ]
         ),
-        dbc.Row(sb.text.from_file("text/home/introduction_2")),
+        dbc.Row(
+            sb.text.from_file("text/home/introduction_2"),
+        ),
         id="home-introduction",
     )
 
@@ -91,10 +92,10 @@ def layout():
     impacts_cards = (
         dbc.Row(
             [
-                dbc.Col(card_storage, md=True),
-                dbc.Col(card_river_flows, md=True),
-                dbc.Col(card_deliveries, md=True),
-                dbc.Col(card_saliniaty, md=True),
+                dbc.Col(card_storage, xl=6, lg=12),
+                dbc.Col(card_river_flows, xl=6, lg=12),
+                dbc.Col(card_deliveries, xl=6, lg=12),
+                dbc.Col(card_saliniaty, xl=6, lg=12),
             ],
             class_name="g-2 my-2 row-cols-1 row-cols-md-2",
         ),
@@ -110,7 +111,7 @@ def layout():
             ],
             class_name="me-3 py-3",
         ),
-        left_width=3,
+        priority="right",
         margin_y=3,
         height_limit="75vh",
         id="home-climate-change",
@@ -118,9 +119,9 @@ def layout():
 
     # 4. INTERLUDE
     interlude = sb.PaddedSection(
-        dbc.Col(
+        dbc.Row(
             sb.text.from_file("text/home/interlude"),
-        )
+        ),
     )
 
     # 5. ADAPTATIONS
@@ -138,14 +139,21 @@ def layout():
             sb.Jump("Explore", "/adaptation#section-operations"),
         ],
     )
+    card_nature_based = sb.SimpleCard(
+        header="Nature Based Measures",
+        body=[
+            sb.text.from_file("text/home/adaptations_nature"),
+        ],
+    )
 
     adaptation_cards = (
         dbc.Row(
             [
-                dbc.Col(card_structural, md=True),
-                dbc.Col(card_operational, md=True),
+                dbc.Col(card_structural, xl=4, lg=12),
+                dbc.Col(card_operational, xl=4, lg=12),
+                dbc.Col(card_nature_based, xl=4, lg=12),
             ],
-            class_name="g-2 my-2 row-cols-1 row-cols-md-2",
+            class_name="g-2 my-2",
         ),
     )
     adaptations = sb.features.ScrollBy(
@@ -154,20 +162,33 @@ def layout():
             children=[
                 sb.text.from_file("text/home/adaptations_1"),
                 *adaptation_cards,
+                dbc.Row(
+                    sb.text.from_file("text/home/projects_1"),
+                ),
+                dash.html.Div(
+                    sb.cards.from_file(
+                        "text/home/projects",
+                        kind="title_only",
+                    ),
+                    className="d-flex align-content-stretch flex-wrap",
+                ),
+                dbc.Row(
+                    sb.text.from_file("text/home/projects_2"),
+                ),
+                dash.html.Div(
+                    sb.cards.from_file(
+                        "text/home/projects_quantitative",
+                        kind="title_only",
+                    ),
+                    className="d-flex align-content-stretch flex-wrap",
+                ),
             ],
             class_name="ms-3 py-3",
         ),
-        left_width=9,
+        priority="left",
         margin_y=3,
         height_limit="75vh",
         id="home-adaptations",
-    )
-
-    # 6. FINAL NOTE
-    final_note = sb.PaddedSection(
-        dbc.Col(
-            sb.text.from_file("text/home/final_note"),
-        )
     )
 
     return sb.Page(
@@ -177,6 +198,5 @@ def layout():
             climate_change,
             interlude,
             adaptations,
-            final_note,
         ],
     )

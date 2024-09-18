@@ -11,29 +11,6 @@ dash.register_page(
 
 app = dash.get_app()
 
-PROJECTS = {
-    "Delta Conveyance Project": (
-        "2043 50% LOC - Maintain",
-        "2043 50% LOC - DCP + Maintain",
-    ),
-    "Additional South Of Delta Storage": (
-        "2043 50% LOC - Maintain",
-        "2043 50% LOC - SODS + Maintain",
-    ),
-    "Forecast Informed Reservoir Operations": (
-        "2043 50% LOC - Maintain",
-        "2043 50% LOC - FIRO + Maintain",
-    ),
-}
-
-
-def url_to_pretty(s: str) -> str:
-    return s.replace("-", " ").title()
-
-
-def pretty_to_url(s: str) -> str:
-    return s.replace(" ", "-").lower()
-
 
 def introduction():
     # 2. INTRODUCTION
@@ -201,27 +178,6 @@ def operational():
     return adaptations
 
 
-def project_impacts(project: str = ""):
-    if project:
-        project = url_to_pretty(project)
-    return dbc.Container(
-        id="section-explore",
-        children=[
-            dash.html.H1("Explore Project Impacts"),
-            dash.dcc.Dropdown(
-                list(PROJECTS.keys()),
-                project,
-                placeholder="Select a Project",
-                id="project-selection",
-            ),
-            dbc.Row(
-                id="project-explorer",
-            ),
-        ],
-        class_name="mt-3",
-    )
-
-
 def layout(project: str = "", **kwargs):
     """Create the layout of the climate-change page.
 
@@ -240,67 +196,7 @@ def layout(project: str = "", **kwargs):
                 children=[
                     operational(),
                     structural(),
-                    project_impacts(project),
                 ],
             ),
         ],
     )
-
-
-@app.callback(
-    dash.Output("url", "search"),
-    dash.Input("project-selection", "value"),
-    dash.State("url", "pathname"),
-    dash.State("url", "search"),
-    prevent_initial_call=True,
-)
-def update_url(project: str, url: str, search: str) -> str:
-    key = pretty_to_url(project)
-    s = f"?project={key}"
-    if key and (s != search):
-        return s
-    return dash.no_update
-
-
-@app.callback(
-    dash.Output("project-explorer", "children"),
-    dash.Input("project-selection", "value"),
-)
-def update_explore(project: str) -> str:
-    scenario_names = PROJECTS[project]
-    data = {
-        "storage": sb.DB.get_timeseries("/.*/S_OROVL/STORAGE/.*/.*/.*/"),
-        "river_flow": sb.DB.get_timeseries("/.*/NDOI/FLOW/.*/.*/.*/"),
-        "deliveries": sb.DB.get_timeseries("/.*/SWP_PERDELDV/SWP-DELIVERY/.*/.*/.*/"),
-    }
-    for k, v in data.items():
-        data[k] = {s: ts for s, ts in v.items() if s in scenario_names}
-
-    return [
-        dbc.Col(
-            [
-                dash.html.H3(project, className="mt-1"),
-                dash.dcc.Graph(
-                    figure=sb.plots.monthly(
-                        data["storage"],
-                        y_label="Oroville Stroage",
-                    )
-                ),
-                dash.dcc.Graph(
-                    figure=sb.plots.monthly(
-                        data["river_flow"],
-                        y_label="Delta Outflow",
-                        conversion="cfs_to_taf",
-                    )
-                ),
-                dash.dcc.Graph(
-                    figure=sb.plots.annual_exceedance(
-                        data["deliveries"],
-                        y_label="SWP Deliveries",
-                    )
-                ),
-            ],
-            width=9,
-        ),
-        dbc.Col(sb.text.from_file(f"text/adaptation/explore/{pretty_to_url(project)}")),
-    ]
