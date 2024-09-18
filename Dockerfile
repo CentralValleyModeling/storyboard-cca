@@ -17,7 +17,7 @@
     RUN conda install -c conda-forge conda-pack
     COPY prod_environment.yaml .
     RUN conda env create -f prod_environment.yaml
-    RUN conda-pack -n csrs -o /tmp/env.tar
+    RUN conda-pack -n storyboard_cca -o /tmp/env.tar
     RUN conda clean --all --force-pkgs-dirs -y
     RUN mkdir /env &&\
         cd /env &&\ 
