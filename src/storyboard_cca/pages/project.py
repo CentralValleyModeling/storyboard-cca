@@ -116,18 +116,52 @@ def update_url(project: str, search: str) -> str:
     dash.Input("adaptation-selection", "value"),
 )
 def update_explore(project: str) -> list:
-    figs = sb.plots.sankey(PROJECTS[project])
-    figs = [dash.dcc.Graph(figure=f) for f in figs]
     content = list()
-    for i, fig in enumerate(figs):
-        content.append(
-            dbc.Col(
-                [
-                    dash.html.H3(PROJECTS[project][i]),
-                    fig,
-                ],
-                width=12,
-                lg=6,
+    paths = [
+        {
+            "title": "Oroville Storage",
+            "path": "/.*/S_OROVL/STORAGE/.*/.*/.*/",
+            "y": "Oroville Storage (TAF)",
+        },
+        {
+            "title": "San Luis Storage (SWP)",
+            "path": "/.*/S_SLUIS_SWP/STORAGE/.*/.*/.*/",
+            "y": "SWP San Luis Storage (TAF)",
+        },
+        {
+            "title": "Delta Outflow",
+            "path": "/.*/NDOI/FLOW/.*/.*/.*/",
+            "y": "Delta Outflow (cfs)",
+        },
+        {
+            "title": "SWP Delivery %",
+            "path": "/.*/SWP_PERDELDV/SWP-DELIVERY/.*/.*/.*/",
+            "y": "SWP Delivery (%)",
+        },
+        {
+            "title": "Emmaton Salinity",
+            "path": "/.*/EM_EC_MONTH/SALINITY/.*/.*/.*/",
+            "y": "EC at Emmaton (UMHOS/CM)",
+        },
+    ]
+    for kwargs in paths:
+        data = sb.DB.get_timeseries(kwargs["path"])
+        data = {k: v for k, v in data.items() if k in PROJECTS[project]}
+        figs = [
+            sb.plots.annual_exceedance(data, y_label=kwargs["y"]),
+            sb.plots.monthly(data, y_label=kwargs["y"]),
+        ]
+        figs = [dash.dcc.Graph(figure=f) for f in figs]
+
+        r = list()
+        for fig in figs:
+            r.append(
+                dbc.Col(
+                    [fig],
+                    width=12,
+                    lg=6,
+                )
             )
-        )
+        content.append(dash.html.H3(kwargs["title"]))
+        content.append(dbc.Row(r))
     return content
