@@ -113,7 +113,7 @@ def layout():
         ),
         priority="right",
         margin_y=3,
-        height_limit="75vh",
+        height_limit="135vh",
         id="home-climate-change",
     )
 
@@ -187,7 +187,7 @@ def layout():
         ),
         priority="left",
         margin_y=3,
-        height_limit="75vh",
+        height_limit="110vh",
         id="home-adaptations",
     )
 
