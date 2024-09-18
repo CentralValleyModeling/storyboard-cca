@@ -1,5 +1,1 @@
-Neque enim disputari sine reprehensione nec cum iracundia aut pertinacia recte disputari potest. Quamquam tu hanc copiosiorem etiam soles dicere. Si mala non sunt, iacet omnis ratio Peripateticorum. Quod autem principium officii quaerunt, melius quam Pyrrho; Hoc est non modo cor non habere, sed ne palatum quidem. Materiam vero rerum et copiam apud hos exilem, apud illos uberrimam reperiemus.
-
-Nam si quae sunt aliae, falsum est omnis animi voluptates esse e corporis societate. Mihi enim satis est, ipsis non satis. Quae contraria sunt his, malane? Ex rebus enim timiditas, non ex vocabulis nascitur. Sic consequentibus vestris sublatis prima tolluntur.
-
-Bork Nihil acciderat ei, quod nollet, nisi quod anulum, quo delectabatur, in mari abiecerat. Hos contra singulos dici est melius. Torquatus, is qui consul cum Cn. Quo studio cum satiari non possint, omnium ceterarum rerum obliti níhil abiectum, nihil humile cogitant; Non est enim vitium in oratione solum, sed etiam in moribus. 
+Structural measures are those that require significant infrastructural changes to the SWP. This may include adding facilities or major rehabilitation or rebuilding of existing facilities. While structural measures will often require additional operational changes, these strategies are distinguished from operational and management strategies by their significant construction components.

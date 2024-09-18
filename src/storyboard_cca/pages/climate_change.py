@@ -23,41 +23,88 @@ def introduction():
 
 def reservoir_storage():
     # 3. IMPACTS TO RESERVOIR STORAGE
-    data = sb.DB.get_timeseries("/.*/S_OROVL/STORAGE/.*/.*/.*/")
     data = {
-        k: v for k, v in data.items() if k in ("Baseline", "2043 50% LOC - Maintain")
+        "oroville": sb.DB.get_timeseries("/.*/S_OROVL/STORAGE/.*/.*/.*/"),
+        "san_luis": sb.DB.get_timeseries("/.*/S_SLUIS_SWP/STORAGE/.*/.*/.*/"),
     }
+    for key, value in data.items():
+        value = {
+            k: v
+            for k, v in value.items()
+            if k in ("Baseline", "2043 50% LOC - Maintain")
+        }
+        data[key] = value
     impacts = dbc.Row(
         [
             dbc.Col(
                 sb.SelfJump(sb.placeholders.get_image()),
-                width=1,
+                class_name="overflow-auto scroll-by ps-0 col-12 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
             ),
             dbc.Col(
                 class_name="mt-2 mb-5 me-5",
                 children=[
                     sb.text.from_file("text/climate_change/impacts_storage_1"),
                     dbc.Row(
+                        dash.html.H3("Oroville", className="mt-1"),
+                        class_name="border-top border-secondary",
+                    ),
+                    dbc.Row(
                         [
                             dbc.Col(
                                 dash.dcc.Graph(
-                                    "graph-climate-change-storage-2043",
+                                    "graph-climate-change-storage-oroville-2043",
                                     figure=sb.plots.monthly(
-                                        data,
+                                        data["oroville"],
                                         y_label="Oroville Storage (TAF)",
                                     ),
                                 ),
+                                sm=12,
+                                lg=6,
                             ),
                             dbc.Col(
                                 dash.dcc.Graph(
-                                    "graph-climate-change-storage-2085",
+                                    "graph-climate-change-storage-oroville-2085",
                                     figure=sb.plots.monthly(
-                                        data,
+                                        data["oroville"],
                                         y_label="Oroville Storage (TAF)",
                                     ),
                                 ),
+                                sm=12,
+                                lg=6,
                             ),
-                        ]
+                        ],
+                        class_name="my-2",
+                    ),
+                    dbc.Row(
+                        dash.html.H3("San Luis (SWP)", className="mt-1"),
+                        class_name="border-top border-secondary",
+                    ),
+                    dbc.Row(
+                        [
+                            dbc.Col(
+                                dash.dcc.Graph(
+                                    "graph-climate-change-storage-san-luis-2043",
+                                    figure=sb.plots.monthly(
+                                        data["san_luis"],
+                                        y_label="San Luis (SWP) Storage (TAF)",
+                                    ),
+                                ),
+                                sm=12,
+                                lg=6,
+                            ),
+                            dbc.Col(
+                                dash.dcc.Graph(
+                                    "graph-climate-change-storage-san-luis-2085",
+                                    figure=sb.plots.monthly(
+                                        data["san_luis"],
+                                        y_label="San Luis (SWP) Storage (TAF)",
+                                    ),
+                                ),
+                                sm=12,
+                                lg=6,
+                            ),
+                        ],
+                        class_name="my-2",
                     ),
                 ],
             ),
@@ -90,6 +137,8 @@ def river_flows():
                                         y_label="Delta Outflow (cfs)",
                                     ),
                                 ),
+                                sm=12,
+                                lg=6,
                             ),
                             dbc.Col(
                                 dash.dcc.Graph(
@@ -99,12 +148,17 @@ def river_flows():
                                         y_label="Delta Outflow (cfs)",
                                     ),
                                 ),
+                                sm=12,
+                                lg=6,
                             ),
                         ]
                     ),
                 ],
             ),
-            dbc.Col(sb.SelfJump(sb.placeholders.get_image()), width=1),
+            dbc.Col(
+                sb.SelfJump(sb.placeholders.get_image()),
+                class_name="overflow-auto scroll-by ps-0 col-0 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+            ),
         ],
         id="section-river-flows",
         class_name="border-top border-primary",
@@ -120,7 +174,10 @@ def deliveries():
     }
     impacts = dbc.Row(
         [
-            dbc.Col(sb.SelfJump(sb.placeholders.get_image()), width=1),
+            dbc.Col(
+                sb.SelfJump(sb.placeholders.get_image()),
+                class_name="overflow-auto scroll-by ps-0 col-0 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+            ),
             dbc.Col(
                 class_name="mt-2 mb-5  me-5",
                 children=[
@@ -135,6 +192,8 @@ def deliveries():
                                         y_label="SWP Delivery (%)",
                                     ),
                                 ),
+                                sm=12,
+                                lg=6,
                             ),
                             dbc.Col(
                                 dash.dcc.Graph(
@@ -144,6 +203,8 @@ def deliveries():
                                         y_label="SWP Delivery (%)",
                                     ),
                                 ),
+                                sm=12,
+                                lg=6,
                             ),
                         ]
                     ),
@@ -178,6 +239,8 @@ def salinity():
                                         y_label="EC at Emmaton (UMHOS/CM)",
                                     ),
                                 ),
+                                sm=12,
+                                lg=6,
                             ),
                             dbc.Col(
                                 dash.dcc.Graph(
@@ -187,12 +250,17 @@ def salinity():
                                         y_label="EC at Emmaton (UMHOS/CM)",
                                     ),
                                 ),
+                                sm=12,
+                                lg=6,
                             ),
                         ]
                     ),
                 ],
             ),
-            dbc.Col(sb.SelfJump(sb.placeholders.get_image()), width=1),
+            dbc.Col(
+                sb.SelfJump(sb.placeholders.get_image()),
+                class_name="overflow-auto scroll-by ps-0 col-1 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+            ),
         ],
         id="section-salinity",
         class_name="border-top border-primary",

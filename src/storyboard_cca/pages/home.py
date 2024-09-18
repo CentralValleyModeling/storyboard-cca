@@ -22,7 +22,6 @@ def layout():
     # 3. Climate Change
     # 4. Interlude
     # 5. Adaptations
-    # 6. Final Note
 
     # 1. HEADER
     header = sb.features.BannerImage(
@@ -163,6 +162,26 @@ def layout():
             children=[
                 sb.text.from_file("text/home/adaptations_1"),
                 *adaptation_cards,
+                dbc.Row(
+                    sb.text.from_file("text/home/projects_1"),
+                ),
+                dash.html.Div(
+                    sb.cards.from_file(
+                        "text/home/projects",
+                        kind="title_only",
+                    ),
+                    className="d-flex align-content-stretch flex-wrap",
+                ),
+                dbc.Row(
+                    sb.text.from_file("text/home/projects_2"),
+                ),
+                dash.html.Div(
+                    sb.cards.from_file(
+                        "text/home/projects_quantitative",
+                        kind="title_only",
+                    ),
+                    className="d-flex align-content-stretch flex-wrap",
+                ),
             ],
             class_name="ms-3 py-3",
         ),
@@ -172,30 +191,6 @@ def layout():
         id="home-adaptations",
     )
 
-    # 6. FINAL NOTE
-    final_note = sb.PaddedSection(
-        dbc.Row(
-            sb.text.from_file("text/home/projects_1"),
-        ),
-        dbc.Row(
-            sb.table.from_file(
-                "text/home/projects",
-                kind="bootstrap",
-                class_name="table-sm",
-            ),
-        ),
-        dbc.Row(
-            sb.text.from_file("text/home/projects_2"),
-        ),
-        dbc.Row(
-            sb.table.from_file(
-                "text/home/projects_quantitative",
-                kind="bootstrap",
-                class_name="table-sm",
-            ),
-        ),
-    )
-
     return sb.Page(
         header=header,
         children=[
@@ -203,6 +198,5 @@ def layout():
             climate_change,
             interlude,
             adaptations,
-            final_note,
         ],
     )
