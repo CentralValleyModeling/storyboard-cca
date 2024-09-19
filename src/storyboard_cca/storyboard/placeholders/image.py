@@ -1,6 +1,7 @@
 import logging
 import random
 from pathlib import Path
+from typing import Literal
 
 from dash import get_asset_url, html
 
@@ -25,8 +26,23 @@ def get_image_src():
     return get_asset_url(p)
 
 
-def get_image(**kwargs):
-    return PlaceholderImage(src=get_image_src(), **kwargs)
+def get_image(
+    alt: str = "Placeholder image.",
+    class_name: str = "",
+    style: dict | None = None,
+    limit: Literal["height", "width"] = "height",
+    rounded: int = 0,
+    **kwargs,
+):
+    return PlaceholderImage(
+        src=get_image_src(),
+        alt=alt,
+        class_name=class_name,
+        style=style,
+        limit=limit,
+        rounded=rounded,
+        **kwargs,
+    )
 
 
 class PlaceholderImage(html.Img):
@@ -34,11 +50,14 @@ class PlaceholderImage(html.Img):
         self,
         src: str,
         alt: str = "Placeholder image.",
-        class_name: str = "card-img rounded-0",
+        class_name: str = "",
         style: dict | None = None,
+        rounded: int = 0,
+        limit: Literal["height", "width"] = "height",
     ):
         if style is None:
-            style = {"height": "100%", "object-fit": "cover"}
+            style = {limit: "100%", "object-fit": "cover"}
+        class_name = class_name + f" card-img rounded-{rounded}"
         super().__init__(
             id=str(src),
             src=src,

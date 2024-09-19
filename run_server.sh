@@ -5,7 +5,6 @@ git_repo_url="https://github.com/$1.git"
 # Clone the repo into a subfolder
 echo "cloning repo $1"
 git clone -b production "$git_repo_url" "code"
-echo tree -d .
 # Copy over any databases included in docker image
 cp -R database/. code/src/storyboard_cca/storyboard/database
 # Change directory to the cloned repository

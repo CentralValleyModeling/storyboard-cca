@@ -36,7 +36,7 @@ def pretty_to_url(s: str) -> str:
 
 def introduction():
     # 2. INTRODUCTION
-    introduction = sb.PaddedSection(
+    introduction = dbc.Container(
         dbc.Row(
             sb.text.from_file("text/project/introduction"),
         ),
