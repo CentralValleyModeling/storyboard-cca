@@ -187,9 +187,10 @@ def deliveries():
                             dbc.Col(
                                 dash.dcc.Graph(
                                     "graph-climate-change-delivery-2043",
-                                    figure=sb.plots.exceedance(
+                                    figure=sb.plots.wyt_bar(
                                         data,
-                                        y_label="SWP Delivery (%)",
+                                        y_label="Average SWP Delivery (%)",
+                                        group_label="Scenario",
                                     ),
                                 ),
                                 sm=12,
@@ -198,9 +199,10 @@ def deliveries():
                             dbc.Col(
                                 dash.dcc.Graph(
                                     "graph-climate-change-delivery-2085",
-                                    figure=sb.plots.exceedance(
+                                    figure=sb.plots.wyt_bar(
                                         data,
-                                        y_label="SWP Delivery (%)",
+                                        y_label="Average SWP Delivery (%)",
+                                        group_label="Scenario",
                                     ),
                                 ),
                                 sm=12,
