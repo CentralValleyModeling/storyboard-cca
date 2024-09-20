@@ -38,7 +38,8 @@ def reservoir_storage():
         [
             dbc.Col(
                 sb.SelfJump(sb.placeholders.get_image()),
-                class_name="overflow-auto scroll-by ps-0 col-12 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+                class_name="overflow-auto scroll-by ps-0"
+                + " col-12 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
             ),
             dbc.Col(
                 class_name="mt-2 mb-5 me-5",
@@ -157,7 +158,8 @@ def river_flows():
             ),
             dbc.Col(
                 sb.SelfJump(sb.placeholders.get_image()),
-                class_name="overflow-auto scroll-by ps-0 col-0 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+                class_name="overflow-auto scroll-by ps-0"
+                + " col-0 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
             ),
         ],
         id="section-river-flows",
@@ -176,7 +178,8 @@ def deliveries():
         [
             dbc.Col(
                 sb.SelfJump(sb.placeholders.get_image()),
-                class_name="overflow-auto scroll-by ps-0 col-0 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+                class_name="overflow-auto scroll-by ps-0"
+                + " col-0 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
             ),
             dbc.Col(
                 class_name="mt-2 mb-5  me-5",
@@ -261,7 +264,8 @@ def salinity():
             ),
             dbc.Col(
                 sb.SelfJump(sb.placeholders.get_image()),
-                class_name="overflow-auto scroll-by ps-0 col-1 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+                class_name="overflow-auto scroll-by ps-0"
+                + " col-1 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
             ),
         ],
         id="section-salinity",
