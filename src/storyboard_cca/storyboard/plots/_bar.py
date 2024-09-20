@@ -10,24 +10,6 @@ from .colors import ASSIGNED_COLORS
 from .conversions import cfs_to_taf
 
 
-def average_annual_bar(
-    timeseries: dict[str, schemas.Timeseries],
-    y_label: str = "y",
-    x_label: str = "x",
-    conversion: Literal["cfs_to_taf"] | None = None,
-    **layout_kwargs,
-) -> go.Figure:
-    data = list()
-    for k, ts in timeseries.items():
-        df = ts.to_frame()
-        if conversion == "cfs_to_taf":
-            df = cfs_to_taf(df)
-        df = df.resample(pd.offsets.YearEnd(n=1)).sum()
-        data.append((k, float(df.mean().values[0])))
-    df_mean = pd.DataFrame.from_records(data, columns=[x_label, y_label])
-    return _bar(df_mean, y_label=y_label, x_label=x_label, **layout_kwargs)
-
-
 def get_wyt_assignments() -> pd.Series:
     wyt = DB.get_timeseries("/.*/WYT_SAC_/WATERYEARTYPE/.*/.*/.*/")
     df_wyt = wyt.popitem()[-1].to_frame()
@@ -43,7 +25,7 @@ def wyt_bar(
     y_label: str = "y",
     x_label: str = "Water Year Type",
     group_label: str = "group",
-    conversion: Literal["cfs_to_taf"] | None = None,
+    conversion: Literal["cfs_to_taf", "portion_to_percent"] | None = None,
     only_use_month: int | None = None,
     agg_method: Literal["mean", "sum"] = "mean",
     **layout_kwargs,
@@ -55,9 +37,16 @@ def wyt_bar(
         df = ts.to_frame()
         if conversion == "cfs_to_taf":
             df = cfs_to_taf(df)
+        elif conversion == "portion_to_percent":
+            df.iloc[:, 0] = df.iloc[:, 0] * 100
         if only_use_month:
             df = df.loc[df.index.month == only_use_month, :].copy()
-        df: pd.DataFrame = df.groupby(df.index.year).agg(agg_method)
+        if agg_method == "sum":
+            df: pd.DataFrame = df.groupby(df.index.year).agg("mean") * 12
+        elif agg_method == "mean":
+            df: pd.DataFrame = df.groupby(df.index.year).agg("mean")
+        else:
+            raise NotImplementedError(f"{agg_method=}")
         df.columns = [y_label]
         df: pd.DataFrame = df.join(wyt)
         df = df.groupby(df["WYT"]).mean().reset_index()
@@ -74,7 +63,6 @@ def wyt_bar(
         }
     )
     df_all = df_all.sort_values("WYT")
-    df_all[y_label] = df_all[y_label] * 100  # portion to %
     return _bar(
         df_all,
         y_label=y_label,

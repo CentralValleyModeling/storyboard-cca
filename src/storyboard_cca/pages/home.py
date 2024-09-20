@@ -219,7 +219,7 @@ def layout():
                 class_name="bg-body p-3",
             ),
         ],
-        background="images/home/PJH_Delta_Farming-3.jpg",
+        background="images/home/PJH_Delta_Farming-0274.jpg",
         id="home-adaptations",
     )
 
