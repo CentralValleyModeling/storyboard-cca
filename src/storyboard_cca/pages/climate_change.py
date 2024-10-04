@@ -28,17 +28,42 @@ def introduction():
 
 def reservoir_storage():
     # 3. IMPACTS TO RESERVOIR STORAGE
-    data = {
-        "oroville": sb.DB.get_timeseries("/.*/S_OROVL/STORAGE/.*/.*/.*/"),
-        "san_luis": sb.DB.get_timeseries("/.*/S_SLUIS_SWP/STORAGE/.*/.*/.*/"),
+    path_oro = "/.*/S_OROVL/STORAGE/.*/.*/.*/"
+    path_sl = "/.*/S_SLUIS_SWP/STORAGE/.*/.*/.*/"
+
+    scenarios_2043 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2043 50% LOC)",
+        "Maintenance without Adaptation (2043 95% LOC)",
+    ]
+
+    scenarios_2085 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2085 50% LOC)",
+        "Maintenance without Adaptation (2085 75% LOC)",
+    ]
+
+    data_2043 = {
+        "oroville": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_oro)
+            for s in scenarios_2043
+        },
+        "san_luis": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_sl)
+            for s in scenarios_2043
+        },
     }
-    for key, value in data.items():
-        value = {
-            k: v
-            for k, v in value.items()
-            if k in ("Baseline", "2043 50% LOC - Maintain")
-        }
-        data[key] = value
+    data_2085 = {
+        "oroville": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_oro)
+            for s in scenarios_2085
+        },
+        "san_luis": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_sl)
+            for s in scenarios_2085
+        },
+    }
+
     impacts = sb.features.Parallax(
         [
             dbc.Container(
@@ -57,7 +82,7 @@ def reservoir_storage():
                                 dash.dcc.Graph(
                                     "graph-climate-change-storage-oroville-2043",
                                     figure=sb.plots.monthly(
-                                        data["oroville"],
+                                        data_2043["oroville"],
                                         y_label="Oroville Storage (TAF)",
                                     ),
                                 ),
@@ -68,7 +93,7 @@ def reservoir_storage():
                                 dash.dcc.Graph(
                                     "graph-climate-change-storage-oroville-2085",
                                     figure=sb.plots.monthly(
-                                        data["oroville"],
+                                        data_2085["oroville"],
                                         y_label="Oroville Storage (TAF)",
                                     ),
                                 ),
@@ -88,7 +113,7 @@ def reservoir_storage():
                                 dash.dcc.Graph(
                                     "graph-climate-change-storage-san-luis-2043",
                                     figure=sb.plots.monthly(
-                                        data["san_luis"],
+                                        data_2043["san_luis"],
                                         y_label="San Luis (SWP) Storage (TAF)",
                                     ),
                                 ),
@@ -99,7 +124,7 @@ def reservoir_storage():
                                 dash.dcc.Graph(
                                     "graph-climate-change-storage-san-luis-2085",
                                     figure=sb.plots.monthly(
-                                        data["san_luis"],
+                                        data_2085["san_luis"],
                                         y_label="San Luis (SWP) Storage (TAF)",
                                     ),
                                 ),
@@ -121,9 +146,31 @@ def reservoir_storage():
 
 def river_flows():
     # 4. IMPACTS TO RIVER FLOWS
-    data = sb.DB.get_timeseries("/.*/NDOI/FLOW/.*/.*/.*/")
-    data = {
-        k: v for k, v in data.items() if k in ("Baseline", "2043 50% LOC - Maintain")
+    path_ndoi = "/.*/NDOI/FLOW/.*/.*/.*/"
+
+    scenarios_2043 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2043 50% LOC)",
+        "Maintenance without Adaptation (2043 95% LOC)",
+    ]
+
+    scenarios_2085 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2085 50% LOC)",
+        "Maintenance without Adaptation (2085 75% LOC)",
+    ]
+
+    data_2043 = {
+        "ndoi": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_ndoi)
+            for s in scenarios_2043
+        },
+    }
+    data_2085 = {
+        "ndoi": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_ndoi)
+            for s in scenarios_2085
+        },
     }
     impacts = sb.features.Parallax(
         [
@@ -138,7 +185,7 @@ def river_flows():
                             dash.dcc.Graph(
                                 "graph-climate-change-river-flows-2043",
                                 figure=sb.plots.monthly(
-                                    data,
+                                    data_2043["ndoi"],
                                     y_label="Delta Outflow (cfs)",
                                 ),
                             ),
@@ -149,7 +196,7 @@ def river_flows():
                             dash.dcc.Graph(
                                 "graph-climate-change-river-flows-2085",
                                 figure=sb.plots.monthly(
-                                    data,
+                                    data_2085["ndoi"],
                                     y_label="Delta Outflow (cfs)",
                                 ),
                             ),
@@ -167,7 +214,7 @@ def river_flows():
                             dash.dcc.Graph(
                                 "graph-climate-change-delivery-2043",
                                 figure=sb.plots.wyt_bar(
-                                    data,
+                                    data_2043["ndoi"],
                                     y_label="Delta Outflow (cfs)",
                                     group_label="Scenario",
                                 ),
@@ -179,7 +226,7 @@ def river_flows():
                             dash.dcc.Graph(
                                 "graph-climate-change-delivery-2085",
                                 figure=sb.plots.wyt_bar(
-                                    data,
+                                    data_2085["ndoi"],
                                     y_label="Delta Outflow (cfs)",
                                     group_label="Scenario",
                                 ),
@@ -200,18 +247,51 @@ def river_flows():
 
 def deliveries():
     # 4. IMPACTS TO DELIVERIES
-    per_del = sb.DB.get_timeseries("/.*/SWP_PERDELDV/SWP-DELIVERY/.*/.*/.*/")
-    per_del = {
-        k: v for k, v in per_del.items() if k in ("Baseline", "2043 50% LOC - Maintain")
+    path_perdel = "/.*/SWP_PERDELDV/SWP-DELIVERY/.*/.*/.*/"
+    path_totaldel = "/.*/SWPTOTALDEL/FLOW-DELIVERY/.*/.*/.*/"
+    path_banks = "/.*/C_CAA003_SWP/FLOW-DELIVERY/.*/.*/.*/"
+
+    scenarios_2043 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2043 50% LOC)",
+        "Maintenance without Adaptation (2043 95% LOC)",
+    ]
+
+    scenarios_2085 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2085 50% LOC)",
+        "Maintenance without Adaptation (2085 75% LOC)",
+    ]
+
+    data_2043 = {
+        "perdel": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_perdel)
+            for s in scenarios_2043
+        },
+        "totaldel": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_totaldel)
+            for s in scenarios_2043
+        },
+        "banks": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_banks)
+            for s in scenarios_2043
+        },
     }
-    table_a = sb.DB.get_timeseries("/.*/SWPTOTALDEL/FLOW-DELIVERY/.*/.*/.*/")
-    table_a = {
-        k: v for k, v in table_a.items() if k in ("Baseline", "2043 50% LOC - Maintain")
+    data_2085 = {
+        "perdel": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_perdel)
+            for s in scenarios_2085
+        },
+        "totaldel": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_totaldel)
+            for s in scenarios_2085
+        },
+        "banks": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_banks)
+            for s in scenarios_2085
+        },
     }
-    banks = sb.DB.get_timeseries("/.*/C_CAA003_SWP/FLOW-DELIVERY/.*/.*/.*/")
-    banks = {
-        k: v for k, v in banks.items() if k in ("Baseline", "2043 50% LOC - Maintain")
-    }
+
     impacts = sb.features.Parallax(
         [
             dbc.Container(
@@ -225,7 +305,7 @@ def deliveries():
                             dash.dcc.Graph(
                                 "graph-climate-change-delivery-2043",
                                 figure=sb.plots.wyt_bar(
-                                    banks,
+                                    data_2043["banks"],
                                     y_label="Banks Exports (TAF)",
                                     group_label="Scenario",
                                     conversion="cfs_to_taf",
@@ -239,7 +319,7 @@ def deliveries():
                             dash.dcc.Graph(
                                 "graph-climate-change-delivery-2085",
                                 figure=sb.plots.wyt_bar(
-                                    banks,
+                                    data_2085["banks"],
                                     y_label="Banks Exports (TAF)",
                                     group_label="Scenario",
                                     conversion="cfs_to_taf",
@@ -260,7 +340,7 @@ def deliveries():
                             dash.dcc.Graph(
                                 "graph-climate-change-delivery-2043",
                                 figure=sb.plots.wyt_bar(
-                                    per_del,
+                                    data_2043["perdel"],
                                     y_label="Average SWP Delivery (%)",
                                     group_label="Scenario",
                                 ),
@@ -272,7 +352,7 @@ def deliveries():
                             dash.dcc.Graph(
                                 "graph-climate-change-delivery-2085",
                                 figure=sb.plots.wyt_bar(
-                                    per_del,
+                                    data_2085["perdel"],
                                     y_label="Average SWP Delivery (%)",
                                     group_label="Scenario",
                                 ),
@@ -291,7 +371,7 @@ def deliveries():
                             dash.dcc.Graph(
                                 "graph-climate-change-delivery-2043",
                                 figure=sb.plots.wyt_bar(
-                                    table_a,
+                                    data_2043["totaldel"],
                                     y_label="Total Deliveries (TAF)",
                                     group_label="Scenario",
                                     conversion="cfs_to_taf",
@@ -305,7 +385,7 @@ def deliveries():
                             dash.dcc.Graph(
                                 "graph-climate-change-delivery-2085",
                                 figure=sb.plots.wyt_bar(
-                                    table_a,
+                                    data_2085["totaldel"],
                                     y_label="Total Deliveries (TAF)",
                                     group_label="Scenario",
                                     conversion="cfs_to_taf",
@@ -328,9 +408,32 @@ def deliveries():
 
 def salinity():
     # 4. IMPACTS TO SALINITY
-    data = sb.DB.get_timeseries("/.*/EM_EC_MONTH/SALINITY/.*/.*/.*/")
-    data = {
-        k: v for k, v in data.items() if k in ("Baseline", "2043 50% LOC - Maintain")
+
+    path_emmaton = "/.*/EM_EC_MONTH/SALINITY/.*/.*/.*/"
+
+    scenarios_2043 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2043 50% LOC)",
+        "Maintenance without Adaptation (2043 95% LOC)",
+    ]
+
+    scenarios_2085 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2085 50% LOC)",
+        "Maintenance without Adaptation (2085 75% LOC)",
+    ]
+
+    data_2043 = {
+        "emmaton": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_emmaton)
+            for s in scenarios_2043
+        },
+    }
+    data_2085 = {
+        "emmaton": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_emmaton)
+            for s in scenarios_2085
+        },
     }
     impacts = sb.features.Parallax(
         [
@@ -345,7 +448,7 @@ def salinity():
                             dash.dcc.Graph(
                                 "graph-climate-salinity-2043",
                                 figure=sb.plots.exceedance(
-                                    data,
+                                    data_2043["emmaton"],
                                     y_label="EC at Emmaton (UMHOS/CM)",
                                 ),
                             ),
@@ -356,7 +459,7 @@ def salinity():
                             dash.dcc.Graph(
                                 "graph-climate-salinity-2085",
                                 figure=sb.plots.exceedance(
-                                    data,
+                                    data_2085["emmaton"],
                                     y_label="EC at Emmaton (UMHOS/CM)",
                                 ),
                             ),
