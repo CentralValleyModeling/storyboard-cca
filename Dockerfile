@@ -41,7 +41,6 @@
     RUN apt-get clean all
     RUN apt-get purge
     RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-    RUN git clone -b 0.0.1 "https://github.com/CentralValleyModeling/storyboard-cca.git" "code"
     
     # Open 80 for http
     EXPOSE 80
@@ -55,4 +54,4 @@
     # Copy the bootstrap database
     COPY /src/storyboard_cca/storyboard/database /database
     
-    ENTRYPOINT ["/bin/bash", "run_server.sh"]
+    ENTRYPOINT ["/bin/bash", "run_server.sh", "https://github.com/CentralValleyModeling/storyboard-cca.git"]
