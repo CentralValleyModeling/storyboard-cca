@@ -32,6 +32,22 @@ PROJECTS = {
             assumption="Forecast-informed Reservoir Operations",
         )
     ),
+    "Subsidence": (
+        *tuple(
+            a.name
+            for a in sb.DB.get_scenarios_for_assumption(
+                kind="caa_subsidence",
+                assumption="2043 50% LOC Subsidence",
+            )
+        ),
+        *tuple(
+            a.name
+            for a in sb.DB.get_scenarios_for_assumption(
+                kind="caa_subsidence",
+                assumption="2085 50% LOC Subsidence",
+            )
+        ),
+    ),
 }
 print(PROJECTS)
 
