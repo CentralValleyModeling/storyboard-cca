@@ -9,7 +9,7 @@ class Jump(dash.dcc.Link):
                 dash.dcc.Store(id="scroll-to-hash"),
             ],
             href=href,
-            className="btn btn-primary",
+            className="btn btn-primary m-1",
             refresh=not same_page,
             **kwargs,
         )

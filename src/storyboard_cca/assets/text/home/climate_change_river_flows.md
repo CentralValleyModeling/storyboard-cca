@@ -1,3 +1,3 @@
 Both the seasonal patterns and the magnitude of river flows is essential to evaluating the resiliency of the State Water Project. The operations of the project are regulated to protect the ecosystems that it iteracts with. If the seasonailtiy of river flows changes from it's current status, this might impact the current operations patterns because of these regulations.
 
-Additionally, a change to the magnitude of river flows will change the operations of the SWP. Increased runoffs in spring months might mean that more water is available for export from the delta, but only if the infrastructure is able to capture it.
+Additionally, changes to the magnitude of river flows will change the operations of the SWP. Increased runoffs in spring months might mean that more water is available for export from the delta, but only if the infrastructure can capture it.

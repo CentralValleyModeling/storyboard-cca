@@ -29,15 +29,14 @@ class DataCache:
         self.db = db
 
     @cache
-    def get_all_scenarios(self) -> list[schemas.Scenario]:
+    def get_all_scenarios(self) -> tuple[schemas.Scenario]:
         with single_use_client(self.db) as client:
             scenarios = client.get_scenario()
         logger.info(f"`get_all_scenarios` found {len(scenarios)}, result cached")
         for s in scenarios:
             logger.info(s)
-        return scenarios
+        return tuple(scenarios)
 
-    @cache
     def get_all_runs(self) -> dict[str, list[schemas.Run]]:
         scenarios = self.get_all_scenarios()
         runs = dict()
@@ -52,7 +51,33 @@ class DataCache:
         return runs
 
     @cache
-    def get_preferred_runs(self) -> list[schemas.Run]:
+    def get_preferred_run(self, scenario: str) -> schemas.Run:
+        logger.info("calling `get_preferred_run`, results are cached")
+        scenarios = self.get_all_scenarios()
+        for s in scenarios:
+            if s.name == scenario:
+                with single_use_client(self.db) as client:
+                    run_list = client.get_run(
+                        scenario=s.name,
+                        version=s.preferred_run,
+                    )
+                    if len(run_list) == 1:
+                        logger.info(f"{s} prefers version {run_list[0].version}")
+                        return run_list[0]
+                    else:
+                        logger.error(
+                            f"{len(run_list)} runs found for scenario={s.name}, "
+                            + f"version={s.preferred_run}"
+                        )
+                        raise ValueError(
+                            f"{len(run_list)} runs found for scenario={s.name}, "
+                            + f"version={s.preferred_run}"
+                        )
+        logger.error(f"couldn't find {scenario=}")
+        raise ValueError(f"couldn't find {scenario=}")
+
+    @cache
+    def get_preferred_runs(self) -> tuple[schemas.Run]:
         logger.info("calling `get_preferred_runs`, results are cached")
         scenarios = self.get_all_scenarios()
         runs = list()
@@ -71,7 +96,7 @@ class DataCache:
                             f"{len(run_list)} runs found for scenario={s.name}, "
                             + f"version={s.preferred_run}, skipping"
                         )
-        return runs
+        return tuple(runs)
 
     @cache
     def get_timeseries_for_run(
@@ -84,6 +109,21 @@ class DataCache:
             ts = client.get_timeseries(
                 scenario=scenario,
                 version=version,
+                path=path,
+            )
+        return ts
+
+    @cache
+    def get_timeseries_for_scenario(
+        self,
+        scenario: str,
+        path: str,
+    ) -> schemas.Timeseries:
+        run = self.get_preferred_run(scenario=scenario)
+        with single_use_client(self.db) as client:
+            ts = client.get_timeseries(
+                scenario=scenario,
+                version=run.version,
                 path=path,
             )
         return ts
@@ -111,6 +151,39 @@ class DataCache:
     @property
     def scenarios(self) -> list[schemas.Scenario]:
         return self.get_all_scenarios()
+
+    @cache
+    def get_scenarios_for_assumption(
+        self,
+        kind: str,
+        assumption: str,
+    ) -> tuple[schemas.Scenario]:
+        scenarios = self.get_all_scenarios()
+        matched = list()
+        for s in scenarios:
+            if kind not in s.assumptions:
+                continue
+            elif assumption == s.assumptions[kind]:
+                matched.append(s)
+        return tuple(matched)
+
+    def get_timeseries_for_assumption(
+        self,
+        kind: str,
+        assumption: str,
+        path: str,
+    ) -> dict[str, schemas.Timeseries]:
+        found = dict()
+        for scenario in self.get_scenarios_for_assumption(
+            kind=kind, assumption=assumption
+        ):
+            run = self.get_preferred_run(scenario.name)
+            found[scenario.name] = self.get_timeseries_for_run(
+                scenario=run.scenario,
+                version=run.version,
+                path=path,
+            )
+        return found
 
 
 DB = DataCache()

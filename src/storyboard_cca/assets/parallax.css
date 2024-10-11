@@ -1,0 +1,15 @@
+.parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*height: 100vh;  Full screen height */
+}
+.content-section {
+    padding: 100px 15px;
+    text-align: center;
+}
+.scrolling-section {
+    background-attachment: scroll;
+    height: 100vh;
+}

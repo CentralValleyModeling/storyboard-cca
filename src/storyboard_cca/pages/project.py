@@ -11,19 +11,45 @@ dash.register_page(
 app = dash.get_app()
 
 PROJECTS = {
-    "Delta Conveyance Project": (
-        "2043 50% LOC - Maintain",
-        "2043 50% LOC - DCP + Maintain",
+    "Delta Conveyance Project": tuple(
+        a.name
+        for a in sb.DB.get_scenarios_for_assumption(
+            kind="dcp",
+            assumption="Delta Conveyance Project",
+        )
     ),
-    "Additional South Of Delta Storage": (
-        "2043 50% LOC - Maintain",
-        "2043 50% LOC - SODS + Maintain",
+    "Additional South Of Delta Storage": tuple(
+        a.name
+        for a in sb.DB.get_scenarios_for_assumption(
+            kind="sods",
+            assumption="Additional South of Delta Storage",
+        )
     ),
-    "Forecast Informed Reservoir Operations": (
-        "2043 50% LOC - Maintain",
-        "2043 50% LOC - FIRO + Maintain",
+    "Forecast Informed Reservoir Operations": tuple(
+        a.name
+        for a in sb.DB.get_scenarios_for_assumption(
+            kind="firo",
+            assumption="Forecast-informed Reservoir Operations",
+        )
+    ),
+    "Subsidence": (
+        *tuple(
+            a.name
+            for a in sb.DB.get_scenarios_for_assumption(
+                kind="caa_subsidence",
+                assumption="2043 50% LOC Subsidence",
+            )
+        ),
+        *tuple(
+            a.name
+            for a in sb.DB.get_scenarios_for_assumption(
+                kind="caa_subsidence",
+                assumption="2085 50% LOC Subsidence",
+            )
+        ),
     ),
 }
+print(PROJECTS)
 
 
 def url_to_pretty(s: str) -> str:
@@ -36,7 +62,7 @@ def pretty_to_url(s: str) -> str:
 
 def introduction():
     # 2. INTRODUCTION
-    introduction = sb.PaddedSection(
+    introduction = dbc.Container(
         dbc.Row(
             sb.text.from_file("text/project/introduction"),
         ),
