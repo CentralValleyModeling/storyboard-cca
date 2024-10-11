@@ -13,37 +13,65 @@ app = dash.get_app()
 
 def introduction():
     # 2. INTRODUCTION
-    introduction = sb.PaddedSection(
+    fig = sb.plots.pre_packed.climate_scenario_scatter()
+    introduction = dbc.Container(
         dbc.Row(
-            sb.text.from_file("text/climate_change/introduction"),
+            [
+                dbc.Col(sb.text.from_file("text/climate_change/introduction")),
+                dbc.Col(dash.dcc.Graph(figure=fig)),
+            ]
         ),
     )
+
     return introduction
 
 
 def reservoir_storage():
     # 3. IMPACTS TO RESERVOIR STORAGE
-    data = {
-        "oroville": sb.DB.get_timeseries("/.*/S_OROVL/STORAGE/.*/.*/.*/"),
-        "san_luis": sb.DB.get_timeseries("/.*/S_SLUIS_SWP/STORAGE/.*/.*/.*/"),
+    path_oro = "/.*/S_OROVL/STORAGE/.*/.*/.*/"
+    path_sl = "/.*/S_SLUIS_SWP/STORAGE/.*/.*/.*/"
+
+    scenarios_2043 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2043 50% LOC)",
+        "Maintenance without Adaptation (2043 95% LOC)",
+    ]
+
+    scenarios_2085 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2085 50% LOC)",
+        "Maintenance without Adaptation (2085 75% LOC)",
+    ]
+
+    data_2043 = {
+        "oroville": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_oro)
+            for s in scenarios_2043
+        },
+        "san_luis": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_sl)
+            for s in scenarios_2043
+        },
     }
-    for key, value in data.items():
-        value = {
-            k: v
-            for k, v in value.items()
-            if k in ("Baseline", "2043 50% LOC - Maintain")
-        }
-        data[key] = value
-    impacts = dbc.Row(
+    data_2085 = {
+        "oroville": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_oro)
+            for s in scenarios_2085
+        },
+        "san_luis": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_sl)
+            for s in scenarios_2085
+        },
+    }
+
+    impacts = sb.features.Parallax(
         [
-            dbc.Col(
-                sb.SelfJump(sb.placeholders.get_image()),
-                class_name="overflow-auto scroll-by ps-0 col-12 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+            dbc.Container(
+                sb.text.from_file("text/climate_change/impacts_storage_1"),
+                className="bg-body p-4",
             ),
-            dbc.Col(
-                class_name="mt-2 mb-5 me-5",
-                children=[
-                    sb.text.from_file("text/climate_change/impacts_storage_1"),
+            dbc.Container(
+                [
                     dbc.Row(
                         dash.html.H3("Oroville", className="mt-1"),
                         class_name="border-top border-secondary",
@@ -54,7 +82,7 @@ def reservoir_storage():
                                 dash.dcc.Graph(
                                     "graph-climate-change-storage-oroville-2043",
                                     figure=sb.plots.monthly(
-                                        data["oroville"],
+                                        data_2043["oroville"],
                                         y_label="Oroville Storage (TAF)",
                                     ),
                                 ),
@@ -65,7 +93,7 @@ def reservoir_storage():
                                 dash.dcc.Graph(
                                     "graph-climate-change-storage-oroville-2085",
                                     figure=sb.plots.monthly(
-                                        data["oroville"],
+                                        data_2085["oroville"],
                                         y_label="Oroville Storage (TAF)",
                                     ),
                                 ),
@@ -85,7 +113,7 @@ def reservoir_storage():
                                 dash.dcc.Graph(
                                     "graph-climate-change-storage-san-luis-2043",
                                     figure=sb.plots.monthly(
-                                        data["san_luis"],
+                                        data_2043["san_luis"],
                                         y_label="San Luis (SWP) Storage (TAF)",
                                     ),
                                 ),
@@ -96,7 +124,7 @@ def reservoir_storage():
                                 dash.dcc.Graph(
                                     "graph-climate-change-storage-san-luis-2085",
                                     figure=sb.plots.monthly(
-                                        data["san_luis"],
+                                        data_2085["san_luis"],
                                         y_label="San Luis (SWP) Storage (TAF)",
                                     ),
                                 ),
@@ -107,163 +135,344 @@ def reservoir_storage():
                         class_name="my-2",
                     ),
                 ],
+                className="bg-body py-3",
             ),
         ],
         id="section-storage",
-        class_name="border-top border-primary",
+        background="images/climate_change/2022_08_02_JW_107_Oroville_Lake_Levels.jpg",
     )
     return impacts
 
 
 def river_flows():
     # 4. IMPACTS TO RIVER FLOWS
-    data = sb.DB.get_timeseries("/.*/NDOI/FLOW/.*/.*/.*/")
-    data = {
-        k: v for k, v in data.items() if k in ("Baseline", "2043 50% LOC - Maintain")
+    path_ndoi = "/.*/NDOI/FLOW/.*/.*/.*/"
+
+    scenarios_2043 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2043 50% LOC)",
+        "Maintenance without Adaptation (2043 95% LOC)",
+    ]
+
+    scenarios_2085 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2085 50% LOC)",
+        "Maintenance without Adaptation (2085 75% LOC)",
+    ]
+
+    data_2043 = {
+        "ndoi": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_ndoi)
+            for s in scenarios_2043
+        },
     }
-    impacts = dbc.Row(
+    data_2085 = {
+        "ndoi": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_ndoi)
+            for s in scenarios_2085
+        },
+    }
+    impacts = sb.features.Parallax(
         [
-            dbc.Col(
-                class_name="mt-2 mb-5 ms-5",
-                children=[
-                    sb.text.from_file("text/climate_change/impacts_river_flows_1"),
-                    dbc.Row(
-                        [
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-change-river-flows-2043",
-                                    figure=sb.plots.monthly(
-                                        data,
-                                        y_label="Delta Outflow (cfs)",
-                                    ),
-                                ),
-                                sm=12,
-                                lg=6,
-                            ),
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-change-river-flows-2085",
-                                    figure=sb.plots.monthly(
-                                        data,
-                                        y_label="Delta Outflow (cfs)",
-                                    ),
-                                ),
-                                sm=12,
-                                lg=6,
-                            ),
-                        ]
-                    ),
-                ],
+            dbc.Container(
+                sb.text.from_file("text/climate_change/impacts_river_flows_1"),
+                className="bg-body p-4",
             ),
-            dbc.Col(
-                sb.SelfJump(sb.placeholders.get_image()),
-                class_name="overflow-auto scroll-by ps-0 col-0 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+            dbc.Container(
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-river-flows-2043",
+                                figure=sb.plots.monthly(
+                                    data_2043["ndoi"],
+                                    y_label="Delta Outflow (cfs)",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-river-flows-2085",
+                                figure=sb.plots.monthly(
+                                    data_2085["ndoi"],
+                                    y_label="Delta Outflow (cfs)",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                    ]
+                ),
+                className="bg-body p-4",
+            ),
+            dbc.Container(
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-delivery-2043",
+                                figure=sb.plots.wyt_bar(
+                                    data_2043["ndoi"],
+                                    y_label="Delta Outflow (cfs)",
+                                    group_label="Scenario",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-delivery-2085",
+                                figure=sb.plots.wyt_bar(
+                                    data_2085["ndoi"],
+                                    y_label="Delta Outflow (cfs)",
+                                    group_label="Scenario",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                    ]
+                ),
+                className="bg-body p-4",
             ),
         ],
         id="section-river-flows",
-        class_name="border-top border-primary",
+        background="images/climate_change/KG_Jan_storm_north_9403.jpg",
     )
     return impacts
 
 
 def deliveries():
     # 4. IMPACTS TO DELIVERIES
-    data = sb.DB.get_timeseries("/.*/SWP_PERDELDV/SWP-DELIVERY/.*/.*/.*/")
-    data = {
-        k: v for k, v in data.items() if k in ("Baseline", "2043 50% LOC - Maintain")
+    path_perdel = "/.*/SWP_PERDELDV/SWP-DELIVERY/.*/.*/.*/"
+    path_totaldel = "/.*/SWPTOTALDEL/FLOW-DELIVERY/.*/.*/.*/"
+    path_banks = "/.*/C_CAA003_SWP/FLOW-DELIVERY/.*/.*/.*/"
+
+    scenarios_2043 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2043 50% LOC)",
+        "Maintenance without Adaptation (2043 95% LOC)",
+    ]
+
+    scenarios_2085 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2085 50% LOC)",
+        "Maintenance without Adaptation (2085 75% LOC)",
+    ]
+
+    data_2043 = {
+        "perdel": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_perdel)
+            for s in scenarios_2043
+        },
+        "totaldel": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_totaldel)
+            for s in scenarios_2043
+        },
+        "banks": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_banks)
+            for s in scenarios_2043
+        },
     }
-    impacts = dbc.Row(
+    data_2085 = {
+        "perdel": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_perdel)
+            for s in scenarios_2085
+        },
+        "totaldel": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_totaldel)
+            for s in scenarios_2085
+        },
+        "banks": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_banks)
+            for s in scenarios_2085
+        },
+    }
+
+    impacts = sb.features.Parallax(
         [
-            dbc.Col(
-                sb.SelfJump(sb.placeholders.get_image()),
-                class_name="overflow-auto scroll-by ps-0 col-0 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+            dbc.Container(
+                sb.text.from_file("text/climate_change/impacts_deliveries_1"),
+                className="bg-body p-4",
             ),
-            dbc.Col(
-                class_name="mt-2 mb-5  me-5",
-                children=[
-                    sb.text.from_file("text/climate_change/impacts_deliveries_1"),
-                    dbc.Row(
-                        [
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-change-delivery-2043",
-                                    figure=sb.plots.exceedance(
-                                        data,
-                                        y_label="SWP Delivery (%)",
-                                    ),
+            dbc.Container(
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-delivery-2043",
+                                figure=sb.plots.wyt_bar(
+                                    data_2043["banks"],
+                                    y_label="Banks Exports (TAF)",
+                                    group_label="Scenario",
+                                    conversion="cfs_to_taf",
+                                    agg_method="sum",
                                 ),
-                                sm=12,
-                                lg=6,
                             ),
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-change-delivery-2085",
-                                    figure=sb.plots.exceedance(
-                                        data,
-                                        y_label="SWP Delivery (%)",
-                                    ),
+                            sm=12,
+                            lg=6,
+                        ),
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-delivery-2085",
+                                figure=sb.plots.wyt_bar(
+                                    data_2085["banks"],
+                                    y_label="Banks Exports (TAF)",
+                                    group_label="Scenario",
+                                    conversion="cfs_to_taf",
+                                    agg_method="sum",
                                 ),
-                                sm=12,
-                                lg=6,
                             ),
-                        ]
-                    ),
-                ],
+                            sm=12,
+                            lg=6,
+                        ),
+                    ]
+                ),
+                className="bg-body p-4",
+            ),
+            dbc.Container(
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-delivery-2043",
+                                figure=sb.plots.wyt_bar(
+                                    data_2043["perdel"],
+                                    y_label="Average SWP Delivery (%)",
+                                    group_label="Scenario",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-delivery-2085",
+                                figure=sb.plots.wyt_bar(
+                                    data_2085["perdel"],
+                                    y_label="Average SWP Delivery (%)",
+                                    group_label="Scenario",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                    ]
+                ),
+                className="bg-body p-4",
+            ),
+            dbc.Container(
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-delivery-2043",
+                                figure=sb.plots.wyt_bar(
+                                    data_2043["totaldel"],
+                                    y_label="Total Deliveries (TAF)",
+                                    group_label="Scenario",
+                                    conversion="cfs_to_taf",
+                                    agg_method="sum",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-change-delivery-2085",
+                                figure=sb.plots.wyt_bar(
+                                    data_2085["totaldel"],
+                                    y_label="Total Deliveries (TAF)",
+                                    group_label="Scenario",
+                                    conversion="cfs_to_taf",
+                                    agg_method="sum",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                    ]
+                ),
+                className="bg-body p-4",
             ),
         ],
         id="section-deliveries",
-        class_name="border-top border-primary",
+        background="images/climate_change/2023_05_13_ZZ_0037_CVP_SWP_Aqueduct.jpg",
     )
     return impacts
 
 
 def salinity():
     # 4. IMPACTS TO SALINITY
-    data = sb.DB.get_timeseries("/.*/EM_EC_MONTH/SALINITY/.*/.*/.*/")
-    data = {
-        k: v for k, v in data.items() if k in ("Baseline", "2043 50% LOC - Maintain")
+
+    path_emmaton = "/.*/EM_EC_MONTH/SALINITY/.*/.*/.*/"
+
+    scenarios_2043 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2043 50% LOC)",
+        "Maintenance without Adaptation (2043 95% LOC)",
+    ]
+
+    scenarios_2085 = [
+        "Maintenance without Adaptation (2023)",
+        "Maintenance without Adaptation (2085 50% LOC)",
+        "Maintenance without Adaptation (2085 75% LOC)",
+    ]
+
+    data_2043 = {
+        "emmaton": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_emmaton)
+            for s in scenarios_2043
+        },
     }
-    impacts = dbc.Row(
+    data_2085 = {
+        "emmaton": {
+            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_emmaton)
+            for s in scenarios_2085
+        },
+    }
+    impacts = sb.features.Parallax(
         [
-            dbc.Col(
-                class_name="pt-2 mb-5 ms-5",
-                children=[
-                    sb.text.from_file("text/climate_change/impacts_salinity_1"),
-                    dbc.Row(
-                        [
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-salinity-2043",
-                                    figure=sb.plots.exceedance(
-                                        data,
-                                        y_label="EC at Emmaton (UMHOS/CM)",
-                                    ),
-                                ),
-                                sm=12,
-                                lg=6,
-                            ),
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-salinity-2085",
-                                    figure=sb.plots.exceedance(
-                                        data,
-                                        y_label="EC at Emmaton (UMHOS/CM)",
-                                    ),
-                                ),
-                                sm=12,
-                                lg=6,
-                            ),
-                        ]
-                    ),
-                ],
+            dbc.Container(
+                sb.text.from_file("text/climate_change/impacts_salinity_1"),
+                className="bg-body p-4",
             ),
-            dbc.Col(
-                sb.SelfJump(sb.placeholders.get_image()),
-                class_name="overflow-auto scroll-by ps-0 col-1 col-sm-1 col-md-2 col-lg-3 col-xl-3 col-xxl-3",
+            dbc.Container(
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-salinity-2043",
+                                figure=sb.plots.exceedance(
+                                    data_2043["emmaton"],
+                                    y_label="EC at Emmaton (UMHOS/CM)",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                        dbc.Col(
+                            dash.dcc.Graph(
+                                "graph-climate-salinity-2085",
+                                figure=sb.plots.exceedance(
+                                    data_2085["emmaton"],
+                                    y_label="EC at Emmaton (UMHOS/CM)",
+                                ),
+                            ),
+                            sm=12,
+                            lg=6,
+                        ),
+                    ]
+                ),
+                className="bg-body p-4",
             ),
         ],
         id="section-salinity",
-        class_name="border-top border-primary",
+        background="images/climate_change/2023_05_11_ZZ_0098_Delta.jpg",
     )
     return impacts
 

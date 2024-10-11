@@ -14,7 +14,7 @@ app = dash.get_app()
 
 def introduction():
     # 2. INTRODUCTION
-    introduction = sb.PaddedSection(
+    introduction = dbc.Container(
         dbc.Row(
             sb.text.from_file("text/adaptation/introduction"),
         ),

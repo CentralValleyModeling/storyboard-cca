@@ -1,8 +1,28 @@
+# #############################################################################
+# ASSUMPTIONS
+# regulation assumptions
 [[assumptions]]
 name = "LTO VA 12A Version 2"
 kind = "regulations"
 detail = "Detail to be added for LTO VA 12A Version 2"
 
+# Land use assumptions
+[[assumptions]]
+name = "2020 (2020 UWMP)"
+kind = "land_use"
+detail = "Detail to be added for 2020 land use."
+
+[[assumptions]]
+name = "2040 (2020 UWMP)"
+kind = "land_use"
+detail = "Detail to be added for 2040 land use."
+
+[[assumptions]]
+name = "Reduced"
+kind = "land_use"
+detail = "Detail to be added for reduced land use"
+
+# Hydrology assumptions
 [[assumptions]]
 name = "Historical Adjusted"
 kind = "hydrology"
@@ -28,16 +48,39 @@ name = "2085 75% LOC"
 kind = "hydrology"
 detail = "Detail to be added for 2085 LOC 75%"
 
+# Sea Level Rise assumptions
 [[assumptions]]
-name = "Runflat"
+name = "15CM"
+kind = "sea_level_rise"
+detail = "Assumed 15 cm of Sea Level Rise"
+
+[[assumptions]]
+name = "30CM"
+kind = "sea_level_rise"
+detail = "Assumed 30 cm of Sea Level Rise"
+
+[[assumptions]]
+name = "55CM"
+kind = "sea_level_rise"
+detail = "Assumed 55 cm of Sea Level Rise"
+
+[[assumptions]]
+name = "105CM"
+kind = "sea_level_rise"
+detail = "Assumed 105 cm of Sea Level Rise"
+
+# Asset management assumptions
+[[assumptions]]
+name = "Deteriorating Assets"
 kind = "asset_management"
-detail = "Detail to be added for Runflat"
+detail = "Detail to be added for deteriorating assets"
 
 [[assumptions]]
 name = "Maintain Current Assets"
 kind = "asset_management"
-detail = "Detail to be added for Current"
+detail = "Detail to be added for Current Assets"
 
+# Subsidence assumptions
 [[assumptions]]
 name = "Design CAA Capacity"
 kind = "caa_subsidence"
@@ -53,6 +96,7 @@ name = "2085 50% LOC Subsidence"
 kind = "caa_subsidence"
 detail = "Detail to be added for 2085 50% LOC Subsidence"
 
+# Adaptation assumptions
 [[assumptions]]
 name = "No Delta Conveyance Project"
 kind = "dcp"
@@ -83,10 +127,15 @@ name = "Additional South of Delta Storage"
 kind = "sods"
 detail = "Detail to be added for Additional South of Delta Storage"
 
+# #############################################################################
+# SCENARIOS
+# Maintenance w/o Adapt, under 4 CC scenarios
 [[scenarios]]
-name = "Baseline"
+name = "Maintenance without Adaptation (2023)"
 [scenarios.assumptions]
 regulations = "LTO VA 12A Version 2"
+land_use = "2020 (2020 UWMP)"
+sea_level_rise = "15CM"
 hydrology = "Historical Adjusted"
 asset_management = "Maintain Current Assets"
 caa_subsidence = "Design CAA Capacity"
@@ -95,9 +144,11 @@ firo = "No Forecast-informed Reservoir Operations"
 sods = "No Additional South of Delta Storage"
 
 [[scenarios]]
-name = "2043 50% LOC - Maintain"
+name = "Maintenance without Adaptation (2043 50% LOC)"
 [scenarios.assumptions]
 regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "15CM"
 hydrology = "2043 50% LOC"
 asset_management = "Maintain Current Assets"
 caa_subsidence = "Design CAA Capacity"
@@ -106,9 +157,105 @@ firo = "No Forecast-informed Reservoir Operations"
 sods = "No Additional South of Delta Storage"
 
 [[scenarios]]
-name = "2043 50% LOC - DCP + Maintain"
+name = "Maintenance without Adaptation (2043 95% LOC)"
 [scenarios.assumptions]
 regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "30CM"
+hydrology = "2043 95% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Maintenance without Adaptation (2085 50% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "55CM"
+hydrology = "2085 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Maintenance without Adaptation (2085 75% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "105CM"
+hydrology = "2085 75% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+# No maintenance
+[[scenarios]]
+name = "Deteriorating System (2043 50% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "15CM"
+hydrology = "2043 50% LOC"
+asset_management = "Deteriorating Assets"
+caa_subsidence = "2043 50% LOC Subsidence"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Deteriorating System (2043 95% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "30CM"
+hydrology = "2043 95% LOC"
+asset_management = "Deteriorating Assets"
+caa_subsidence = "2043 50% LOC Subsidence"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Deteriorating System (2085 50% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "55CM"
+hydrology = "2085 50% LOC"
+asset_management = "Deteriorating Assets"
+caa_subsidence = "2085 50% LOC Subsidence"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Deteriorating System (2085 75% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "105CM"
+hydrology = "2085 75% LOC"
+asset_management = "Deteriorating Assets"
+caa_subsidence = "2085 50% LOC Subsidence"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+
+# 2043 50% LOC Projects
+[[scenarios]]
+name = "Delta Conveyance Project (2043 50% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "15CM"
 hydrology = "2043 50% LOC"
 asset_management = "Maintain Current Assets"
 caa_subsidence = "Design CAA Capacity"
@@ -117,9 +264,11 @@ firo = "No Forecast-informed Reservoir Operations"
 sods = "No Additional South of Delta Storage"
 
 [[scenarios]]
-name = "2043 50% LOC - FIRO + Maintain"
+name = "Forecast Informed Reservoir Operations (2043 50% LOC)"
 [scenarios.assumptions]
 regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "15CM"
 hydrology = "2043 50% LOC"
 asset_management = "Maintain Current Assets"
 caa_subsidence = "Design CAA Capacity"
@@ -128,9 +277,11 @@ firo = "Forecast-informed Reservoir Operations"
 sods = "No Additional South of Delta Storage"
 
 [[scenarios]]
-name = "2043 50% LOC - SODS + Maintain"
+name = "South of Delta Storage (2043 50% LOC)"
 [scenarios.assumptions]
 regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "15CM"
 hydrology = "2043 50% LOC"
 asset_management = "Maintain Current Assets"
 caa_subsidence = "Design CAA Capacity"
@@ -139,9 +290,11 @@ firo = "No Forecast-informed Reservoir Operations"
 sods = "Additional South of Delta Storage"
 
 [[scenarios]]
-name = "2043 50% LOC - Combination"
+name = "Combined Adaptations (2043 50% LOC)"
 [scenarios.assumptions]
 regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "15CM"
 hydrology = "2043 50% LOC"
 asset_management = "Maintain Current Assets"
 caa_subsidence = "Design CAA Capacity"
@@ -149,62 +302,485 @@ dcp = "Delta Conveyance Project"
 firo = "Forecast-informed Reservoir Operations"
 sods = "Additional South of Delta Storage"
 
+# 2043 95% LOC Projects
+[[scenarios]]
+name = "Delta Conveyance Project (2043 95% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "30CM"
+hydrology = "2043 95% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Forecast Informed Reservoir Operations (2043 95% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "30CM"
+hydrology = "2043 95% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "South of Delta Storage (2043 95% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "30CM"
+hydrology = "2043 95% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Combined Adaptations (2043 95% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "2040 (2020 UWMP)"
+sea_level_rise = "30CM"
+hydrology = "2043 95% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "Delta Conveyance Project"
+firo = "Forecast-informed Reservoir Operations"
+sods = "Additional South of Delta Storage"
+
+# 2085 50% LOC Projects
+[[scenarios]]
+name = "Delta Conveyance Project (2085 50% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "55CM"
+hydrology = "2085 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Forecast Informed Reservoir Operations (2085 50% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "55CM"
+hydrology = "2085 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "South of Delta Storage (2085 50% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "55CM"
+hydrology = "2085 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Combined Adaptations (2085 50% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "55CM"
+hydrology = "2085 50% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "Delta Conveyance Project"
+firo = "Forecast-informed Reservoir Operations"
+sods = "Additional South of Delta Storage"
+
+# 2085 75% LOC Projects
+[[scenarios]]
+name = "Delta Conveyance Project (2085 75% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "105CM"
+hydrology = "2085 75% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Forecast Informed Reservoir Operations (2085 75% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "105CM"
+hydrology = "2043 95% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "Forecast-informed Reservoir Operations"
+sods = "No Additional South of Delta Storage"
+
+[[scenarios]]
+name = "South of Delta Storage (2085 75% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "105CM"
+hydrology = "2085 75% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "No Delta Conveyance Project"
+firo = "No Forecast-informed Reservoir Operations"
+sods = "Additional South of Delta Storage"
+
+[[scenarios]]
+name = "Combined Adaptations (2085 75% LOC)"
+[scenarios.assumptions]
+regulations = "LTO VA 12A Version 2"
+land_use = "Reduced"
+sea_level_rise = "105CM"
+hydrology = "2085 75% LOC"
+asset_management = "Maintain Current Assets"
+caa_subsidence = "Design CAA Capacity"
+dcp = "Delta Conveyance Project"
+firo = "Forecast-informed Reservoir Operations"
+sods = "Additional South of Delta Storage"
+
+# #############################################################################
+# RUNS
+# No Projects - Maintenance
 [[runs]]
-scenario = "Baseline"
+scenario = "Maintenance without Adaptation (2023)"
 version = "1.0"
 code_version = "3.6.0"
 contact = "puneet.khatavkar@stantec.com"
 confidential = true
 published = false
-detail = "Draft run for the baseline"
+detail = "Draft run"
 dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA1_v3.6.0__Baseline_LU100_SLR0_20240711/DSS/output/CCA1_v3.6.0__Baseline_LU100_SLR0_20240711.dss"
 
 [[runs]]
-scenario = "2043 50% LOC - Maintain"
+scenario = "Maintenance without Adaptation (2023)"
+version = "1.1"
+parent = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Update uses 3.6.2 codebase"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA1_v3.6.x__Baseline_LU100_SLR0_20240821.dss"
+
+[[runs]]
+scenario = "Maintenance without Adaptation (2043 50% LOC)"
 version = "1.0"
 code_version = "3.6.0"
 contact = "puneet.khatavkar@stantec.com"
 confidential = true
 published = false
-detail = "Draft run, Climate Change at 2043 50% LOC, LU 100%, Sea Level Rise 15cm"
+detail = "Draft run"
 dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA4_v3.6.0__2043_50CC_LU100_SLR15_20240715/DSS/output/CCA4_v3.6.0__2043_50CC_LU100_SLR15_20240715.dss"
 
 [[runs]]
-scenario = "2043 50% LOC - DCP + Maintain"
+scenario = "Maintenance without Adaptation (2043 50% LOC)"
+version = "1.1"
+parent = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Update uses 3.6.2 codebase"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA4_v3.6.x__2043_50CC_LU100_SLR15_20240819.dss"
+
+[[runs]]
+scenario = "Maintenance without Adaptation (2043 95% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA5_v3.6.x__2043_95CC_LU100_SLR30_20240822.dss"
+
+[[runs]]
+scenario = "Maintenance without Adaptation (2085 50% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA16_v3.6.x_G_2085_50CC_LU50_SLR55_20240903.dss"
+
+[[runs]]
+scenario = "Maintenance without Adaptation (2085 75% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA17_v3.6.x_G_2085_75CC_LU50_SLR105_20240916.dss"
+
+# No Projects - No Maintenance
+[[runs]]
+scenario = "Deteriorating System (2043 50% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA2_v3.6.x_BE_2043_50CC_LU100_SLR15_20240920.dss"
+
+[[runs]]
+scenario = "Deteriorating System (2043 95% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA3_v3.6.x_BE_2043_95CC_LU100_SLR30_20240920.dss"
+
+[[runs]]
+scenario = "Deteriorating System (2085 50% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA14_v3.6.x_BEG_2085_50CC_LU50_SLR55_20240921.dss"
+
+[[runs]]
+scenario = "Deteriorating System (2085 75% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA15_v3.6.x_BEG_2085_75CC_LU50_SLR105_20240921.dss"
+
+# Projects - 2043 50% LOC
+[[runs]]
+scenario = "Delta Conveyance Project (2043 50% LOC)"
 version = "1.0"
 code_version = "3.6.0"
 contact = "puneet.khatavkar@stantec.com"
 confidential = true
 published = false
-detail = "Draft run for DCP analysis, uses the same climate as 2043 50CC"
+detail = "Draft run"
 dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA6_v3.6.0_A_2043_50CC_LU100_SLR15_20240716/DSS/output/CCA6_v3.6.0_A_2043_50CC_LU100_SLR15_20240716.dss"
 
 [[runs]]
-scenario = "2043 50% LOC - FIRO + Maintain"
+scenario = "Delta Conveyance Project (2043 50% LOC)"
+version = "1.1"
+parent = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Update uses 3.6.2 codebase"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA6_v3.6.x_A_2043_50CC_LU100_SLR15_20240821.dss"
+
+[[runs]]
+scenario = "Forecast Informed Reservoir Operations (2043 50% LOC)"
 version = "1.0"
 code_version = "3.6.0"
 contact = "puneet.khatavkar@stantec.com"
 confidential = true
 published = false
-detail = "Draft run for FIRO analysis, uses the same climate as 2043 50CC"
+detail = "Draft run"
 dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA8_v3.6.0_D_2043_50CC_LU100_SLR15_20240711/DSS/output/CCA8_v3.6.0_D_2043_50CC_LU100_SLR15_20240711.dss"
 
 [[runs]]
-scenario = "2043 50% LOC - SODS + Maintain"
+scenario = "Forecast Informed Reservoir Operations (2043 50% LOC)"
+version = "1.1"
+parent = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Update uses 3.6.2 codebase"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA8_v3.6.x_D_2043_50CC_LU100_SLR15_20240821.dss"
+
+[[runs]]
+scenario = "South of Delta Storage (2043 50% LOC)"
 version = "1.0"
 code_version = "3.6.0"
 contact = "puneet.khatavkar@stantec.com"
 confidential = true
 published = false
-detail = "Draft run for SOD analysis, uses the same climate as 2043 50CC"
+detail = "Draft run"
 dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA10_v3.6.0_C_2043_50CC_LU100_SLR15_20240711/DSS/output/CCA10_v3.6.0_C_2043_50CC_LU100_SLR15_20240711.dss"
 
 [[runs]]
-scenario = "2043 50% LOC - Combination"
+scenario = "South of Delta Storage (2043 50% LOC)"
+version = "1.1"
+parent = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Update uses 3.6.2 codebase"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA10_v3.6.x_C_2043_50CC_LU100_SLR15_20240821.dss"
+
+[[runs]]
+scenario = "Combined Adaptations (2043 50% LOC)"
 version = "1.0"
 code_version = "3.6.0"
 contact = "puneet.khatavkar@stantec.com"
 confidential = true
 published = false
-detail = "Draft run for multi-project analysis, uses the same climate as 2043 50CC"
+detail = "Draft run"
 dss = "C:/Users/zroy/Documents/_Modeling/_ClimateChange/_studies/CCA12_v3.6.0_ACD_2043_50CC_LU100_SLR15_20240712/DSS/output/CCA12_v3.6.0_ACD_2043_50CC_LU100_SLR15_20240712.dss"
+
+[[runs]]
+scenario = "Combined Adaptations (2043 50% LOC)"
+version = "1.1"
+parent = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Update uses 3.6.2 codebase"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA12_v3.6.x_ACD_2043_50CC_LU100_SLR15_20240821.dss"
+
+# Projects - 2043 95% LOC
+[[runs]]
+scenario = "Delta Conveyance Project (2043 95% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA7_v3.6.x_A_2043_95CC_LU100_SLR30_20240823.dss"
+
+[[runs]]
+scenario = "Forecast Informed Reservoir Operations (2043 95% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA9_v3.6.x_D_2043_95CC_LU100_SLR30_20240823.dss"
+
+[[runs]]
+scenario = "South of Delta Storage (2043 95% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA11_v3.6.x_C_2043_95CC_LU100_SLR30_20240822.dss"
+
+[[runs]]
+scenario = "Combined Adaptations (2043 95% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA13_v3.6.x_ACD_2043_95CC_LU100_SLR30_20240823.dss"
+
+# Projects - 2085 50% LOC
+[[runs]]
+scenario = "Delta Conveyance Project (2085 50% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA18_v3.6.x_AG_2085_50CC_LU50_SLR55_20240904.dss"
+
+[[runs]]
+scenario = "Forecast Informed Reservoir Operations (2085 50% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA20_v3.6.x_DG_2085_50CC_LU50_SLR55_20240905.dss"
+
+[[runs]]
+scenario = "South of Delta Storage (2085 50% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA22_v3.6.x_CG_2085_50CC_LU50_SLR55_20240905.dss"
+
+[[runs]]
+scenario = "Combined Adaptations (2085 50% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA24_v3.6.x_ACDG_2085_50CC_LU50_SLR55_20240905.dss"
+
+# Projects - 2085 75% LOC
+[[runs]]
+scenario = "Delta Conveyance Project (2085 75% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA19_v3.6.x_AG_2085_75CC_LU50_SLR105_20240916.dss"
+
+[[runs]]
+scenario = "Forecast Informed Reservoir Operations (2085 75% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA21_v3.6.x_DG_2085_75CC_LU50_SLR105_20240918.dss"
+
+[[runs]]
+scenario = "South of Delta Storage (2085 75% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA23_v3.6.x_CG_2085_75CC_LU50_SLR105_20240918.dss"
+
+[[runs]]
+scenario = "Combined Adaptations (2085 75% LOC)"
+version = "1.0"
+code_version = "3.6.2"
+contact = "puneet.khatavkar@stantec.com"
+confidential = true
+published = false
+detail = "Draft run"
+dss = "C:/Users/zroy/OneDrive - California Department of Water Resources/SWP Climate Adaptation Plan/CalSim 3 models/ModelRuns_20240920/CCA25_v3.6.x_ACDG_2085_75CC_LU50_SLR105_20240918.dss"

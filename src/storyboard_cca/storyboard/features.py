@@ -107,7 +107,7 @@ class ScrollBy(dbc.Row):
         col_L = "overflow-auto scroll-by ps-0"
         col_R = "overflow-auto scroll-by ps-0"
         # Set up the breakpoints of the minor column
-        minor_col_steps_used = dict(xs=1, sm=1, md=2, lg=3, xl=3, xxl=3)
+        minor_col_steps_used = dict(xs=1, sm=1, md=1, lg=6, xl=6, xxl=6)
         if minor_col_steps:
             minor_col_steps_used.update(minor_col_steps)
         minor_col = " "
@@ -139,11 +139,39 @@ class ScrollBy(dbc.Row):
         )
 
 
+class Parallax(html.Div):
+    def __init__(
+        self,
+        children,
+        *,
+        class_name: str = "",
+        style: dict | None = None,
+        background: str,
+        **kwargs,
+    ):
+        if style is None:
+            style = dict()
+        style["background-image"] = f"url('assets/{background}')"
+        class_name = (
+            class_name
+            + " parallax"
+            + " border-top border-bottom border-primary "
+            + "justify-content-center"
+        )
+        super().__init__(
+            children=children,
+            style=style,
+            className=class_name,
+            **kwargs,
+        )
+
+
 class LinksBin(html.Div):
     def __init__(
         self,
         links: list[tuple[str, str]],
         title: str = "More",
+        float_to: None | str = None,
         **kwargs,
     ):
         link_list = [
@@ -155,10 +183,16 @@ class LinksBin(html.Div):
             )
             for link in links
         ]
-
+        if float_to:
+            float_to = f" float-{float_to}"
+        else:
+            float_to = ""
         kwargs = (
             dict(
-                className="border border-secondary p-2 rounded-1",
+                className="border border-secondary rounded-1"
+                + " p-2"
+                + " d-inline-flex flex-column"
+                + float_to,
             )
             | kwargs
         )
