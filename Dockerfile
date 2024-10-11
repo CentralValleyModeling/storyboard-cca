@@ -41,7 +41,6 @@
     RUN apt-get clean all
     RUN apt-get purge
     RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-    RUN git clone -b production "https://github.com/CentralValleyModeling/storyboard-cca.git" "code"
     
     # Open 80 for http
     EXPOSE 80
