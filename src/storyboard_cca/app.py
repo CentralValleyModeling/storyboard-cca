@@ -9,6 +9,7 @@ app = dash.Dash(
     assets_folder="assets",
     pages_folder="pages",
     use_pages=True,
+    suppress_callback_exceptions=True,
 )
 
 app.layout = storyboard.body.AppLayout()

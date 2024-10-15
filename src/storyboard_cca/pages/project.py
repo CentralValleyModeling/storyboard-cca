@@ -49,7 +49,6 @@ PROJECTS = {
         ),
     ),
 }
-print(PROJECTS)
 
 
 def url_to_pretty(s: str) -> str:
