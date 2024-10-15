@@ -167,23 +167,37 @@ class DataCache:
                 matched.append(s)
         return tuple(matched)
 
+    def _get_timeseries_for_assumption(
+        self,
+        kind: str,
+        assumption: str,
+        path: str,
+    ) -> tuple[tuple[str, schemas.Timeseries]]:
+        found = list()
+        for scenario in self.get_scenarios_for_assumption(
+            kind=kind, assumption=assumption
+        ):
+            run = self.get_preferred_run(scenario.name)
+            found.append(
+                scenario.name,
+                self.get_timeseries_for_run(
+                    scenario=run.scenario,
+                    version=run.version,
+                    path=path,
+                ),
+            )
+        return tuple(found)
+
     def get_timeseries_for_assumption(
         self,
         kind: str,
         assumption: str,
         path: str,
     ) -> dict[str, schemas.Timeseries]:
-        found = dict()
-        for scenario in self.get_scenarios_for_assumption(
-            kind=kind, assumption=assumption
-        ):
-            run = self.get_preferred_run(scenario.name)
-            found[scenario.name] = self.get_timeseries_for_run(
-                scenario=run.scenario,
-                version=run.version,
-                path=path,
-            )
-        return found
+        found = self._get_timeseries_for_assumption(
+            kind=kind, assumption=assumption, path=path
+        )
+        return {k: v for k, v in found}
 
 
 DB = DataCache()
