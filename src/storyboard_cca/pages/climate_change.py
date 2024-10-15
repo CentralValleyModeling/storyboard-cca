@@ -5,7 +5,7 @@ from typing import Literal
 import dash
 import dash_bootstrap_components as dbc
 import storyboard as sb
-from dash.dcc import Graph, Loading
+from dash.dcc import Graph
 from dash_bootstrap_components import Col, Row
 
 logger = logging.getLogger(__name__)
