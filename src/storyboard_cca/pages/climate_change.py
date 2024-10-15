@@ -1,6 +1,14 @@
+import logging
+from functools import lru_cache
+from typing import Literal
+
 import dash
 import dash_bootstrap_components as dbc
 import storyboard as sb
+from dash.dcc import Graph, Loading
+from dash_bootstrap_components import Col, Row
+
+logger = logging.getLogger(__name__)
 
 dash.register_page(
     __name__,
@@ -13,12 +21,18 @@ app = dash.get_app()
 
 def introduction():
     # 2. INTRODUCTION
-    fig = sb.plots.pre_packed.climate_scenario_scatter()
     introduction = dbc.Container(
-        dbc.Row(
+        Row(
             [
-                dbc.Col(sb.text.from_file("text/climate_change/introduction")),
-                dbc.Col(dash.dcc.Graph(figure=fig)),
+                Col(sb.text.from_file("text/climate_change/introduction")),
+                Col(
+                    id="g-intro",
+                    children=Row(
+                        dbc.Spinner(color="primary"),
+                        justify="center",
+                    ),
+                    align="center",
+                ),
             ]
         ),
     )
@@ -28,42 +42,6 @@ def introduction():
 
 def reservoir_storage():
     # 3. IMPACTS TO RESERVOIR STORAGE
-    path_oro = "/.*/S_OROVL/STORAGE/.*/.*/.*/"
-    path_sl = "/.*/S_SLUIS_SWP/STORAGE/.*/.*/.*/"
-
-    scenarios_2043 = [
-        "Maintenance without Adaptation (2023)",
-        "Maintenance without Adaptation (2043 50% LOC)",
-        "Maintenance without Adaptation (2043 95% LOC)",
-    ]
-
-    scenarios_2085 = [
-        "Maintenance without Adaptation (2023)",
-        "Maintenance without Adaptation (2085 50% LOC)",
-        "Maintenance without Adaptation (2085 75% LOC)",
-    ]
-
-    data_2043 = {
-        "oroville": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_oro)
-            for s in scenarios_2043
-        },
-        "san_luis": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_sl)
-            for s in scenarios_2043
-        },
-    }
-    data_2085 = {
-        "oroville": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_oro)
-            for s in scenarios_2085
-        },
-        "san_luis": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_sl)
-            for s in scenarios_2085
-        },
-    }
-
     impacts = sb.features.Parallax(
         [
             dbc.Container(
@@ -72,62 +50,58 @@ def reservoir_storage():
             ),
             dbc.Container(
                 [
-                    dbc.Row(
+                    Row(
                         dash.html.H3("Oroville", className="mt-1"),
                         class_name="border-top border-secondary",
                     ),
-                    dbc.Row(
+                    Row(
                         [
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-change-storage-oroville-2043",
-                                    figure=sb.plots.monthly(
-                                        data_2043["oroville"],
-                                        y_label="Oroville Storage (TAF)",
-                                    ),
+                            Col(
+                                id="g-cc-storage-oroville-2043",
+                                children=Row(
+                                    dbc.Spinner(color="primary"),
+                                    justify="center",
                                 ),
+                                align="center",
                                 sm=12,
                                 lg=6,
                             ),
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-change-storage-oroville-2085",
-                                    figure=sb.plots.monthly(
-                                        data_2085["oroville"],
-                                        y_label="Oroville Storage (TAF)",
-                                    ),
+                            Col(
+                                id="g-cc-storage-oroville-2085",
+                                children=Row(
+                                    dbc.Spinner(color="primary"),
+                                    justify="center",
                                 ),
+                                align="center",
                                 sm=12,
                                 lg=6,
                             ),
                         ],
                         class_name="my-2",
                     ),
-                    dbc.Row(
+                    Row(
                         dash.html.H3("San Luis (SWP)", className="mt-1"),
                         class_name="border-top border-secondary",
                     ),
-                    dbc.Row(
+                    Row(
                         [
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-change-storage-san-luis-2043",
-                                    figure=sb.plots.monthly(
-                                        data_2043["san_luis"],
-                                        y_label="San Luis (SWP) Storage (TAF)",
-                                    ),
+                            Col(
+                                id="g-cc-storage-san-luis-2043",
+                                children=Row(
+                                    dbc.Spinner(color="primary"),
+                                    justify="center",
                                 ),
+                                align="center",
                                 sm=12,
                                 lg=6,
                             ),
-                            dbc.Col(
-                                dash.dcc.Graph(
-                                    "graph-climate-change-storage-san-luis-2085",
-                                    figure=sb.plots.monthly(
-                                        data_2085["san_luis"],
-                                        y_label="San Luis (SWP) Storage (TAF)",
-                                    ),
+                            Col(
+                                id="g-cc-storage-san-luis-2085",
+                                children=Row(
+                                    dbc.Spinner(color="primary"),
+                                    justify="center",
                                 ),
+                                align="center",
                                 sm=12,
                                 lg=6,
                             ),
@@ -146,32 +120,6 @@ def reservoir_storage():
 
 def river_flows():
     # 4. IMPACTS TO RIVER FLOWS
-    path_ndoi = "/.*/NDOI/FLOW/.*/.*/.*/"
-
-    scenarios_2043 = [
-        "Maintenance without Adaptation (2023)",
-        "Maintenance without Adaptation (2043 50% LOC)",
-        "Maintenance without Adaptation (2043 95% LOC)",
-    ]
-
-    scenarios_2085 = [
-        "Maintenance without Adaptation (2023)",
-        "Maintenance without Adaptation (2085 50% LOC)",
-        "Maintenance without Adaptation (2085 75% LOC)",
-    ]
-
-    data_2043 = {
-        "ndoi": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_ndoi)
-            for s in scenarios_2043
-        },
-    }
-    data_2085 = {
-        "ndoi": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_ndoi)
-            for s in scenarios_2085
-        },
-    }
     impacts = sb.features.Parallax(
         [
             dbc.Container(
@@ -179,58 +127,34 @@ def river_flows():
                 className="bg-body p-4",
             ),
             dbc.Container(
-                dbc.Row(
+                Row(
                     [
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-river-flows-2043",
-                                figure=sb.plots.monthly(
-                                    data_2043["ndoi"],
-                                    y_label="Delta Outflow (cfs)",
-                                ),
-                            ),
-                            sm=12,
-                            lg=6,
-                        ),
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-river-flows-2085",
-                                figure=sb.plots.monthly(
-                                    data_2085["ndoi"],
-                                    y_label="Delta Outflow (cfs)",
-                                ),
-                            ),
-                            sm=12,
-                            lg=6,
-                        ),
+                        Col(id="g-cc-river-flows-2043", sm=12, lg=6),
+                        Col(id="g-cc-river-flows-2085", sm=12, lg=6),
                     ]
                 ),
                 className="bg-body p-4",
             ),
             dbc.Container(
-                dbc.Row(
+                Row(
                     [
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-delivery-2043",
-                                figure=sb.plots.wyt_bar(
-                                    data_2043["ndoi"],
-                                    y_label="Delta Outflow (cfs)",
-                                    group_label="Scenario",
-                                ),
+                        Col(
+                            id="g-cc-river-flows-wyt-2043",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-delivery-2085",
-                                figure=sb.plots.wyt_bar(
-                                    data_2085["ndoi"],
-                                    y_label="Delta Outflow (cfs)",
-                                    group_label="Scenario",
-                                ),
+                        Col(
+                            id="g-cc-river-flows-wyt-2085",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
@@ -247,51 +171,6 @@ def river_flows():
 
 def deliveries():
     # 4. IMPACTS TO DELIVERIES
-    path_perdel = "/.*/SWP_PERDELDV/SWP-DELIVERY/.*/.*/.*/"
-    path_totaldel = "/.*/SWPTOTALDEL/FLOW-DELIVERY/.*/.*/.*/"
-    path_banks = "/.*/C_CAA003_SWP/FLOW-DELIVERY/.*/.*/.*/"
-
-    scenarios_2043 = [
-        "Maintenance without Adaptation (2023)",
-        "Maintenance without Adaptation (2043 50% LOC)",
-        "Maintenance without Adaptation (2043 95% LOC)",
-    ]
-
-    scenarios_2085 = [
-        "Maintenance without Adaptation (2023)",
-        "Maintenance without Adaptation (2085 50% LOC)",
-        "Maintenance without Adaptation (2085 75% LOC)",
-    ]
-
-    data_2043 = {
-        "perdel": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_perdel)
-            for s in scenarios_2043
-        },
-        "totaldel": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_totaldel)
-            for s in scenarios_2043
-        },
-        "banks": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_banks)
-            for s in scenarios_2043
-        },
-    }
-    data_2085 = {
-        "perdel": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_perdel)
-            for s in scenarios_2085
-        },
-        "totaldel": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_totaldel)
-            for s in scenarios_2085
-        },
-        "banks": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_banks)
-            for s in scenarios_2085
-        },
-    }
-
     impacts = sb.features.Parallax(
         [
             dbc.Container(
@@ -299,33 +178,25 @@ def deliveries():
                 className="bg-body p-4",
             ),
             dbc.Container(
-                dbc.Row(
+                Row(
                     [
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-delivery-2043",
-                                figure=sb.plots.wyt_bar(
-                                    data_2043["banks"],
-                                    y_label="Banks Exports (TAF)",
-                                    group_label="Scenario",
-                                    conversion="cfs_to_taf",
-                                    agg_method="sum",
-                                ),
+                        Col(
+                            id="g-cc-banks-wyt-2043",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-delivery-2085",
-                                figure=sb.plots.wyt_bar(
-                                    data_2085["banks"],
-                                    y_label="Banks Exports (TAF)",
-                                    group_label="Scenario",
-                                    conversion="cfs_to_taf",
-                                    agg_method="sum",
-                                ),
+                        Col(
+                            id="g-cc-banks-wyt-2085",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
@@ -334,29 +205,25 @@ def deliveries():
                 className="bg-body p-4",
             ),
             dbc.Container(
-                dbc.Row(
+                Row(
                     [
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-delivery-2043",
-                                figure=sb.plots.wyt_bar(
-                                    data_2043["perdel"],
-                                    y_label="Average SWP Delivery (%)",
-                                    group_label="Scenario",
-                                ),
+                        Col(
+                            id="g-cc-perdel-wyt-2043",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-delivery-2085",
-                                figure=sb.plots.wyt_bar(
-                                    data_2085["perdel"],
-                                    y_label="Average SWP Delivery (%)",
-                                    group_label="Scenario",
-                                ),
+                        Col(
+                            id="g-cc-perdel-wyt-2085",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
@@ -365,33 +232,25 @@ def deliveries():
                 className="bg-body p-4",
             ),
             dbc.Container(
-                dbc.Row(
+                Row(
                     [
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-delivery-2043",
-                                figure=sb.plots.wyt_bar(
-                                    data_2043["totaldel"],
-                                    y_label="Total Deliveries (TAF)",
-                                    group_label="Scenario",
-                                    conversion="cfs_to_taf",
-                                    agg_method="sum",
-                                ),
+                        Col(
+                            id="g-cc-totaldel-wyt-2043",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-change-delivery-2085",
-                                figure=sb.plots.wyt_bar(
-                                    data_2085["totaldel"],
-                                    y_label="Total Deliveries (TAF)",
-                                    group_label="Scenario",
-                                    conversion="cfs_to_taf",
-                                    agg_method="sum",
-                                ),
+                        Col(
+                            id="g-cc-totaldel-wyt-2085",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
@@ -408,33 +267,6 @@ def deliveries():
 
 def salinity():
     # 4. IMPACTS TO SALINITY
-
-    path_emmaton = "/.*/EM_EC_MONTH/SALINITY/.*/.*/.*/"
-
-    scenarios_2043 = [
-        "Maintenance without Adaptation (2023)",
-        "Maintenance without Adaptation (2043 50% LOC)",
-        "Maintenance without Adaptation (2043 95% LOC)",
-    ]
-
-    scenarios_2085 = [
-        "Maintenance without Adaptation (2023)",
-        "Maintenance without Adaptation (2085 50% LOC)",
-        "Maintenance without Adaptation (2085 75% LOC)",
-    ]
-
-    data_2043 = {
-        "emmaton": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_emmaton)
-            for s in scenarios_2043
-        },
-    }
-    data_2085 = {
-        "emmaton": {
-            s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path_emmaton)
-            for s in scenarios_2085
-        },
-    }
     impacts = sb.features.Parallax(
         [
             dbc.Container(
@@ -442,27 +274,25 @@ def salinity():
                 className="bg-body p-4",
             ),
             dbc.Container(
-                dbc.Row(
+                Row(
                     [
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-salinity-2043",
-                                figure=sb.plots.exceedance(
-                                    data_2043["emmaton"],
-                                    y_label="EC at Emmaton (UMHOS/CM)",
-                                ),
+                        Col(
+                            id="g-cc-emmaton-2043",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
-                        dbc.Col(
-                            dash.dcc.Graph(
-                                "graph-climate-salinity-2085",
-                                figure=sb.plots.exceedance(
-                                    data_2085["emmaton"],
-                                    y_label="EC at Emmaton (UMHOS/CM)",
-                                ),
+                        Col(
+                            id="g-cc-emmaton-2085",
+                            children=Row(
+                                dbc.Spinner(color="primary"),
+                                justify="center",
                             ),
+                            align="center",
                             sm=12,
                             lg=6,
                         ),
@@ -493,8 +323,56 @@ def layout():
 
     return sb.Page(
         children=[
+            sb.obj_to_div(
+                {
+                    "paths": {
+                        "path-oroville": "/.*/S_OROVL/STORAGE/.*/.*/.*/",
+                        "path-san-luis": "/.*/S_SLUIS_SWP/STORAGE/.*/.*/.*/",
+                        "path-ndoi": "/.*/NDOI/FLOW/.*/.*/.*/",
+                        "path-perdel": "/.*/SWP_PERDELDV/SWP-DELIVERY/.*/.*/.*/",
+                        "path-totaldel": "/.*/SWPTOTALDEL/FLOW-DELIVERY/.*/.*/.*/",
+                        "path-banks": "/.*/C_CAA003_SWP/FLOW-DELIVERY/.*/.*/.*/",
+                        "path-emmaton": "/.*/EM_EC_MONTH/SALINITY/.*/.*/.*/",
+                    },
+                    "y-labels": {
+                        "y-label-oroville": "Oroville Storage (TAF)",
+                        "y-label-san-luis": "San Luis Storage (TAF)",
+                        "y-label-ndoi": "Net Delta Outflow Index (cfs)",
+                        "y-label-banks": "Banks Exports (TAF)",
+                        "y-label-perdel": "Average SWP Delivery (%)",
+                        "y-label-totaldel": "Total Deliveries (TAF)",
+                        "y-label-emmaton": "EC at Emmaton (UMHOS/CM)",
+                    },
+                    "group-labels": {
+                        "g-label-ndoi": "Scenario",
+                        "g-label-banks": "Scenario",
+                        "g-label-perdel": "Scenario",
+                        "g-label-totaldel": "Scenario",
+                    },
+                    "conversions": {
+                        "conversion-banks": "cfs_to_taf",
+                        "conversion-totaldel": "cfs_to_taf",
+                        "conversion-perdel": None,
+                    },
+                    "agg-methods": {
+                        "agg-banks": "sum",
+                        "agg-perdel": "mean",
+                        "agg-totaldel": "sum",
+                    },
+                    "scenarios-2043": [
+                        "Maintenance without Adaptation (2023)",
+                        "Maintenance without Adaptation (2043 50% LOC)",
+                        "Maintenance without Adaptation (2043 95% LOC)",
+                    ],
+                    "scenarios-2085": [
+                        "Maintenance without Adaptation (2023)",
+                        "Maintenance without Adaptation (2085 50% LOC)",
+                        "Maintenance without Adaptation (2085 75% LOC)",
+                    ],
+                },
+            ),
             introduction(),
-            dbc.Col(
+            Col(
                 children=[
                     reservoir_storage(),
                     river_flows(),
@@ -506,6 +384,11 @@ def layout():
     )
 
 
+@lru_cache
+def endpoint_is(pathname: str, endpoint: str) -> bool:
+    return pathname.endswith(endpoint)
+
+
 @app.callback(
     dash.Output("scroll-to-hash", "data"),
     dash.Input("url", "href"),
@@ -514,3 +397,242 @@ def update_hash(href: str):
     if href and "#" in href:
         return href.split("#")[-1]
     return None
+
+
+def plot_monthly_to_loading_div(
+    url: str,
+    path: str,
+    scenarios: list[str],
+    y_label: str = "Value",
+    conversion: Literal["cfs_to_taf"] | None = None,
+) -> Graph:
+    if not endpoint_is(url, "climate-change"):
+        return dash.no_update
+    data = {
+        s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path) for s in scenarios
+    }
+    figure = sb.plots.monthly(
+        data,
+        y_label=y_label,
+        conversion=conversion,
+    )
+    return Graph(figure=figure)
+
+
+def plot_wyt_bar_to_loading_div(
+    url: str,
+    path: str,
+    scenarios: list[str],
+    y_label: str = "y",
+    group_label: str = "group",
+    conversion: Literal["cfs_to_taf", "portion_to_percent"] | None = None,
+    only_use_month: int | None = None,
+    agg_method: Literal["mean", "sum"] = "mean",
+) -> Graph:
+    if not endpoint_is(url, "climate-change"):
+        return dash.no_update
+    data = {
+        s: sb.DB.get_timeseries_for_scenario(scenario=s, path=path) for s in scenarios
+    }
+    figure = sb.plots.wyt_bar(
+        data,
+        y_label=y_label,
+        group_label=group_label,
+        conversion=conversion,
+        only_use_month=only_use_month,
+        agg_method=agg_method,
+    )
+    return Graph(figure=figure)
+
+
+# Establish callbacks for the graphs
+@dash.callback(
+    output=dash.Output("g-intro", "children"),
+    inputs=[dash.Input("url", "href")],
+)
+def callback_graph_intro(_: str):
+    return Graph(
+        figure=sb.plots.pre_packed.climate_scenario_scatter(),
+        config={"displayModeBar": False},
+    )
+
+
+dash.callback(
+    output=dash.Output("g-cc-storage-oroville-2043", "children"),
+    inputs=dict(
+        url=dash.Input("url", "href"),
+        path=dash.State("path-oroville", "children"),
+        scenarios=dash.State("scenarios-2043", "children"),
+        y_label=dash.State("y-label-oroville", "children"),
+    ),
+)(plot_monthly_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-storage-oroville-2085", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-oroville", "children"),
+        scenarios=dash.State("scenarios-2085", "children"),
+        y_label=dash.State("y-label-oroville", "children"),
+    ),
+)(plot_monthly_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-storage-san-luis-2043", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-san-luis", "children"),
+        scenarios=dash.State("scenarios-2043", "children"),
+        y_label=dash.State("y-label-san-luis", "children"),
+    ),
+)(plot_monthly_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-storage-san-luis-2085", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-san-luis", "children"),
+        scenarios=dash.State("scenarios-2085", "children"),
+        y_label=dash.State("y-label-san-luis", "children"),
+    ),
+)(plot_monthly_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-river-flows-2043", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-ndoi", "children"),
+        scenarios=dash.State("scenarios-2043", "children"),
+        y_label=dash.State("y-label-ndoi", "children"),
+    ),
+)(plot_monthly_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-river-flows-2085", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-ndoi", "children"),
+        scenarios=dash.State("scenarios-2085", "children"),
+        y_label=dash.State("y-label-ndoi", "children"),
+    ),
+)(plot_monthly_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-river-flows-wyt-2043", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-ndoi", "children"),
+        scenarios=dash.State("scenarios-2043", "children"),
+        group_label=dash.State("g-label-ndoi", "children"),
+        y_label=dash.State("y-label-ndoi", "children"),
+    ),
+)(plot_wyt_bar_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-river-flows-wyt-2085", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-ndoi", "children"),
+        scenarios=dash.State("scenarios-2085", "children"),
+        group_label=dash.State("g-label-ndoi", "children"),
+        y_label=dash.State("y-label-ndoi", "children"),
+    ),
+)(plot_wyt_bar_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-banks-wyt-2043", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-banks", "children"),
+        scenarios=dash.State("scenarios-2043", "children"),
+        group_label=dash.State("g-label-banks", "children"),
+        y_label=dash.State("y-label-banks", "children"),
+        agg_method=dash.State("agg-banks", "children"),
+        conversion=dash.State("conversion-banks", "children"),
+    ),
+)(plot_wyt_bar_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-banks-wyt-2085", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-banks", "children"),
+        scenarios=dash.State("scenarios-2085", "children"),
+        group_label=dash.State("g-label-banks", "children"),
+        y_label=dash.State("y-label-banks", "children"),
+        agg_method=dash.State("agg-banks", "children"),
+        conversion=dash.State("conversion-banks", "children"),
+    ),
+)(plot_wyt_bar_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-perdel-wyt-2043", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-perdel", "children"),
+        scenarios=dash.State("scenarios-2043", "children"),
+        group_label=dash.State("g-label-perdel", "children"),
+        y_label=dash.State("y-label-perdel", "children"),
+        agg_method=dash.State("agg-perdel", "children"),
+        conversion=dash.State("conversion-perdel", "children"),
+    ),
+)(plot_wyt_bar_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-perdel-wyt-2085", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-perdel", "children"),
+        scenarios=dash.State("scenarios-2085", "children"),
+        group_label=dash.State("g-label-perdel", "children"),
+        y_label=dash.State("y-label-perdel", "children"),
+        agg_method=dash.State("agg-perdel", "children"),
+        conversion=dash.State("conversion-perdel", "children"),
+    ),
+)(plot_wyt_bar_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-totaldel-wyt-2043", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-totaldel", "children"),
+        scenarios=dash.State("scenarios-2043", "children"),
+        group_label=dash.State("g-label-totaldel", "children"),
+        y_label=dash.State("y-label-totaldel", "children"),
+        agg_method=dash.State("agg-totaldel", "children"),
+        conversion=dash.State("conversion-totaldel", "children"),
+    ),
+)(plot_wyt_bar_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-totaldel-wyt-2085", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-totaldel", "children"),
+        scenarios=dash.State("scenarios-2085", "children"),
+        group_label=dash.State("g-label-totaldel", "children"),
+        y_label=dash.State("y-label-totaldel", "children"),
+        agg_method=dash.State("agg-totaldel", "children"),
+        conversion=dash.State("conversion-totaldel", "children"),
+    ),
+)(plot_wyt_bar_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-emmaton-2043", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-emmaton", "children"),
+        scenarios=dash.State("scenarios-2043", "children"),
+        y_label=dash.State("y-label-emmaton", "children"),
+    ),
+)(plot_monthly_to_loading_div)
+
+dash.callback(
+    output=dash.Output("g-cc-emmaton-2085", "children"),
+    inputs=dict(
+        url=dash.Input("url", "pathname"),
+        path=dash.State("path-emmaton", "children"),
+        scenarios=dash.State("scenarios-2085", "children"),
+        y_label=dash.State("y-label-emmaton", "children"),
+    ),
+)(plot_monthly_to_loading_div)
