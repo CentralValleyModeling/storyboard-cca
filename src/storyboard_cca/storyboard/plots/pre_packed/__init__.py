@@ -40,22 +40,44 @@ def climate_scenario_scatter():
     )
     fig = None
     fig = go.Figure(
-        go.Scatter(
-            mode="markers",
-            x=data["Change in Average Precipitation"],
-            y=data["Change in Average Temperature"],
-            marker_symbol="square",
-            hovertemplate="Change in Temperature: %{y} C"
-            + "<br>Change in Precipitation: %{x}%<br>"
-            + "%{text}",
-            text=["Scenario: {}".format(i) for i in data["Scenario"]],
-            marker_line_color="midnightblue",
-            marker_color="lightskyblue",
-            marker_line_width=1,
-            marker_size=5,
-        )
+        [
+            go.Scatter(
+                # name="Climate Change Scenario Parameters",
+                mode="markers",
+                x=(data.loc[idx, "Change in Average Precipitation"],),
+                y=(data.loc[idx, "Change in Average Temperature"],),
+                marker_symbol="circle",
+                hovertemplate="\u0394T: %{y}\u00B0C<br>\u0394P: %{x}%<br>",
+                # text=["Scenario: {}".format(j) for j in data["Scenario"]],
+                marker_line_width=1,
+                marker_size=12,
+                name=data.loc[idx, "Scenario"],
+            )
+            for idx in data.index
+        ]
     )
     fig.update_layout(
-        yaxis_scaleanchor="x",
+        template="plotly_white",
+        xaxis_title="Change in Precipitation (%)",
+        yaxis_title="Change in Temperature (\u00B0C)",
+        legend=dict(
+            yanchor="top",
+            y=-0.25,
+            xanchor="center",
+            x=0.5,
+            orientation="h",
+        ),
+    )
+    fig.update_xaxes(
+        mirror=True,
+        ticks="outside",
+        fixedrange=True,
+        range=(-5, 5),
+    )
+    fig.update_yaxes(
+        mirror=True,
+        ticks="outside",
+        fixedrange=True,
+        range=(0, 5),
     )
     return fig

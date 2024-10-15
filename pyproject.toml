@@ -10,7 +10,7 @@ authors = [
 description = "A Story Dashboard for the SWP Climate Change Adaptation Studies"
 readme = "README.md"
 license = {text = "MIT"}
-version = "0.0.2"
+version = "0.0.3"
 classifiers = [
     "Programming Language :: Python :: 3",
 ]
